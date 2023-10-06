@@ -1,14 +1,20 @@
 import { authAxios, axi } from "./UseAxios";
 
 
-
 export const registerRequest = async (data) => {
     const response = await axi.post("register", data);
     return response;
 };
   
-export const loginRequest = async (email, password) => {
-    const response = await axi.post("/users/login/", { email, password });
+
+export const otpValidationRequest = async (data) => {
+    const response = await axi.post("verification", data);
+    return response;
+};
+
+
+export const loginRequest = async (data) => {
+    const response = await axi.post("login",data );
     return response;
 };
   

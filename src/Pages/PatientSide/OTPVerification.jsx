@@ -1,22 +1,108 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from 'react';
+import {useDispatch,useSelector } from 'react-redux'
+import {otpVerificationAction} from '../../Redux/Actions/otpVerificationAction'
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import { useNavigate} from "react-router-dom";
+import { otpValidationRequest } from "../../api/user";
+import LoadingSpinner from "../../Components/LoadingSpinner";
+
 
 function OTPVerification() {
   const [otp, setOTP] = useState('');
-  const [verificationSuccess, setVerificationSuccess] = useState(false);
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+  const user_id = useSelector(state => state.otpVerification.user_id);
+
+
+  const requestData = {
+    user_id: user_id,
+    otp: otp,
+  };
 
   const handleOTPChange = (e) => {
     setOTP(e.target.value);
   };
 
+
+
+
+  const registerMutations = useMutation({
+    mutationFn: () => otpValidationRequest(requestData),
+    onSuccess: (response) => {
+      toast.success(
+        <div>
+          <strong>Success:</strong> OTP Verification Successful
+        </div>,
+        {
+          position: 'top-center',
+          autoClose: 5000, 
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: '#4CAF50', 
+            color: 'white',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            border: 'none',
+            width: '100%',
+            textAlign: 'center',
+          },
+        }
+      );
+
+      dispatch(otpVerificationAction(""))
+      navigate("/login");
+    },
+    onError: (error) => {
+     
+      const firstErrorMessage = error.response.data.message;
+      
+      toast.error(
+        <div>
+          {firstErrorMessage}
+        </div>,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#ff4d4f", 
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "bold",
+            border: "none",
+            width: "100%", 
+            textAlign: "center", 
+          },
+        }
+      );
+    },
+  });
+
   const handleVerifyOTP = () => {
-    if (otp === '123456') {
-      setVerificationSuccess(true);
-      toast.success('OTP Verified Successfully');
-    } else {
-      toast.error('Invalid OTP. Please try again.');
-    }
+    registerMutations.mutate()
   };
+
+
+  useEffect(() => {
+    if (!user_id) {
+      navigate('/login');
+    }
+  }, [user_id, navigate]);
+
+  if (registerMutations.isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center">
@@ -40,14 +126,6 @@ function OTPVerification() {
         >
           Verify
         </button>
-        {verificationSuccess && (
-          <div className="text-center mt-4">
-            <h2 className="text-2xl font-semibold text-green-600">
-              Verification Successful
-            </h2>
-            <p>Congratulations! You have been verified.</p>
-          </div>
-        )}
       </div>
     </div>
   );

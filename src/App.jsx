@@ -13,6 +13,7 @@ import OTPVerification from "./Pages/PatientSide/OTPVerification"
 import AdminSidebar from "./Components/AdminComponents/AdminSidebar"
 import AdminNavBar from "./Components/AdminComponents/AdminNavBar"
 import AdminDashboard from "./Pages/AdminSide/AdminDashboard"
+import LoadingSpinner from "./Components/LoadingSpinner"
 
 
 
@@ -31,7 +32,6 @@ function App() {
                 <Route path="patient/profile" element={<PatientProfilePage/>} />
                 <Route path="admin/login" element={<AdminLoginPage/>} />
                 <Route path="patient/verification" element={<OTPVerification/>} />
-                <Route path="dash" element={<AdminNavBar/>} />
                 <Route path="dashboard" element={<AdminDashboard/>} />
                 <Route path="*" element={<NotFound/>} />
 

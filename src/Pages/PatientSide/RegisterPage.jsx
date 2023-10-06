@@ -1,9 +1,12 @@
-import { useNavigate,Link,Navigate} from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { registerRequest } from "../../api/user";
-
+import { useDispatch } from 'react-redux'
+import { otpVerificationAction } from '../../Redux/Actions/otpVerificationAction'
+import LoadingSpinner from "../../Components/LoadingSpinner";
+import { useAuthStore } from "../../Store/auth";
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -16,6 +19,8 @@ const RegisterPage = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { isAuth } = useAuthStore();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,16 +33,64 @@ const RegisterPage = () => {
   const registerMutations = useMutation({
     mutationFn: () => registerRequest(formData),
     onSuccess: (response) => {
-      toast.success("Registration Successful!",);
-      navigate("/login");
-      <Navigate to="patient/verification" replace={true} element={<OTPVerification/>} />
+      toast.success(
+        <div>
+          <strong>Success:</strong> Verify User Account
+          <br />
+          <small>Redirecting to verification...</small>
+        </div>,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#4CAF50",
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "bold",
+            border: "none",
+            width: "100%",
+            textAlign: "center",
+          },
+        }
+      );
+
+
+      dispatch(otpVerificationAction(response.data.id))
+      navigate("/patient/verification");
+
     },
     onError: (error) => {
       const firstErrorKey = Object.keys(error.response.data.errors)[0];
       const firstErrorMessage = error.response.data.errors[firstErrorKey];
-      
-      toast.error(firstErrorMessage);
 
+      toast.error(
+        <div>
+          {firstErrorMessage}
+        </div>,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#ff4d4f",
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "bold",
+            border: "none",
+            width: "100%",
+            textAlign: "center",
+          },
+        }
+      );
     },
   });
 
@@ -102,7 +155,11 @@ const RegisterPage = () => {
     registerMutations.mutate();
   };
 
-  if (registerMutations.isLoading) return <p>Loading...</p>;
+  if (registerMutations.isLoading) {
+    return <LoadingSpinner />;
+  }
+  if (isAuth) return <Navigate to="/" />;
+  
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="box-area w-100 p-6 bg-white rounded-lg shadow-md">
@@ -144,14 +201,14 @@ const RegisterPage = () => {
               onChange={handleInputChange}
             />
             <input
-              type="date"
+              type="text"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Date of Birth (MM/DD/YYYY)"
               name="date"
               value={formData.date}
               onChange={handleInputChange}
-
             />
+
             <input
               type="text"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
@@ -183,7 +240,11 @@ const RegisterPage = () => {
                 <span className="ml-1">I agree to the hospital's terms and conditions</span>
               </label>
             </div>
-            <button className="bg-blue-500 text-white w-full py-3 text-sm" >Register</button>
+            <button
+              className={`bg-blue-500 hover:bg-blue-700 active:bg-blue-900 text-white w-full py-3 text-sm ${formData.agreeToTerms ? '' : 'opacity-50 cursor-not-allowed'
+                }`}
+              disabled={!formData.agreeToTerms}
+            >Register</button>
             <div className="mt-2">
               <small>Already a patient? <Link to={'/login'}>Log In</Link></small>
             </div>

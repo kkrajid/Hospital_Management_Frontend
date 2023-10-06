@@ -4,25 +4,87 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "../../Store/auth";
-import Navbar from "../../Components/Navbar";
+import LoadingSpinner from "../../Components/LoadingSpinner";
+import { useSelector } from 'react-redux';
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { isAuth } = useAuthStore();
   const setToken = useAuthStore((state) => state.setToken);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+
+  const handleInputChange = (e) => {
+    const { name, value} = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
 
   const loginMutation = useMutation({
-    mutationFn: () => loginRequest(email, password),
+    mutationFn: () => loginRequest(formData),
     onSuccess: (response) => {
-      setToken(response.data.access, response.data.refresh);
-      toast.success("Login Successfull!");
+      setToken(response.data.token);
+      toast.success(
+        <div>
+          Login Successfull!
+        </div>,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#4CAF50",
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "bold",
+            border: "none",
+            width: "100%",
+            textAlign: "center",
+          },
+        }
+      );
       navigate("/");
     },
-    onError: () => {
-      toast.error("Something problem");
+    onError: (error) => {
+      const firstErrorMessage = error.response.data.message
+      console.log(error);
+
+      toast.error(
+        <div>
+          {firstErrorMessage}
+        </div>,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#ff4d4f",
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "bold",
+            border: "none",
+            width: "100%",
+            textAlign: "center",
+          },
+        }
+      );
     },
   });
 
@@ -33,7 +95,9 @@ const LoginPage = () => {
     loginMutation.mutate();
   };
 
-  if (loginMutation.isLoading) return <p>Loading...</p>;
+  if (loginMutation.isLoading) {
+    return <LoadingSpinner />;
+  }
   if (isAuth) return <Navigate to="/" />;
 
   return (
@@ -47,7 +111,7 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="md:w-1/2 p-6">
+          <form className="md:w-1/2 p-6" onSubmit={handleSubmit}>
             <div className="mb-4">
               <h2 className="text-2xl font-semibold">Patient Login</h2>
               <p>Welcome back! Please sign in to access your account.</p>
@@ -56,11 +120,17 @@ const LoginPage = () => {
               type="text"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Email Address"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
             />
             <input
               type="password"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
             />
             <div className="flex justify-between items-center mb-5">
               <label htmlFor="formCheck" className="text-secondary text-sm">
@@ -81,7 +151,7 @@ const LoginPage = () => {
             <div className="mt-2">
               <small>Don't have an account? <Link to={'/register'}>Register</Link></small>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
