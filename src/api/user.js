@@ -19,6 +19,12 @@ export const loginRequest = async (data) => {
 };
   
 
+export const AdminloginRequest = async (data) => {
+    const response = await axi.post("admin/login",data );
+    return response;
+};
+  
+
 export const get_users = async () => {
     const response = await authAxios.get("/users/get/");
     return response.data;

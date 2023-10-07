@@ -1,15 +1,17 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useAuthStore } from "../Store/auth";
-import jwt_decode from "jwt-decode";
 
 export const PrivateRoute = () => {
-  const { isAuth } = useAuthStore();
-  return isAuth ? <Outlet /> : <Navigate to="/login" />;
+  const { isAuth, role } = useAuthStore();
+  return isAuth && role === "patient" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const AdminPrivateRoute = () => {
-  const token = useAuthStore.getState().access;
-  const tokenDecoded = jwt_decode(token);
-  const isAdmin = tokenDecoded.is_staff;
-  return isAdmin ? <Outlet /> : <Navigate to="/" />;
+  const { isAuth, role } = useAuthStore();
+  return isAuth && role === "admin" ? <Outlet /> : <Navigate to="/admin/login" />;
+};
+
+export const DoctorPrivateRoute = () => {
+  const { isAuth, role } = useAuthStore();
+  return isAuth && role === "doctor" ? <Outlet /> : <Navigate to="/doctor/login" />;
 };

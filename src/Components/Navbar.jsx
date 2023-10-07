@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { lock, hamburgerMenu, close } from '../assets'
 import { useAuthStore } from ".././Store/auth";
 import { useSelector } from 'react-redux';
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     const [toggle, setToggle] = useState(false)
-    const { isAuth } = useAuthStore();
+    const { isAuth, role } = useAuthStore();
+    console.log(role)
     const navigate = useNavigate();
     console.log(isAuth);
     const setToken = useAuthStore((state) => state.setToken);
@@ -14,11 +15,11 @@ const Navbar = () => {
     const handleLogout = () => {
         useAuthStore.getState().logout();
     };
-    const handleLogin =()=>{
+    const handleLogin = () => {
         navigate("/login");
     }
 
-    const handleRegister = () =>{
+    const handleRegister = () => {
         navigate("/register");
     }
 
@@ -36,22 +37,21 @@ const Navbar = () => {
                         <li >Pricing</li>
                     </ul>
                 </div>
-                {isAuth ? "" : (
+                {role !== 'patient'? (
                     <div className='hidden md:flex '>
-                        
+
                         <button className='flex gap-2 justify-between items-center bg-transparent px-6' onClick={handleLogin}>
                             <img src={lock} alt="" />
                             Login</button>
                         <button className='px-8 py-3 bg-[#355FCF] rounded-md text-white font-bold' onClick={handleRegister}>Sign Up</button>
                     </div>
-                )}
-                 {!isAuth ? "" : (
-                <div className='hidden md:flex '>
-                    <button className='flex gap-2 justify-between items-center bg-transparent px-6' onClick={handleLogout}>
-                        <img src={lock} alt="" />
-                        Logout</button>
-                  
-                </div>
+                ):(
+                    <div className='hidden md:flex '>
+                        <button className='flex gap-2 justify-between items-center bg-transparent px-6' onClick={handleLogout}>
+                            <img src={lock} alt="" />
+                            Logout</button>
+
+                    </div>
                 )}
 
                 <div className='md:hidden' onClick={() => setToggle(!toggle)}>
@@ -65,23 +65,23 @@ const Navbar = () => {
                     <li className='p-4 hover:bg-gray-100'>Doctors</li>
                     <li className='p-4 hover:bg-gray-100'>Contact</li>
                     <li className='p-4 hover:bg-gray-100'>Pricing</li>
-                    {isAuth ? "" : (
-                        <div className='flex flex-col my-4 gap-4'>
-                            <button className='flex gap-2 justify-center border border-[208486] items-center bg-transparent px-6 py-4' onClick={handleLogin}>
-                                <img src={lock} alt="" />
-                                Login
-                            </button>
-                            <button className='px-8 py-5 bg-[#355FCF] rounded-md text-white font-bold'  onClick={handleRegister}>Sign Up</button>
-                        </div>
-                    )}
-                    {!isAuth ? "" : (
+                    {role === "patient" ? (
                         <div className='flex flex-col my-4 gap-4'>
                             <button className='flex gap-2 justify-center border border-[208486] items-center bg-transparent px-6 py-4' onClick={handleLogout}>
                                 <img src={lock} alt="" />
                                 Logout
                             </button>
                         </div>
+                    ) : (
+                        <div className='flex flex-col my-4 gap-4'>
+                            <button className='flex gap-2 justify-center border border-[208486] items-center bg-transparent px-6 py-4' onClick={handleLogin}>
+                                <img src={lock} alt="" />
+                                Login
+                            </button>
+                            <button className='px-8 py-5 bg-[#355FCF] rounded-md text-white font-bold' onClick={handleRegister}>Sign Up</button>
+                        </div>
                     )}
+
 
                 </ul>
 

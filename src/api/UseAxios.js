@@ -2,10 +2,10 @@ import axios from "axios";
 import { useAuthStore } from "../Store/auth";
 import jwt_decode from "jwt-decode";
 
-function logout() {
-    useAuthStore.getState().logout();
-    window.location.href = '/login';
-}
+// function logout() {
+//     useAuthStore.getState().logout();
+//     window.location.href = '/login';
+// }
 
 const baseURL = "http://localhost:8000/api/";
 

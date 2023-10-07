@@ -32,7 +32,6 @@ function App() {
                 <Route path="patient/profile" element={<PatientProfilePage/>} />
                 <Route path="admin/login" element={<AdminLoginPage/>} />
                 <Route path="patient/verification" element={<OTPVerification/>} />
-                <Route path="dashboard" element={<AdminDashboard/>} />
                 <Route path="*" element={<NotFound/>} />
 
 
@@ -44,13 +43,13 @@ function App() {
                     <Route path="profile" element={<UserProfile />} />
                     <Route path="order/:id" element={<SoloOrder />} />
                 </Route>
+            </Route> */}
 
                 <Route path="admin" element={<AdminPrivateRoute />} >
-                    <Route index element={<AdminPage />} />
-                    <Route path="add" element={<AddProductPage />} />
-                    <Route path="edit/:id" element={<EditProductPage />} />
-                </Route> */}
-
+                    <Route index element={<AdminDashboard />} />
+                    {/* <Route path="add" element={<AddProductPage />} />
+                    <Route path="edit/:id" element={<EditProductPage />} /> */}
+                </Route> 
             </Route>
         </Routes>
     </BrowserRouter>
