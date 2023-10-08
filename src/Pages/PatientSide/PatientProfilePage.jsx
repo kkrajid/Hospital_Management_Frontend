@@ -1,7 +1,7 @@
 import React from 'react';
 
 function PatientProfilePage() {
-  // Replace the following sample data with actual patient information
+  
   const patientInfo = {
     fullName: 'John Doe',
     emailAddress: 'johndoe@example.com',

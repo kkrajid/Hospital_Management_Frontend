@@ -77,7 +77,7 @@ function AdminLoginPage() {
           },
         }
       );
-      navigate("/admin/dashboard");
+      navigate("/admin");
     },
     onError: (error) => {
       const firstErrorMessage = error.response.data.message

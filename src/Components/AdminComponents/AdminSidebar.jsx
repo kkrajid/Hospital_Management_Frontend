@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTachometerAlt, faUserMd, faUsers, faBed, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { useDispatch,useSelector } from 'react-redux'
+import { selectDashboard } from '../../Redux/Actions/selectDashboardActions'
 function AdminSidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hoveredItemIndex, setHoveredItemIndex] = useState(-1);
+
+  const dispatch = useDispatch()
+  const filed_type = useSelector(state => state.adminDashboardSelectionButton.filed_type);
+  console.log(filed_type);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -35,14 +40,14 @@ function AdminSidebar() {
               <li
                 key={index}
                 className={`py-2 px-4 my-8 cursor-pointer flex items-center ${
-                  isSidebarOpen ? '' : 'justify-center' // Center align items when sidebar is closed
+                  isSidebarOpen ? '' : 'justify-center' 
                 } ${
                   index === hoveredItemIndex && isSidebarOpen ? 'bg-white text-[#129FBD]' : '' // Apply hover effect
                 }`}
                 onMouseEnter={() => setHoveredItemIndex(index)} // Handle hover
                 onMouseLeave={() => setHoveredItemIndex(-1)} // Remove hover effect
                 onClick={() => {
-                  
+                  dispatch(selectDashboard(item.label))
                 }}
               >
                 <FontAwesomeIcon icon={item.icon} size="lg" className="mr-2" />
