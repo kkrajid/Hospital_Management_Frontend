@@ -9,21 +9,23 @@ import jwt_decode from "jwt-decode";
 
 const baseURL = "http://localhost:8000/api/";
 
+
 export const axi = axios.create({
     baseURL
 });
 
-export const authAxios = axios.create({
-    baseURL,
-    withCredentials: true
-});
 
-authAxios.interceptors.request.use((config) => {
-    const token = useAuthStore.getState().access;
-    
-    config.headers = {
-        Authorization: `Bearer ${token}`,
-    };
-    // const tokenDecoded = jwt_decode(token);
+export const authAxios = axios.create({
+    baseURL 
+  });
+  
+  authAxios.interceptors.request.use((config) => {
+    const token = useAuthStore.getState().access; 
+  
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  
     return config;
-});
+  });
+

@@ -23,10 +23,25 @@ export const AdminloginRequest = async (data) => {
     const response = await axi.post("admin/login",data );
     return response;
 };
-  
 
-export const get_users = async () => {
-    const response = await authAxios.get("/users/get/");
+export const DoctorloginRequest = async (data) => {
+    const response = await axi.post("doctor/login",data );
+    return response;
+};
+  
+export const admin_add_new_doctor = async (data) => {
+    const response = await authAxios.post("admin/add_doctor",data);
+    return response.data;
+};
+
+export const get_all_doctor = async () => {
+    const response = await authAxios.get("admin/all_doctors");
+    return response.data;
+};
+
+
+export const get_all_patients = async () => {
+    const response = await authAxios.get("admin/all_patients");
     return response.data;
 };
   

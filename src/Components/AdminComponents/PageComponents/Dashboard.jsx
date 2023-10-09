@@ -11,16 +11,15 @@ function Dashboard() {
   
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <TotalAppointmentsCard totalAppointments={totalAppointments} />
                 <PatientSurveysCard surveyCount={surveyCount} />
                 <TopCasesCard topCases={topCases} />
-                <TopCasesCard topCases={topCases} />
             </div>
-            <div className="grid grid-cols-1 mt-2 md:grid-cols-2 gap-4">
-                <TotalAppointmentsCard totalAppointments={totalAppointments} />
-                <TopCasesCard topCases={topCases} />
+            <div className="bg-gradient-to-r from-blue-600 to-blue-400 h-[150px]  mt-2 rounded-lg">
+
             </div>
+       
         </>
     )
 }

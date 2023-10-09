@@ -107,7 +107,7 @@ const LoginPage = () => {
         <div className="flex flex-col md:flex-row space-y-6 md:space-x-6">
           <div className="md:w-1/2 bg-blue-600 rounded-lg p-6">
             <div className="mb-3">
-              <img src="images/1.png" alt="Hospital Logo" className="w-48 mx-auto" />
+              <img src="Hospital Image" placeholder="Hospital Image" alt="Hospital Logo" className="w-48 mx-auto" />
             </div>
           </div>
 
@@ -134,16 +134,16 @@ const LoginPage = () => {
             />
             <div className="flex justify-between items-center mb-5">
               <label htmlFor="formCheck" className="text-secondary text-sm">
-                <input
+                {/* <input
                   type="checkbox"
                   className="form-checkbox"
                   id="formCheck"
                 />
-                <span className="ml-1">Remember Me</span>
+                <span className="ml-1">Remember Me</span> */}
               </label>
               <div className="forgot">
                 <small>
-                  <a href="#">Forgot Password?</a>
+                  {/* <a href="#">Forgot Password?</a> */}
                 </small>
               </div>
             </div>

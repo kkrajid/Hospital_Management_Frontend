@@ -119,13 +119,13 @@ function AdminLoginPage() {
   if (AdminloginMutation.isLoading) {
     return <LoadingSpinner />;
   }
-  if (isAuth) return <Navigate to="/admin/dashboard" />;
+  if (isAuth) return <Navigate to="/admin" />;
 
   return (
     <div style={containerStyle}>
       <form style={formContainerStyle} onSubmit={handleSubmit}>
         <div className="mb-4 text-center">
-          <img src="images/hospital_logo.png" alt="Hospital Logo" style={logoStyle} />
+          {/* <img src="images/hospital_logo.png" alt="Hospital Logo" style={logoStyle} /> */}
         </div>
         <h2 className="text-2xl font-semibold text-center text-indigo-600 mb-4">Hospital Admin Login</h2>
         <p className="text-center text-gray-600 mb-6">Welcome back, Hospital Admin! Please sign in to access your account.</p>
@@ -151,16 +151,16 @@ function AdminLoginPage() {
         </div>
         <div className="mb-4 flex items-center justify-between">
           <label htmlFor="formCheck" className="text-secondary text-sm">
-            <input
+            {/* <input
               type="checkbox"
               className="form-checkbox"
               id="formCheck"
-            />
-            <span className="ml-1 text-gray-600">Remember Me</span>
+            /> */}
+            {/* <span className="ml-1 text-gray-600">Remember Me</span> */}
           </label>
           <div className="forgot">
             <small>
-              <a href="#" className="text-indigo-600">Forgot Password?</a>
+              {/* <a href="#" className="text-indigo-600">Forgot Password?</a> */}
             </small>
           </div>
         </div>

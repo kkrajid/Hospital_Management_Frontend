@@ -10,7 +10,7 @@ export const Hero = () => {
                     <h1 className='leading-[72px] py-4 md:text-6xl text-5xl font-semibold '><span className='text-[#355FCF]'>Take Care </span>To Of Your Health And It Will Take Care Of You </h1>
                     <p className='py-4 text-lg text-gray-600'> Far far away,behind the word mountains,far from the countries vokalia and consonantia,there live the blind text</p>
                     <form className='max-w-[700px] py-4 shadow-lg rounded-md flex justify-between ' >
-                        <input
+                        {/* <input
                             type="text"
                             className='bg-white mx-3'
                             placeholder='What do want '
@@ -21,7 +21,7 @@ export const Hero = () => {
                             className='icon'
                             style={{color:'#000',marginRight:'20px'}}
                             />
-                        </button>
+                        </button> */}
                     </form>
                 </div>
                 <img className='order-first md:order-last md:ml-5' src={landing_im} alt="heroimag" />
