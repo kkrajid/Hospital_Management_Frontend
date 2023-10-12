@@ -50,7 +50,6 @@ function App() {
 
                 <Route path="doctor" element={<DoctorPrivateRoute/>} >
                     <Route index element={<DoctorDashboard/>} />
-
                 </Route>
 
     
