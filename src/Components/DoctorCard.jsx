@@ -1,8 +1,7 @@
 import React from 'react';
-
 function DoctorCard() {
   return (
-    <div className="bg-white shadow-lg rounded-md p-4 mb-4 flex flex-col items-center">
+    <div className="bg-white shadow-lg rounded-md p-10 mb-4 flex flex-col items-center">
       <img
         src={"https://th.bing.com/th/id/R.215c1ff399e961851cc11a7810886a0e?rik=oZfxvnavGwz6cA&riu=http%3a%2f%2fwww.writergirl.com%2fwp-content%2fuploads%2f2014%2f11%2fDoctor-790X1024.jpg&ehk=CmnYm47Si7SLogCKQcVQ9Onueou53ycpcjvFFc3Ej00%3d&risl=&pid=ImgRaw&r=0"}
         alt={"doctor name"}

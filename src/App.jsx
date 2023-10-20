@@ -7,18 +7,8 @@ import RegisterPage from "./Pages/PatientSide/RegisterPage"
 import NotFound from "./Pages/NotFound"
 import DoctorLoginPage from "./Pages/DoctorSide/DoctorLoginPage"
 import AdminLoginPage from "./Pages/AdminSide/AdminLoginPage"
-import PatientProfilePage from "./Pages/PatientSide/PatientProfilePage"
 import OTPVerification from "./Pages/PatientSide/OTPVerification"
-import AdminSidebar from "./Components/AdminComponents/AdminSidebar"
-import AdminNavBar from "./Components/AdminComponents/AdminNavBar"
-import AdminDashboard from "./Pages/AdminSide/AdminDashboard"
-import LoadingSpinner from "./Components/LoadingSpinner"
 import DoctorDashboard from "./Pages/DoctorSide/DoctorDashboard"
-import Dashboard from "./Components/AdminComponents/PageComponents/Dashboard"
-import Doctors from "./Components/AdminComponents/PageComponents/Doctors"
-import Patients from "./Components/AdminComponents/PageComponents/Patients"
-import ICU from "./Components/AdminComponents/PageComponents/ICU"
-import Settings from "./Components/AdminComponents/PageComponents/Settings"
 import PatientsPage from "./Pages/AdminSide/PatientsPage"
 import ICUPage from "./Pages/AdminSide/ICUPage"
 import SettingsPage from "./Pages/AdminSide/SettingsPage"
@@ -26,6 +16,12 @@ import DoctorsPage from "./Pages/AdminSide/DoctorsPage"
 import DashboardPage from "./Pages/AdminSide/DashboardPage"
 import AddDoctorPage from "./Pages/AdminSide/AddDoctorPage"
 import AddPatientsPage from "./Pages/AdminSide/AddPatientsPage"
+import PatientSideBar from "./Pages/PatientSide/PageComponents/PatientSideBar"
+import PatientDashboard from "./Pages/PatientSide/PatientDashboard"
+import PatientDoctorPage from "./Pages/PatientSide/PatientDoctorPage"
+import PatientAppointmentPage from "./Pages/PatientSide/PatientAppointmentPage"
+import PatientChatPage from "./Pages/PatientSide/PatientChatPage"
+import IndividulaDoctor from "./Pages/PatientSide/IndividulaDoctor"
 
 function App() {
 
@@ -37,7 +33,16 @@ function App() {
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
                 <Route path="doctor/login" element={<DoctorLoginPage/>} />
-                <Route path="patient/profile" element={<PatientProfilePage/>} />
+
+                <Route path="patient/profile" element={<PatientDashboard/>} />
+                <Route path="patient/doctors" element={<PatientDoctorPage/>} />
+                <Route path="patient/doctors/:page" element={<IndividulaDoctor/>} />
+                
+                <Route path="patient/appointments" element={<PatientAppointmentPage/>} />
+                <Route path="patient/chat" element={<PatientChatPage/>} />
+
+                
+
                 <Route path="admin/login" element={<AdminLoginPage/>} />
                 <Route path="patient/verification" element={<OTPVerification/>} />
                 <Route path="*" element={<NotFound/>} />

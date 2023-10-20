@@ -1,8 +1,12 @@
 import React from 'react'
+import PatientSideBar from './PageComponents/PatientSideBar'
+import PatientHome from './PageComponents/PatientHome'
 
 function PatientDashboard() {
   return (
-    <div>PatientDashboard</div>
+    <>
+    <PatientSideBar child ={<PatientHome/>} />
+    </>
   )
 }
 
