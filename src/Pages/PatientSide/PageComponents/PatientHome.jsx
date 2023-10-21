@@ -1,6 +1,10 @@
 import React from 'react'
-
+import { useQuery } from '@tanstack/react-query';
+import { patientProfile } from "../../../api/user";
 function PatientHome() {
+    const { data, error, isLoading } = useQuery(['doctors'],patientProfile);
+    console.log(data);
+    console.log(error);
     return (
         <>
             <div className='mx-4 mb-0 bg-gradient-to-r from-blue-400 to-green-100 h full p-9 rounded-[10px]  '>

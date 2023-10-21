@@ -25,52 +25,53 @@ import IndividulaDoctor from "./Pages/PatientSide/IndividulaDoctor"
 
 function App() {
 
-  return (
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<Layout />} >
-                <Route index element={<HomePage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="doctor/login" element={<DoctorLoginPage/>} />
-
-                <Route path="patient/profile" element={<PatientDashboard/>} />
-                <Route path="patient/doctors" element={<PatientDoctorPage/>} />
-                <Route path="patient/doctors/:page" element={<IndividulaDoctor/>} />
-                
-                <Route path="patient/appointments" element={<PatientAppointmentPage/>} />
-                <Route path="patient/chat" element={<PatientChatPage/>} />
-
-                
-
-                <Route path="admin/login" element={<AdminLoginPage/>} />
-                <Route path="patient/verification" element={<OTPVerification/>} />
-                <Route path="*" element={<NotFound/>} />
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout />} >
+                    <Route index element={<HomePage />} />
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="register" element={<RegisterPage />} />
+                    <Route path="doctor/login" element={<DoctorLoginPage />} />
 
 
-                <Route path="patient" element={<PrivateRoute/>} >
 
-                    {/* <Route index element={<AdminDashboard />} /> */}
+                    <Route path="patient/appointments" element={<PatientAppointmentPage />} />
+                    <Route path="patient/chat" element={<PatientChatPage />} />
+
+
+
+                    <Route path="admin/login" element={<AdminLoginPage />} />
+                    <Route path="patient/verification" element={<OTPVerification />} />
+                    <Route path="*" element={<NotFound />} />
+
+
+                    <Route path="patient" element={<PrivateRoute />} >
+                        <Route path="profile" element={<PatientDashboard />} />
+                        <Route path="doctors" element={<PatientDoctorPage />} />
+                        <Route path="doctors/:page" element={<IndividulaDoctor />} />
+
+                        {/* <Route index element={<AdminDashboard />} /> */}
+                    </Route>
+
+                    <Route path="doctor" element={<DoctorPrivateRoute />} >
+                        <Route index element={<DoctorDashboard />} />
+                    </Route>
+
+
+                    <Route path="admin" element={<AdminPrivateRoute />} >
+                        <Route index element={<DashboardPage />} />
+                        <Route path="patients" element={<PatientsPage />} />
+                        <Route path="patients/addpatient" element={<AddPatientsPage />} />
+                        <Route path="doctors/addDoctor" element={<AddDoctorPage />} />
+                        <Route path="doctors" element={<DoctorsPage />} />
+                        <Route path="icu" element={<ICUPage />} />
+                        <Route path="settings" element={<SettingsPage />} />
+                    </Route>
                 </Route>
-
-                <Route path="doctor" element={<DoctorPrivateRoute/>} >
-                    <Route index element={<DoctorDashboard/>} />
-                </Route>
-
-    
-                <Route path="admin" element={<AdminPrivateRoute />} >
-                    <Route index element={<DashboardPage/>} />
-                    <Route path="patients" element={<PatientsPage/>} />
-                    <Route path="patients/addpatient" element={<AddPatientsPage/>} />
-                    <Route path="doctors/addDoctor" element={<AddDoctorPage/>} />
-                    <Route path="doctors" element={<DoctorsPage/>} />
-                    <Route path="icu" element={<ICUPage/>} />
-                    <Route path="settings" element={<SettingsPage/>} />
-                </Route> 
-            </Route>
-        </Routes>
-    </BrowserRouter>
-  )
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App
@@ -91,14 +92,14 @@ export default App
 
 
 
-       {/* <Route path="add" element={<AddProductPage />} />
+{/* <Route path="add" element={<AddProductPage />} />
                     <Route path="edit/:id" element={<EditProductPage />} /> */}
 
 
-                {/* <Route path="cate" element={<CatePage />} />
+{/* <Route path="cate" element={<CatePage />} />
                 <Route path="cate/:cate" element={<SearchByCate />} /> */}
 
-                {/* <Route element={<PrivateRoute />} >
+{/* <Route element={<PrivateRoute />} >
 
                     <Route path="profile" element={<UserProfile />} />
                     <Route path="order/:id" element={<SoloOrder />} />

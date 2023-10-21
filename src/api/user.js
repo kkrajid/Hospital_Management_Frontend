@@ -44,4 +44,8 @@ export const get_all_patients = async () => {
     const response = await authAxios.get("admin/all_patients");
     return response.data;
 };
-  
+
+export const patientProfile = async () => {
+    const response = await authAxios.get("patient/profile");
+    return response.data;
+};
