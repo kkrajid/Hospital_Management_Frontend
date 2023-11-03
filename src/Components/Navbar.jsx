@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { lock, hamburgerMenu, close } from '../assets'
 import { useAuthStore } from ".././Store/auth";
 import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
     const [toggle, setToggle] = useState(false)
@@ -47,10 +49,9 @@ const Navbar = () => {
                     </div>
                 ):(
                     <div className='hidden md:flex '>
-                        <button className='flex gap-2 justify-between items-center bg-transparent px-6' onClick={handleLogout}>
-                            <img src={lock} alt="" />
-                            Logout</button>
-
+                        <Link className='flex gap-2 justify-between items-center bg-gray-100  rounded-full p-4 ' to={`/patient/dashboard`}>
+                        <FontAwesomeIcon icon={faUser} className='text-gray-600' />
+                            </Link>
                     </div>
                 )}
 

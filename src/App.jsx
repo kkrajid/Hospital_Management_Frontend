@@ -8,20 +8,22 @@ import NotFound from "./Pages/NotFound"
 import DoctorLoginPage from "./Pages/DoctorSide/DoctorLoginPage"
 import AdminLoginPage from "./Pages/AdminSide/AdminLoginPage"
 import OTPVerification from "./Pages/PatientSide/OTPVerification"
-import DoctorDashboard from "./Pages/DoctorSide/DoctorDashboard"
-import PatientsPage from "./Pages/AdminSide/PatientsPage"
-import ICUPage from "./Pages/AdminSide/ICUPage"
-import SettingsPage from "./Pages/AdminSide/SettingsPage"
-import DoctorsPage from "./Pages/AdminSide/DoctorsPage"
-import DashboardPage from "./Pages/AdminSide/DashboardPage"
-import AddDoctorPage from "./Pages/AdminSide/AddDoctorPage"
-import AddPatientsPage from "./Pages/AdminSide/AddPatientsPage"
-import PatientSideBar from "./Pages/PatientSide/PageComponents/PatientSideBar"
-import PatientDashboard from "./Pages/PatientSide/PatientDashboard"
+import DoctorDashboard from "./Pages/DoctorSide/DoctorDashboardPage"
+import PatientDashboardPage from "./Pages/PatientSide/PatientDashboardPage"
 import PatientDoctorPage from "./Pages/PatientSide/PatientDoctorPage"
 import PatientAppointmentPage from "./Pages/PatientSide/PatientAppointmentPage"
 import PatientChatPage from "./Pages/PatientSide/PatientChatPage"
 import IndividulaDoctor from "./Pages/PatientSide/IndividulaDoctor"
+import DoctorTimeSlotePage from "./Pages/DoctorSide/DoctorTimeSlotePage"
+import PatientProfilePage from "./Pages/PatientSide/PatientProfilePage"
+import DoctorDashboardPage from "./Pages/DoctorSide/DoctorDashboardPage"
+import AdminDashboardPage from "./Pages/AdminSide/AdminDashboardPage"
+import AdminDoctorsPage from "./Pages/AdminSide/AdminDoctorsPage"
+import AdminPatientsPage from "./Pages/AdminSide/AdminPatientsPage"
+import AdminSettingsPage from "./Pages/AdminSide/AdminSettingsPage"
+import DoctorProfilePage from "./Pages/DoctorSide/DoctorProfilePage"
+import DoctorAppointmentPage from "./Pages/DoctorSide/DoctorAppointmentPage"
+import DoctorChatPage from "./Pages/DoctorSide/DoctorChatPage"
 
 function App() {
 
@@ -33,40 +35,34 @@ function App() {
                     <Route path="login" element={<LoginPage />} />
                     <Route path="register" element={<RegisterPage />} />
                     <Route path="doctor/login" element={<DoctorLoginPage />} />
-
-
-
-                    <Route path="patient/appointments" element={<PatientAppointmentPage />} />
-                    <Route path="patient/chat" element={<PatientChatPage />} />
-
-
-
                     <Route path="admin/login" element={<AdminLoginPage />} />
                     <Route path="patient/verification" element={<OTPVerification />} />
                     <Route path="*" element={<NotFound />} />
 
+                    <Route path="patient/chat" element={<PatientChatPage />} />
 
                     <Route path="patient" element={<PrivateRoute />} >
-                        <Route path="profile" element={<PatientDashboard />} />
+                        <Route path="dashboard" element={<PatientDashboardPage />} />
+                        <Route path="profile" element={<PatientProfilePage/>} />
                         <Route path="doctors" element={<PatientDoctorPage />} />
                         <Route path="doctors/:page" element={<IndividulaDoctor />} />
-
-                        {/* <Route index element={<AdminDashboard />} /> */}
+                        <Route path="appointments" element={<PatientAppointmentPage />} />
                     </Route>
 
                     <Route path="doctor" element={<DoctorPrivateRoute />} >
-                        <Route index element={<DoctorDashboard />} />
+                        <Route index element={<DoctorDashboardPage/>} />
+                        <Route path="profile" element={<DoctorProfilePage/>} />
+                        <Route path="timeslote" element={<DoctorTimeSlotePage/>} />
+                        <Route path="appointments" element={<DoctorAppointmentPage/>} />
+                        <Route path="chat" element={<DoctorChatPage/>} />
                     </Route>
 
 
                     <Route path="admin" element={<AdminPrivateRoute />} >
-                        <Route index element={<DashboardPage />} />
-                        <Route path="patients" element={<PatientsPage />} />
-                        <Route path="patients/addpatient" element={<AddPatientsPage />} />
-                        <Route path="doctors/addDoctor" element={<AddDoctorPage />} />
-                        <Route path="doctors" element={<DoctorsPage />} />
-                        <Route path="icu" element={<ICUPage />} />
-                        <Route path="settings" element={<SettingsPage />} />
+                        <Route index element={<AdminDashboardPage/>} />
+                        <Route path="doctors" element={<AdminDoctorsPage/>} />
+                        <Route path="patients" element={<AdminPatientsPage/>} />
+                        <Route path="settings" element={<AdminSettingsPage/>} />
                     </Route>
                 </Route>
             </Routes>

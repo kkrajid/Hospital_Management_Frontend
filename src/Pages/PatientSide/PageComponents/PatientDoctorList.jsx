@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { faSearch ,faAddressBook   } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DoctorList from './DoctorList';
+import { useQuery } from '@tanstack/react-query';
+import { all_doctors_Profile_patientside  } from "../../../api/user";
+import LoadingSpinner from '../../../Components/LoadingSpinner';
+import { ListGroup } from 'react-bootstrap';
+
 
 function PatientDoctorList() {
+    const [doctorProfiles, setDoctorProfiles] = useState([]);
+    const { data, error, isLoading } = useQuery(['all_doctors_Profile_patientside'], all_doctors_Profile_patientside);
+    useEffect(() => {
+        if (data && !isLoading) {
+            setDoctorProfiles(data);
+
+        }
+    }, [data, isLoading, error]);
+
+    if (isLoading) {
+    
+        return <LoadingSpinner/>;
+      }
     return (
         <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2  h-screen border-b rounded-[10px]'>
             <div className='flex flex-row shadow max-w-[600px] md:max-w-[1480px] w-full  h-[50px] rounded-[2px] py-1 px-4'>
@@ -60,11 +78,11 @@ function PatientDoctorList() {
                             </div>
                         </div>
                     </div>*/}
-                <DoctorList/>
-                <DoctorList/>
-                <DoctorList/>
-                <DoctorList/>
-                <DoctorList/>
+              
+                {doctorProfiles.map((profile) => (
+                            <DoctorList child={profile} />
+
+                        ))}
             
                 </div> 
             </div>

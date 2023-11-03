@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { faHome, faCalendar, faComments, faEnvelope, faSignOutAlt, faUserMd } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {useAuthStore} from '../../../Store/auth'
 
 
 function PatientSideBar({ child }) {
@@ -18,7 +19,7 @@ function PatientSideBar({ child }) {
               <div className="mx-5 my-3 rounded-[20px] bg-[#5E62F1] w-[10px] px-9 flex justify-center ">
                 <div className='flex flex-col justify-between my-12'>
                   <div className='flex flex-col my-12 gap-6'>
-                    <Link className='bg-[#9DA0F5] flex items-center justify-center rounded-[10px] p-2 hover:bg-white' to='/patient/profile'>
+                    <Link className='bg-[#9DA0F5] flex items-center justify-center rounded-[10px] p-2 hover:bg-white' to='/patient/dashboard'>
                       <FontAwesomeIcon icon={faHome} size="lg" className="text-white hover:text-blue-500" />
                     </Link>
                     <Link className='bg-[#9DA0F5] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' to='/patient/doctors'>
@@ -34,7 +35,7 @@ function PatientSideBar({ child }) {
                       <FontAwesomeIcon icon={faEnvelope} size="lg" className="text-white hover:text-blue-500" />
                     </Link>
                   </div>
-                  <div className='bg-[#9DA0F5] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' onClick={() => navigate('/logout')}>
+                  <div className='bg-[#9DA0F5] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' onClick={() => useAuthStore.getState().logout()}>
                     <FontAwesomeIcon icon={faSignOutAlt} size="lg" className="text-white hover:text-blue-500" />
                   </div>
                 </div>

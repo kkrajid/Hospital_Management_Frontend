@@ -13,9 +13,12 @@ const RegisterPage = () => {
     full_name: "",
     password: "",
     phone: "",
-    date: "",
+    date_of_birth: "",
     address: "",
     agreeToTerms: false,
+    gender:"Unknown",
+    role:"Patient"
+
   });
 
   const navigate = useNavigate();
@@ -204,8 +207,8 @@ const RegisterPage = () => {
               type="text"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Date of Birth (MM/DD/YYYY)"
-              name="date"
-              value={formData.date}
+              name="date_of_birth"
+              value={formData.date_of_birth}
               onChange={handleInputChange}
             />
 
