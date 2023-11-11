@@ -19,8 +19,9 @@ export const Doctor_all_time_slote_ = async (date) => {
     const response = await authAxios.get(`doctor/all_time_slots?date=${date}`);
     return response.data;
 };
-export const Doctor_delete_time_slot = async (timeSlotId) => {
-    const response = await authAxios.delete(`doctor/delete_time_slot/${timeSlotId}`);
+export const Doctor_delete_time_slot = async (data) => {
+    console.log(data,34544);
+    const response = await authAxios.post("doctor/doctor_delete_time_slots",{ time_slot: data });
     return response.data;
 };
 export const doctor_profile_detail = async () => {
@@ -33,6 +34,10 @@ export const DoctorProfile_add_or_update = async (formData) => {
 };
 export const all_user_appointments_for_doctor = async (data) => {
     const response = await authAxios.get(`doctor/get_all_appointment_of_doctor?data=${data}`);
+    return response.data;
+};
+export const doctor_get_detail_appointments_view = async (id) => {
+    const response = await authAxios.get(`doctor/appointments/${id}/`);
     return response.data;
 };
 //**///////////////////////////////////////ADMIN SIDE////////////////////////////////////////////////**//
@@ -103,5 +108,10 @@ export const all_user_appointments = async () => {
     const response = await authAxios.get("patient/get_all_appointment");
     return response.data;
 };
+export const get_detail_appointments_view = async (id) => {
+    const response = await authAxios.get(`patient/appointments/${id}/`);
+    return response.data;
+};
+
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////

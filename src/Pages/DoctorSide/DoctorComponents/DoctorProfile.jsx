@@ -4,7 +4,7 @@ import { doctor_profile_detail,DoctorProfile_add_or_update } from "../../../api/
 import LoadingSpinner from '../../../Components/LoadingSpinner';
 import { useMutation } from "@tanstack/react-query";
 import jwt_decode from "jwt-decode";
-
+import { toast } from "react-hot-toast";
 function DoctorProfile() {
     const [formData, setFormData] = useState({
         user: {
@@ -53,7 +53,29 @@ function DoctorProfile() {
     const update_or_addMutation = useMutation({
         mutationFn: () => DoctorProfile_add_or_update(formData),
         onSuccess: (response) => {
-            alert(response);
+            toast.success(
+                <div>
+                  {response.message}
+                </div>,
+                {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  style: {
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    border: "none",
+                    width: "100%",
+                    textAlign: "center",
+                  },
+                }
+              );
         },
         onError: (error) => {
             console.log(error.message);
@@ -70,10 +92,10 @@ function DoctorProfile() {
     }
 
     return (
-        <div className='max-w-[1480px] w-full bg-gray-100 rounded-[10px] h-full p-2 '>
-            <div className='w-full h-[450px]'>
-                <div className='w-full h-[60px] shadow-lg bg-white rounded-[3px] flex items-center my-2'>
-                    <div className='flex justify-between items-center py-2 px-4 w-full '>
+        <div className=' w-full bg-gray-100 rounded-[10px] h-full px-1 overflow-y-auto'>
+            <div className='w-full   ' style={{height:"96%"}}>
+                <div className='w-full h-1/6 flex items-center my-2'>
+                    <div className='flex justify-between items-center py-3 px-4 px-4 w-full  shadow-lg bg-white  rounded-[3px] '>
                         <div>
                             <h1>Profile</h1>
                         </div>
@@ -82,7 +104,7 @@ function DoctorProfile() {
                         </div>
                     </div>
                 </div>
-                <div className='flex md:flex-row flex-col w-full h-full'>
+                <div className='flex md:flex-row flex-col w-full h-5/6  rounded-[10px]'>
                     <div className='md:max-w-xs w-full  h-full p-3'>
                         <div className='w-full h-full bg-white shadow-lg px-5 py-2 rounded-[10px]'>
                             <div className='w-full h-full  p-3'>

@@ -24,6 +24,9 @@ import AdminSettingsPage from "./Pages/AdminSide/AdminSettingsPage"
 import DoctorProfilePage from "./Pages/DoctorSide/DoctorProfilePage"
 import DoctorAppointmentPage from "./Pages/DoctorSide/DoctorAppointmentPage"
 import DoctorChatPage from "./Pages/DoctorSide/DoctorChatPage"
+import Patient_Appointment_Detail_View_Page from "./Pages/PatientSide/Patient_Appointment_Detail_View_Page"
+import Doctor_Appointment_Detail_View_Page from "./Pages/DoctorSide/Doctor_Appointment_Detail_View_Page"
+
 
 function App() {
 
@@ -47,6 +50,7 @@ function App() {
                         <Route path="doctors" element={<PatientDoctorPage />} />
                         <Route path="doctors/:page" element={<IndividulaDoctor />} />
                         <Route path="appointments" element={<PatientAppointmentPage />} />
+                        <Route path="appointments/:appointmentId" element={<Patient_Appointment_Detail_View_Page/>} />
                     </Route>
 
                     <Route path="doctor" element={<DoctorPrivateRoute />} >
@@ -54,6 +58,7 @@ function App() {
                         <Route path="profile" element={<DoctorProfilePage/>} />
                         <Route path="timeslote" element={<DoctorTimeSlotePage/>} />
                         <Route path="appointments" element={<DoctorAppointmentPage/>} />
+                        <Route path="appointments/:appointmentId" element={<Doctor_Appointment_Detail_View_Page/>} />
                         <Route path="chat" element={<DoctorChatPage/>} />
                     </Route>
 

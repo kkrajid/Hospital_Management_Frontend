@@ -40,7 +40,7 @@ function PatientSideBar({ child }) {
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col p-2  my-3  max-w-[1180px] w-full  rounded-[10px]  '>
+              <div className='flex flex-col p-2  my-3  w-full  rounded-[10px]  '>
                 {child}
               </div>
             </div>
