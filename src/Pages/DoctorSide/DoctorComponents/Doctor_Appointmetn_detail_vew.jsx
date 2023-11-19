@@ -8,7 +8,7 @@ function Doctor_Appointmetn_detail_vew() {
     const [appointData, setAppointmentData] = useState(null)
     const [activeComponent, setActiveComponent] = useState('Medical_Background');
     const { appointmentId } = useParams();
-    console.log(appointmentId,444444444444444444);
+   
 
     const appointment_date = appointData?.appointment_datetime.split("T")[0] ?? 'date'
 
@@ -53,7 +53,7 @@ function Doctor_Appointmetn_detail_vew() {
                 <div className='w-full h-5/6 bg-transparent absolute bottom-0 flex flex-col md:flex-row    p-4 gap-2'>
                     <div className='h-full w-1/5 bg-transparent py-2 px-2 flex justify-center'>
                         <div className='w-full h-full bg-white rounded-[8px] shadow-lg p-2'>
-                            {/* <div className='w-full h-full'>
+                            <div className='w-full h-full'>
                                 <div className='w-full h-2/5  flex items-center justify-center p-1'>
                                     <div className=' w-6/12 h-5/6 flex items-center justify-center'>
                                         <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg?size=626&ext=jpg" alt="" className='w-24 h-24 rounded-full shadow-lg' />
@@ -62,31 +62,33 @@ function Doctor_Appointmetn_detail_vew() {
                                 <div className='w-full h-3/5 '>
                                     <div className='w-full h-full  p-1 flex flex-col'>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p className='text-gray-500 font-mono'>{appointData?.doctor_profile?.user?.full_name}</p>
+                                            <p className='text-gray-500 font-mono'>{'appointData?.doctor_profile?.user?.full_name'}</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center text-sm'>
-                                            <p>{appointData?.doctor_profile?.specialization}  </p>
+                                            <p>{'appointData?.doctor_profile?.specialization'}  </p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{appointment_date} </p>
+                                            <p>{'appointment_date'} </p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{appointData?.time_slot?.start_time }-{appointData?.time_slot?.end_time }</p>
+                                            <p>{'appointData?.time_slot?.start_time' }-{'appointData?.time_slot?.end_time '}</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p >{appointData?.appointment_status}</p>
+                                            <p >{'appointData?.appointment_status'}</p>
                                         </div>
                                     </div>
 
                                 </div>
-                            </div> */}
+                            </div>
+
+                        
                         </div>
                     </div>
                     <div className='h-full  w-4/5 bg-transparent py-2 px-2 flex justify-center'>
                         <div className='w-full h-full bg-gray-200 rounded-[8px] shadow-lg p-2'>
                             <div className=' w-full h-full '>
-                                <div className='w-full h-1/6 bg-white rounded-t-[10px] border-gray-300 shadow-lg p-2'>
-                                    <div className='w-full h-full shadow-lg flex gap-1 p-1'>
+                                <div className='w-full h-1/6 bg-gray-200 rounded-t-[10px] border-gray-300 shadow-lg p-2 flex'>
+                                    <div className='w-10/12 h-full shadow-lg flex gap-1 p-1 '>
                                         {/* <button className='w-36 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showMedical_Background}>
                                             <p className=' font-semibold'>Medical Background</p>
                                         </button>
@@ -98,6 +100,11 @@ function Doctor_Appointmetn_detail_vew() {
                                         </button>
                                         <button className='w-24 h-full shadow-lg border rounded-[5px]  text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'>
                                             <p className=' font-semibold'>Download</p>
+                                        </button>
+                                    </div>
+                                    <div className='w-2/12 h-full  gap-1 p-1'>
+                                    <button className='w-24 h-full shadow-lg border rounded-[5px]  text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'>
+                                            <p className=' font-semibold'>Completed</p>
                                         </button>
                                     </div>
                                 </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { faHome, faCalendar, faComments, faEnvelope, faSignOutAlt, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCalendar, faComments, faEnvelope, faSignOutAlt, faClock,faBedPulse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useAuthStore} from '../../../Store/auth'
 
@@ -27,12 +27,16 @@ function DoctorSideBar({ child }) {
                     <Link className='bg-[#EEEEEE] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' to='/doctor/appointments'>
                       <FontAwesomeIcon icon={faCalendar} size="lg" className="text-gray-500 hover:text-blue-500" />
                     </Link>
+                    <Link className='bg-[#EEEEEE] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' to='/doctor/icu'>
+                      <FontAwesomeIcon icon={faBedPulse} size="lg" className="text-gray-500 hover:text-blue-500" />
+                    </Link>
                     <Link className='bg-[#EEEEEE] flex justify-center items-center rounded-[10px] p-2 hover.bg-white' to='/doctor/chat'>
                       <FontAwesomeIcon icon={faComments} size="lg" className="text-gray-500 hover:text-blue-500" />
                     </Link>
                     <Link className='bg-[#EEEEEE] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' to=''>
                       <FontAwesomeIcon icon={faEnvelope} size="lg" className="text-gray-500 hover:text-blue-500" />
                     </Link>
+
                   </div>
                   <div className='bg-[#EEEEEE] flex justify-center items-center rounded-[10px] p-2 hover:bg-white' onClick={() => useAuthStore.getState().logout()}>
                     <FontAwesomeIcon icon={faSignOutAlt} size="lg" className="text-gray-500 hover:text-blue-500" />

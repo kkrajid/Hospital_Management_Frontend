@@ -40,6 +40,17 @@ export const doctor_get_detail_appointments_view = async (id) => {
     const response = await authAxios.get(`doctor/appointments/${id}/`);
     return response.data;
 };
+
+export const doctor_get_all_icu_patients = async () => {
+    const response = await authAxios.get(`doctor/all_icu_patients/`);
+    return response.data;
+};
+export const Doctor_submitICUPatient = async (data) => {
+    const response = await authAxios.post("doctor/add_icu_patient/",data);
+    return response.data;
+};
+
+ 
 //**///////////////////////////////////////ADMIN SIDE////////////////////////////////////////////////**//
 
 export const AdminloginRequest = async (data) => {

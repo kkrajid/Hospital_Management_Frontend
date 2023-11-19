@@ -26,6 +26,7 @@ import DoctorAppointmentPage from "./Pages/DoctorSide/DoctorAppointmentPage"
 import DoctorChatPage from "./Pages/DoctorSide/DoctorChatPage"
 import Patient_Appointment_Detail_View_Page from "./Pages/PatientSide/Patient_Appointment_Detail_View_Page"
 import Doctor_Appointment_Detail_View_Page from "./Pages/DoctorSide/Doctor_Appointment_Detail_View_Page"
+import DoctorIcuPatientsPage from "./Pages/DoctorSide/DoctorIcuPatientsPage"
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
                         <Route index element={<DoctorDashboardPage/>} />
                         <Route path="profile" element={<DoctorProfilePage/>} />
                         <Route path="timeslote" element={<DoctorTimeSlotePage/>} />
+                        <Route path="icu" element={<DoctorIcuPatientsPage />}/>
                         <Route path="appointments" element={<DoctorAppointmentPage/>} />
                         <Route path="appointments/:appointmentId" element={<Doctor_Appointment_Detail_View_Page/>} />
                         <Route path="chat" element={<DoctorChatPage/>} />
