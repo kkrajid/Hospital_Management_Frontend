@@ -8,7 +8,7 @@ function Doctor_Appointmetn_detail_vew() {
     const [appointData, setAppointmentData] = useState(null)
     const [activeComponent, setActiveComponent] = useState('Medical_Background');
     const { appointmentId } = useParams();
-   
+
 
     const appointment_date = appointData?.appointment_datetime.split("T")[0] ?? 'date'
 
@@ -27,18 +27,18 @@ function Doctor_Appointmetn_detail_vew() {
     const { data: AppointmentData, isLoading, error } = useQuery(
         ['doctor_get_detail_appointments_view', appointmentId],
         () => doctor_get_detail_appointments_view(appointmentId)
-      );
-      
-  
+    );
+
+
     useEffect(() => {
-      if (!isLoading && !error) {
-        setAppointmentData(AppointmentData);
-      }
+        if (!isLoading && !error) {
+            setAppointmentData(AppointmentData);
+        }
     }, [AppointmentData, isLoading, error]);
     console.log(appointData);
 
-    const room_name_for_chat = appointData?.doctor_profile?.user?.id+appointData?.patient?.id+appointData?.id
-    const room_name_ = 'asd'+room_name_for_chat
+    const room_name_for_chat = appointData?.doctor_profile?.user?.id + appointData?.patient?.id + appointData?.id
+    const room_name_ = 'asd' + room_name_for_chat
     return (
         <div className='w-full h-full p-2 rounded-[10px] bg-gray-200'>
             <div className='w-full h-1/6 flex items-center'>
@@ -47,7 +47,7 @@ function Doctor_Appointmetn_detail_vew() {
                 </div>
             </div>
             <div className='w-full h-5/6 bg-white rounded-b-[10px] relative'>
-                <div className='w-full  bg-blue-400 h-2/5 rounded-t-[5px]'>
+                <div className='w-full  bg-[#1AACAC] h-2/5 rounded-t-[5px]'>
 
                 </div>
                 <div className='w-full h-5/6 bg-transparent absolute bottom-0 flex flex-col md:flex-row    p-4 gap-2'>
@@ -62,26 +62,26 @@ function Doctor_Appointmetn_detail_vew() {
                                 <div className='w-full h-3/5 '>
                                     <div className='w-full h-full  p-1 flex flex-col'>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p className='text-gray-500 font-mono'>{'appointData?.doctor_profile?.user?.full_name'}</p>
+                                            {/* <p className='text-gray-500 font-mono'>{'appointData?.doctor_profile?.user?.full_name'}</p> */}
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center text-sm'>
-                                            <p>{'appointData?.doctor_profile?.specialization'}  </p>
+                                            {/* <p>{'appointData?.doctor_profile?.specialization'}  </p> */}
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{'appointment_date'} </p>
+                                            {/* <p>{'appointment_date'} </p> */}
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{'appointData?.time_slot?.start_time' }-{'appointData?.time_slot?.end_time '}</p>
+                                            {/* <p>{'appointData?.time_slot?.start_time'}-{'appointData?.time_slot?.end_time '}</p> */}
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p >{'appointData?.appointment_status'}</p>
+                                            {/* <p >{'appointData?.appointment_status'}</p> */}
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
 
-                        
+
                         </div>
                     </div>
                     <div className='h-full  w-4/5 bg-transparent py-2 px-2 flex justify-center'>
@@ -89,12 +89,12 @@ function Doctor_Appointmetn_detail_vew() {
                             <div className=' w-full h-full '>
                                 <div className='w-full h-1/6 bg-gray-200 rounded-t-[10px] border-gray-300 shadow-lg p-2 flex'>
                                     <div className='w-10/12 h-full shadow-lg flex gap-1 p-1 '>
-                                        {/* <button className='w-36 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showMedical_Background}>
+                                        <button className='w-36 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showMedical_Background}>
                                             <p className=' font-semibold'>Medical Background</p>
                                         </button>
                                         <button className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showPrescription}>
                                             <p className=' font-semibold'>Prescription</p>
-                                        </button> */}
+                                        </button>
                                         <button className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white  hover:bg-blue-600 hover:text-white' onClick={showChat}>
                                             <p className=' font-semibold '>Chat</p>
                                         </button>
@@ -103,7 +103,7 @@ function Doctor_Appointmetn_detail_vew() {
                                         </button>
                                     </div>
                                     <div className='w-2/12 h-full  gap-1 p-1'>
-                                    <button className='w-24 h-full shadow-lg border rounded-[5px]  text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'>
+                                        <button className='w-24 h-full shadow-lg border rounded-[5px]  text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'>
                                             <p className=' font-semibold'>Completed</p>
                                         </button>
                                     </div>
@@ -112,7 +112,7 @@ function Doctor_Appointmetn_detail_vew() {
 
                                     {/* {activeComponent === 'Medical_Background' && <Medical_Background />} */}
                                     {activeComponent === 'prescription' && <Prescription />}
-                                    {activeComponent === 'chat' && <Chat  room={room_name_}  />}
+                                    {activeComponent === 'chat' && <Chat room={room_name_} />}
                                 </div>
                             </div>
                         </div>
@@ -126,114 +126,118 @@ function Doctor_Appointmetn_detail_vew() {
 
 
 
-// function Medical_Background() {
-//     return (
-//         <div className='w-full h-full  p-2'>
-//             <div className='w-full h-full  bg-[#FAFAFA] rounded-[5px] p-1'>
-//                 <div className='w-full h-full flex '>
-//                     <div className='w-full h-3/6  flex gap-3 '>
-//                         <div className='w-full h-full flex gap-2'>
-//                             <div className='h-full w-full flex flex-col '>
-//                                 <div className='   flex items-center my-2'>
-//                                     <p className='text-bold px-2 text-gray-400 font-mono capitalize '>Allergies : </p>
-//                                 </div>
-//                                 <div className=' h-full rounded-[5px] py-2 flex items-center justify-center bg-white shadow-lg '>
-//                                     <p className='p-3'>
+function Medical_Background() {
+    return (
+        <div className='w-full h-full  p-2'>
+            <div className='w-full h-full  bg-[#FAFAFA] rounded-[5px] p-1'>
+                <div className='w-full h-full flex '>
+                    <div className='w-full h-3/6  flex gap-3 '>
+                        <div className='w-full h-full flex gap-2'>
+                            <div className='h-full w-full flex flex-col '>
+                                <div className='   flex items-center my-2'>
+                                    <p className='text-bold px-2 text-gray-400 font-mono capitalize '>Allergies : </p>
+                                </div>
+                                <div className=' h-full rounded-[5px] py-2 flex items-center justify-center bg-white shadow-lg '>
+                                    <p className='p-3'>
 
-//                                     </p>
-//                                 </div>
-//                             </div>
-//                             <div className=' flex flex-col h-full w-full '>
-//                                 <div className='   flex items-center my-2'>
-//                                     <p className='text-bold px-2 text-gray-400 font-mono capitalize '>Problems : </p>
-//                                 </div>
-//                                 <div className=' h-full rounded-[5px] py-2 flex items-center justify-center bg-white shadow-lg '>
-//                                     <p className='p-3'>
+                                    </p>
+                                </div>
+                            </div>
+                            <div className=' flex flex-col h-full w-full '>
+                                <div className='   flex items-center my-2'>
+                                    <p className='text-bold px-2 text-gray-400 font-mono capitalize '>Problems : </p>
+                                </div>
+                                <div className=' h-full rounded-[5px] py-2 flex items-center justify-center bg-white shadow-lg '>
+                                    <p className='p-3'>
 
-//                                     </p>
-//                                 </div>
-//                             </div>
+                                    </p>
+                                </div>
+                            </div>
 
-//                         </div>
+                        </div>
 
-//                     </div>
+                    </div>
 
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
+                </div>
+            </div>
+        </div>
+    )
+}
+function Prescription() {
 
-// function Prescription() {
-//     return (
-//         <div className='w-full h-full  p-2'>
-//             <div className='w-full h-full  rounded-[5px] p-1 flex flex-col gap-1  '>
-
-//                 <div className='w-full h-3/6 flex flex-col gap-1 overflow-y-auto'>
-//                     <div className='w-full h-2/6 bg-white flex gap-1  shadow-lg rounded-[5px]'>
-//                         <div className='w-1/6 h-full  flex items-center justify-center p-3'>
-//                             <div className=' w-full h-full flex items-center justify-center '>
-//                                 2
-//                             </div>
-//                         </div>
-//                         <div className='w-5/6 h-full shadow-lg  flex items-center justify-center'>
-//                             medicine
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center'>
-//                             dose
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center'>
-//                             day
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center'>
-//                             fr
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center '>
-//                             status
-//                         </div>
-//                     </div>
-//                     <div className='w-full h-2/6 bg-white flex gap-1  shadow-lg rounded-[5px]'>
-//                         <div className='w-1/6 h-full  flex items-center justify-center p-3'>
-//                             <div className=' w-full h-full flex items-center justify-center '>
-//                                 2
-//                             </div>
-//                         </div>
-//                         <div className='w-5/6 h-full shadow-lg  flex items-center justify-center'>
-//                             medicine
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center'>
-//                             dose
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center'>
-//                             day
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center'>
-//                             fr
-//                         </div>
-//                         <div className='w-1/6 h-full shadow-lg flex items-center justify-center '>
-//                             status
-//                         </div>
-//                     </div>
+    const prescriptions = [
+        {
+            medications: 'Aspirin',
+            dosage: '100mg',
+            duration: '7 days',
+            quantity: 30,
+            instructions: 'Take one tablet daily with food.',
+        },
+        {
+            medications: 'Ibuprofen',
+            dosage: '200mg',
+            duration: '10 days',
+            quantity: 20,
+            instructions: 'Take two tablets every 8 hours as needed.',
+        },
+        {
+            medications: 'Aspirin',
+            dosage: '100mg',
+            duration: '7 days',
+            quantity: 30,
+            instructions: 'Take one tablet daily with food.',
+        },
+        {
+            medications: 'Ibuprofen',
+            dosage: '200mg',
+            duration: '10 days',
+            quantity: 20,
+            instructions: 'Take two tablets every 8 hours as needed.',
+        },
 
 
-//                 </div>
-//                 <div className='w-full h-3/6 bg-gray-100 shadow-lg rounded-lg border border-2 p-5'>
-//                     <p className='w-full h-full border border-1 p-3 rounded-[10px] border-blue-200'>
-//                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione est quos eum! Eum consectetur iusto fugit assumenda quas tenetur ad quae velit pariatur, dicta rerum asperiores ipsa deleniti cupiditate! Molestiae?
-//                     </p>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-
-
-function Chat({room}) {
-    
   
-    const roomName ='DP'+room
-    const userName ='Doctor';
+
+
+        // Add more sample prescriptions as needed
+    ];
+
+    return (
+        <div className='w-full h-full'>
+        <div className='w-full h-full p-4 rounded-[10px] bg-[#d0d0e1] max-h-[400px] overflow-y-auto flex items-center justify-center '>
+            <table className='w-full border-collapse border'>
+                <thead className='bg-gray-200'>
+                    <tr className='shadow-lg bg-gray-500 text-white'>
+                        <th className='py-2 px-4 border text-center'>Medications</th>
+                        <th className='py-2 px-4 border text-center'>Dosage</th>
+                        <th className='py-2 px-4 border text-center'>Duration</th>
+                        <th className='py-2 px-4 border text-center'>Quantity</th>
+                        <th className='py-2 px-4 border text-center'>Instructions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {prescriptions.map((prescription, index) => (
+                        <tr key={index} className={index % 2 === 1 ? 'bg-gray-400 text-white' : 'bg-blue-100'}>
+                            <td className='py-2 px-4 border text-center'>{prescription.medications}</td>
+                            <td className='py-2 px-4 border text-center'>{prescription.dosage}</td>
+                            <td className='py-2 px-4 border text-center'>{prescription.duration}</td>
+                            <td className='py-2 px-4 border text-center'>{prescription.quantity}</td>
+                            <td className='py-2 px-4 border text-center'>{prescription.instructions}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    );
+}
+
+
+function Chat({ room }) {
+
+
+    const roomName = 'DP' + room
+    const userName = 'Doctor';
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
     const chatSocket = useRef(null);
@@ -265,7 +269,7 @@ function Chat({room}) {
         };
 
         chatMessageInputRef.current.focus();
-        
+
         return () => {
             chatSocket.current.close();
             console.log('Closed WebSocket...');
@@ -305,13 +309,13 @@ function Chat({room}) {
                             <div
                                 key={index}
                                 className={`${message.username === userName
-                                        ? 'flex flex-col items-start' 
-                                        : 'flex flex-col items-end'  
+                                    ? 'flex flex-col items-start'
+                                    : 'flex flex-col items-end'
                                     } mb-2 max-w-2/6 p-2 rounded-lg bg-white shadow`}
                             >
                                 <span className={`font-semibold text-${message.username === userName
-                                        ? 'blue'  
-                                        : 'green' 
+                                    ? 'blue'
+                                    : 'green'
                                     }-500`}>
                                     {message.username}:
                                 </span>

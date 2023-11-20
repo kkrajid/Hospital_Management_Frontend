@@ -120,6 +120,7 @@ function AdminDoctorsList() {
                 }
               );
               setFormData({})
+              setIsModalOpen(false);
         },
         onError: (error) => {
             console.log(error.message);
@@ -145,8 +146,8 @@ function AdminDoctorsList() {
         return <LoadingSpinner />;
     }
     return (
-        <div className='px-2 py-3  '>
-            <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2   border-b rounded-[10px]'>
+        <div className='px-2 py-3 h-full w-full '>
+            <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2  h-full  border-b rounded-[10px]'>
                 <div className='flex flex-row shadow max-w-[600px] md:max-w-[1480px] w-full  h-[50px] rounded-[1rem] py-1 px-4'>
                     <div className='hidden md:flex flex-row justify-between items-center w-full'>
                         <div>
@@ -187,12 +188,13 @@ function AdminDoctorsList() {
                     </ul>
                 </div>
 
-                <div className=' md:max-w-[700px]w-full max-h-[430px] h-full flex  mt-2 overflow-y-auto bg-gray-100 p-2'>
-                    <div className='gap-2 grid md:grid-cols-4 grid-cols-2 m-auto'>
-                        {doctorProfiles.map((profile) => (
-                            <AdminDoctors child={profile} />
+                <div className=' w-full  bg-gray-300 h-5/6 rounded-b-[10px] flex  mt-2 overflow-y-auto bg-gray-100 p-2'>
+                    <div className='gap-2 grid md:grid-cols-5 grid-cols-2 mx-auto'>
+                        {doctorProfiles.map((profile,index) => (
+                            <AdminDoctors child={profile} key={index} />
 
                         ))}
+                        
                     </div>
 
                 </div>
@@ -219,10 +221,10 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input border mb-2 w-full py-3 px-6 text-sm rounded-md ${errors.full_name ? ' border-2 border-red-600' : ''} `}
+                                                    className={`form-input border mb-2 w-full py-3 px-6 text-sm rounded-md  `}
                                                     placeholder="Full Name"
                                                     name="full_name"
-                                                    value={formData.user.full_name}
+                                                    value={formData?.user?.full_name}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, user: { ...prevUserData.user, full_name: e.target.value } }))}
                                                 />
                                             </div>
@@ -232,7 +234,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.email ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Email"
                                                     name="email"
-                                                    value={formData.user.email}
+                                                    value={formData?.user?.email}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, user: { ...prevUserData.user, email: e.target.value } }))}
                                                 />
                                             </div>
@@ -244,7 +246,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.date_of_birth ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="DOB"
                                                     name="date_of_birth"
-                                                    value={formData.user.date_of_birth}
+                                                    value={formData?.user?.date_of_birth}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, user: { ...prevUserData.user, date_of_birth: e.target.value } }))}
                                                 />
                                             </div>
@@ -254,7 +256,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.gender ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Gender"
                                                     name="gender"
-                                                    value={formData.user.gender}
+                                                    value={formData?.user?.gender}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, user: { ...prevUserData.user, gender: e.target.value } }))}
                                                 />
                                             </div>
@@ -266,7 +268,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.phone ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Mobile"
                                                     name="phone"
-                                                    value={formData.user.phone}
+                                                    value={formData?.user?.phone}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, user: { ...prevUserData.user, phone: e.target.value } }))}
                                                 />
                                             </div>
@@ -276,7 +278,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.specialization ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Specialization"
                                                     name="specialization"
-                                                    value={formData.specialization}
+                                                    value={formData?.specialization}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -288,7 +290,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.street_address ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Street Address"
                                                     name="street_address"
-                                                    value={formData.address.street_address}
+                                                    value={formData?.address?.street_address}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, address: { ...prevUserData.address, street_address: e.target.value } }))}
                                                 />
                                             </div>
@@ -298,7 +300,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.city ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="City"
                                                     name="city"
-                                                    value={formData.address.city}
+                                                    value={formData?.address?.city}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, address: { ...prevUserData.address, city: e.target.value } }))}
                                                 />
                                             </div>
@@ -310,7 +312,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.state ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="State"
                                                     name="state"
-                                                    value={formData.address.state}
+                                                    value={formData?.address?.state}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, address: { ...prevUserData.address, state: e.target.value } }))}
                                                 />
                                             </div>
@@ -320,7 +322,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.country ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Country"
                                                     name="country"
-                                                    value={formData.address.country}
+                                                    value={formData?.address?.country}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, address: { ...prevUserData.address, country: e.target.value } }))}
                                                 />
                                             </div>
@@ -332,7 +334,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.zip_code ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Pin Code"
                                                     name="zip_code"
-                                                    value={formData.address.zip_code}
+                                                    value={formData?.address?.zip_code}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, address: { ...prevUserData.address, zip_code: e.target.value } }))}
                                                 />
                                             </div>
@@ -342,7 +344,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.password ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="Password"
                                                     name="password"
-                                                    value={formData.user.password}
+                                                    value={formData?.user?.password}
                                                     onChange={(e) => setFormData((prevUserData) => ({ ...prevUserData, user: { ...prevUserData.user, password: e.target.value } }))}
                                                 />
                                             </div>
@@ -354,7 +356,7 @@ function AdminDoctorsList() {
                                                     className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.password ? ' border-2 border-red-600' : ''}`}
                                                     placeholder="license number"
                                                     name="license_number"
-                                                    value={formData.license_number}
+                                                    value={formData?.license_number}
                                                     onChange={handleChange}
                                                 />
                                             </div>
