@@ -16,8 +16,8 @@ const DoctorDashboard = () => {
   }
 
   return (
-    <div className='max-w-[1480px] w-full bg-gray-100 rounded-[10px] h-full p-2 overflow-y-auto'>
-      <div className='w-full h-[450px]'>
+    <div className='max-w-[1480px] w-full bg-[#dcdfe4] rounded-[10px] h-full p-2 overflow-y-auto'>
+      <div className='w-full h-[88%]'>
         <div className='w-full h-[60px] shadow-lg bg-white rounded-[3px] flex items-center my-2'>
           <div className='flex justify-between items-center py-2 px-4 w-full '>
             <div>

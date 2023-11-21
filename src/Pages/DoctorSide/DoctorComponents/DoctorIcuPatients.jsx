@@ -136,75 +136,70 @@ const DoctorIcuPatients = () => {
   };
 
     return (
-        <div className='w-full h-full bg-red-100 p-1'>
+        <div className='w-full h-full bg-[#E5E7EB] p-1'>
             <div className='w-full h-full rounded-[10px]' >
-                <div className='w-full h-1/6 rounded-t-[10px] py-4'>
-                    <div className='w-full h-full bg-gray-200 flex items-center justify-between px-2 shadow'>
+                <div className='w-full h-1/6 rounded-t-[10px] py-7'>
+                    <div className='w-full h-full  bg-gray-300 flex items-center justify-between px-2 shadow-lg '>
                         <div >
                             <h1>ICU </h1>
                         </div>
-                        <div className='w-2/6 h-full flex'>
+                        <div className='w-2/6 h-full flex  '>
                             <div className='w-2/6 h-full  py-4 px-2 items-end'>
 
                             </div>
                             <div className='w-2/6 h-full  py-4 px-2 flex items-center justify-center'>
                                 <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={() => setDevicelistView(true)}>Device config</button>
                             </div>
-                            <div className='w-2/6 h-full  py-5 px-1 items-end'>
-                                <button className='w-full h-full  flex items-center justify-center shadow border-blue-500 text-blue-500 gap-2 px-1 rounded-[5px] active:bg-blue-400 active:text-white' onClick={openAddPatient}>
-                                    <h1 className='text-2xl'>
-                                        +
-                                    </h1>
-                                    <h1>
-                                        Add Patient
-                                    </h1>
-                                </button>
+        
+                            <div className='w-2/6 h-full  py-4 px-2 flex items-center justify-center'>
+                                <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={openAddPatient}> +
+                                        Add Patient</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className='w-full h-5/6  rounded-b-[10px]'>
                     <div className='w-full h-full '>
-                        <div className='w-full h-1/6  py-4 '>
-                            <ul className='w-full h-full bg-white flex gap-1'>
-                                <li className='h-full w-1/12 shadow-lg  flex items-center justify-center'>
+                        <div className='w-full h-1/6  py-6 '>
+                            <ul className='w-full h-full bg-[#1AACAC] shadow-lg flex gap-1'>
+                                <li className='h-full w-1/12  flex items-center justify-center'>
                                     <label className="inline-flex items-center">
                                         <input type="checkbox" className=" w-[15px] h-[15px] " />
                                     </label>
                                 </li>
-                                <li className='h-full w-1/4 shadow-lg   flex items-center pl-16'>
+                                <li className='h-full w-1/4   flex items-center pl-16'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  text-gray-600'>Patient Name</p>
+                                        <p className='font-mono font-semibold  '>Patient Name</p>
                                     </div>
                                 </li>
-                                <li className='h-full w-1/6 shadow-lg    flex items-center justify-center'>
+                                <li className='h-full w-1/6    flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold text-gray-600'>Email</p>
+                                        <p className='font-mono font-semibold '>Email</p>
                                     </div>
                                 </li>
-                                <li className='h-full w-1/12 shadow-lg     flex items-center justify-center'>
+                                <li className='h-full w-1/12      flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  text-gray-600'>Gender</p>
+                                        <p className='font-mono font-semibold  '>Gender</p>
                                     </div>
                                 </li>
-                                <li className='h-full w-1/12 shadow-lg    flex items-center justify-center'>
+                                <li className='h-full w-1/12     flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  text-gray-600'>Age</p>
+                                        <p className='font-mono font-semibold  '>Age</p>
                                     </div>
                                 </li>
-                                <li className='h-full w-1/6 shadow-lg   flex items-center justify-center'>
+                                <li className='h-full w-1/6   flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  text-gray-600'>Last Visit</p>
+                                        <p className='font-mono font-semibold  '>Last Visit</p>
                                     </div>
                                 </li>
-                                <li className='h-full w-1/12 shadow-lg    flex items-center justify-center'>
+                                <li className='h-full w-1/12   flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  text-gray-600'>Status</p>
+                                        <p className='font-mono font-semibold  '>Status</p>
                                     </div>
                                 </li>
-                                <li className='h-full w-1/12 shadow-lg   flex items-center justify-center'>
+                                <li className='h-full w-1/12    flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold   text-gray-600'>Actions</p>
+                                        <p className='font-mono font-semibold   '>Actions</p>
                                     </div>
                                 </li>
                             </ul>
@@ -213,7 +208,7 @@ const DoctorIcuPatients = () => {
                             {IcuAddedPatientList?.map((val, index) => {
                                 return (
                                     <div className='w-full h-1/6  py-2   ' key={index}>
-                                        <ul className='w-full h-full bg-white flex gap-1 text-gray-600 hover:bg-green-500 hover:text-white'>
+                                        <ul className='w-full h-full bg-gray-300 shadow-lg flex gap-1 text-gray-600 '>
                                             <li className='h-full w-1/12    flex items-center justify-center'>
                                                 <label className="inline-flex items-center">
                                                     <input type="checkbox" className=" w-[15px] h-[15px] " />
@@ -285,6 +280,7 @@ const DoctorIcuPatients = () => {
                                                 </div>
 
                                             </li>
+                                            
                                             {/* {deviceCon?.find(item => {
 
                                                                 console.log(item,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
@@ -311,6 +307,11 @@ const DoctorIcuPatients = () => {
                                                     )}
                                                 </div>
                                             </li> */}
+                                               <li className='h-full w-1/12    flex items-center justify-center'>
+                                                <div className=''>
+                                                    <p className='text-sm '>{val?.id}</p>
+                                                </div>
+                                            </li>
 
                                         </ul>
                                     </div>

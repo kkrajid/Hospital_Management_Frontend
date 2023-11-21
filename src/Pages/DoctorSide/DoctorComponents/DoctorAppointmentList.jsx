@@ -23,9 +23,9 @@ function DoctorAppointmentList() {
   }, [AppointmentData, isLoading, error, dataa, datas]);
   console.log(appointData);
   return (
-    <div className='w-full h-full bg-[#F3F4F6] rounded-[10px] border shadow-lg '>
-      <div className='w-full h-1/6 shadow-lg flex items-center py-4'>
-        <div className='w-full h-full bg-white'>
+    <div className='w-full h-full bg-gray-200 rounded-[10px] border shadow-lg '>
+      <div className='w-full h-1/8  flex items-center py-4'>
+        <div className='w-full h-full shadow-lg border bg-[#D1D5DB] '>
           <div className='flex w-full h-full justify-between px-3'>
             <div className='flex items-center justify-center '>
               <p className='uppercase text-gray-500 font-bold'>
@@ -45,9 +45,9 @@ function DoctorAppointmentList() {
       </div>
       <div className='w-full h-5/6 p-1'>
         <div className='w-full h-full rounded-[10px] overflow-y-auto flex flex-col gap-2'>
-          <div className='w-full h-1/6 flex items-center py-3 '>
+          <div className='w-full h-1/6 flex items-center py-6 '>
             <div className='w-full h-full bg-red-500'>
-              <ul className='w-full h-full bg-green-400 shadow-lg border flex items-center justify-evenly'>
+              <ul className='w-full h-full bg-[#1AACAC] shadow-lg border flex items-center justify-evenly roundedw-[15px] shadow-lg '>
                 <li className='flex items-center justify-center w-1/6'>Image</li>
                 <li className='flex items-center justify-center w-1/6'>Patient Name</li>
                 <li className='flex items-center justify-center w-1/6'>Date</li>
@@ -58,43 +58,54 @@ function DoctorAppointmentList() {
             </div>
           </div>
           {appointData?.map((data, index) => {
-            const isCancelable = data?.appointment_status !== "Cancelled" && new Date(data?.time_slot?.date + "T" + data?.time_slot?.start_time) > new Date();
+  const isCancelable = data?.appointment_status !== "Cancelled" && new Date(data?.time_slot?.date + "T" + data?.time_slot?.start_time) > new Date();
 
-            return (
-              <div className='w-full h-1/6 flex items-center ' key={index}>
-                <div className='w-full h-full bg-red-500'>
-                  <ul className='w-full h-full bg-white shadow-lg py-2 flex items-center justify-evenly'>
-                    <li className='flex items-center justify-center w-1/6'>
-                      <img src={data?.Patient_profile?.profile_pic} className='w-12 h-12 rounded-full border border-1' alt="" />
-                    </li>
-                    <li className='flex items-center justify-center w-1/6'>{data?.patient?.full_name}</li>
-                    <li className='flex items-center justify-center w-1/6'>{data?.time_slot?.date}</li>
-                    <li className='flex items-center justify-center w-1/6'>{data?.time_slot?.start_time}-{data?.time_slot?.end_time}</li>
-                    <li className='flex items-center justify-center w-1/6'>{data?.appointment_status}</li>
-                    <li className='flex items-center justify-center w-1/6'>
-                      <div className='flex gap-2 '>
-                        <button
-                          className={`${  data?.appointment_status == "Cancelled" || data?.appointment_status == "Accepted"? "hidden":"bg-green-500 p-1 px-2 text-sm text-white rounded-[5px] active:bg-green-400" }`}
-                          onClick={() => setData({ appointment_id: data?.id, status_val: "Accepted" })}
-                        >
-                          Accept
-                        </button>
-                        <button
-                          className={`${isCancelable ? "bg-yellow-500 p-1 px-2 text-sm tex t-white rounded-[5px] active:bg-yellow-400" : "hidden"}`}
-                          onClick={() => setData({ appointment_id: data?.id, status_val: "Cancelled" })}
-                        >
-                          Cancel
-                        </button>
-                        <Link  to={`/doctor/appointments/${data?.id}`} className='bg-blue-500 p-1 text-sm text-white rounded-[5px] active:bg-blue-400'>
-                          View
-                        </Link>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+  return (
+    <div className='w-full h-1/8 flex items-center mb-1' key={index}>
+      <div className='w-full h-full bg-white rounded-md shadow-lg overflow-hidden'>
+        <ul className='w-full h-full bg-gray-300 border-1 shadow-lg   py-2 flex items-center justify-evenly'>
+          <li className='flex items-center justify-center w-1/6'>
+            <img src={data?.Patient_profile?.profile_pic} className='w-12 h-12 rounded-full border border-2 border-gray-200' alt="" />
+          </li>
+          <li className='flex items-center justify-center w-1/6 text-gray-800 font-semibold'>{data?.patient?.full_name}</li>
+          <li className='flex items-center justify-center w-1/6 text-gray-800'>{data?.time_slot?.date}</li>
+          <li className='flex items-center justify-center w-1/6 text-gray-800'>{data?.time_slot?.start_time}-{data?.time_slot?.end_time}</li>
+          <li className='flex items-center justify-center w-1/6 text-gray-800'>{data?.appointment_status}</li>
+          <li className='flex items-center justify-center w-1/6'>
+            <div className='flex items-center w-[320px] h-full gap-2'>
+              <div className='w-1/3'>
+                <button
+                  className={`${data?.appointment_status === "Cancelled" || data?.appointment_status === "Accepted" ? "bg-gray-400 px-2 cursor-not-allowed pointer-events-none rounded-md" : "bg-green-500 p-1 px-2 text-sm text-white rounded-md hover:bg-green-400 focus:outline-none focus:ring focus:border-blue-300"}`}
+                  onClick={() => setData({ appointment_id: data?.id, status_val: "Accepted" })}
+                >
+                  Accept
+                </button>
               </div>
-            );
-          })}
+              <div className='w-1/3'>
+                <button
+                  className={`${isCancelable  ? "bg-yellow-500 p-1 px-2 text-sm text-white rounded-md hover:bg-yellow-400 focus:outline-none focus:ring focus:border-blue-300" : "bg-gray-400 px-2 cursor-not-allowed pointer-events-none rounded-md "}`}
+                  onClick={() => setData({ appointment_id: data?.id, status_val: "Cancelled" })}
+                >
+                  Cancel
+                </button>
+              </div>
+              <div className='w-1/3'>
+                <Link
+                  to={`/doctor/appointments/${data?.id}`}
+                  className={`${isCancelable || data?.appointment_status === "Accepted"  ? "" :"bg-gray-400 cursor-not-allowed pointer-events-none "} bg-blue-500 p-1 text-sm text-white rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:border-blue-300`}
+                >
+                  View
+                </Link>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+})}
+
+
 
         </div>
       </div>

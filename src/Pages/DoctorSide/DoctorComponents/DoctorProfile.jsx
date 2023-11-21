@@ -92,7 +92,7 @@ function DoctorProfile() {
     }
 
     return (
-        <div className=' w-full bg-gray-100 rounded-[10px] h-full px-1 overflow-y-auto'>
+        <div className=' w-full bg-[#dcdfe4] rounded-[10px] h-full px-1 overflow-y-auto'>
             <div className='w-full   ' style={{height:"96%"}}>
                 <div className='w-full h-1/6 flex items-center my-2'>
                     <div className='flex justify-between items-center py-3 px-4 px-4 w-full  shadow-lg bg-white  rounded-[3px] '>

@@ -170,7 +170,7 @@ function DoctorTimeSlote() {
 
     return (
         <>
-            <div className=' w-full h-full bg-gray-100 rounded-[10px] px-1'>
+            <div className=' w-full h-full bg-[#dcdfe4] rounded-[10px] px-1'>
                 <div className='p-3 w-full h-full'>
                     <div className='flex bg-white justify-evenly items-center h-1/6 px-6 py-3 rounded-[10px]'>
                         <div>
