@@ -7,157 +7,157 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_AUTH_DOMAIN',
-  databaseURL: 'https://hospitalmgnt-default-rtdb.asia-southeast1.firebasedatabase.app/',
-  storageBucket: 'YOUR_STORAGE_BUCKET',
+    apiKey: 'YOUR_API_KEY',
+    authDomain: 'YOUR_AUTH_DOMAIN',
+    databaseURL: 'https://hospitalmgnt-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    storageBucket: 'YOUR_STORAGE_BUCKET',
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const DoctorIcuPatients = () => {
-  const [AddPatient, setAddPatient] = useState(false);
-  const [devicelistView, setDevicelistView] = useState(false);
-  const [firebaseDeviceList, setFirebaseDeviceList] = useState(null);
-  const [selectedPatient, setSelectedPatient] = useState('');
-  const [unconnectedPatientsList, setUnconnectedPatients] = useState(null);
-  const [deviceCon, setDeviceCon] = useState(null);
-  const [selectedValues, setSelectedValues] = useState({
-    device: '',
-    patient: '',
-  });
-  const [formData, setFormData] = useState({
-    admintDate: new Date().toISOString().split('T')[0],
-    appointmentId: '',
-  });
-  const [IcuAddedPatientList, setIcuAddedPatientList] = useState(null);
-  const [IcuNotAddedPatients, setIcuNotAddedPatients] = useState(null);
+    const [AddPatient, setAddPatient] = useState(false);
+    const [devicelistView, setDevicelistView] = useState(false);
+    const [firebaseDeviceList, setFirebaseDeviceList] = useState(null);
+    const [selectedPatient, setSelectedPatient] = useState('');
+    const [unconnectedPatientsList, setUnconnectedPatients] = useState(null);
+    const [deviceCon, setDeviceCon] = useState(null);
+    const [selectedValues, setSelectedValues] = useState({
+        device: '',
+        patient: '',
+    });
+    const [formData, setFormData] = useState({
+        admintDate: new Date().toISOString().split('T')[0],
+        appointmentId: '',
+    });
+    const [IcuAddedPatientList, setIcuAddedPatientList] = useState(null);
+    const [IcuNotAddedPatients, setIcuNotAddedPatients] = useState(null);
 
-  const { data: All_icu_Patient, isLoading, error, refetch } = useQuery(
-    ['doctor_get_all_icu_patients'],
-    () => doctor_get_all_icu_patients()
-  );
+    const { data: All_icu_Patient, isLoading, error, refetch } = useQuery(
+        ['doctor_get_all_icu_patients'],
+        () => doctor_get_all_icu_patients()
+    );
 
-  const add_icu_patient_mutation = useMutation({
-    mutationFn: () => Doctor_submitICUPatient(formData),
-    onSuccess: () => {
-      refetch();
-      closeAddPatient();
-    },
-    onError: (error) => {
-      console.error('Error adding ICU patient:', error);
-      toast.error('Failed to add ICU patient');
-    },
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (All_icu_Patient) {
-          const filteredICUPatients = All_icu_Patient.filter((patient) => patient?.icu_selected === true);
-          setIcuAddedPatientList(filteredICUPatients);
-
-          const filteredNotAddedICUPatients = All_icu_Patient.filter(
-            (patient) => patient?.icu_selected === false && patient?.appointment_status === 'Accepted'
-          );
-          setIcuNotAddedPatients(filteredNotAddedICUPatients);
-        }
-      } catch (error) {
-        console.error('Error fetching ICU patients:', error);
-        toast.error('Failed to fetch ICU patients');
-      }
-    };
-
-    fetchData();
-  }, [All_icu_Patient, add_icu_patient_mutation.isLoading]);
-
-  useEffect(() => {
-    const rootRef = ref(db);
-
-    const rootListener = onValue(rootRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const firebaseArray = Object.entries(snapshot.val()).map(([key, value]) => ({ id: key, ...value }));
-        setDeviceCon(firebaseArray);
-
-        const filteredArray = firebaseArray.filter((item) => item.is_connected === false);
-        setFirebaseDeviceList(filteredArray);
-
-        const unAvai = firebaseArray.filter((item) => item.is_connected === true);
-        const userIdArray = unAvai.map((item) => item.user_id);
-
-        const afterFilterUnconnectedPatient = IcuAddedPatientList?.filter(
-          (item) => !userIdArray.includes(item.id.toString())
-        );
-        setUnconnectedPatients(afterFilterUnconnectedPatient);
-      }
+    const add_icu_patient_mutation = useMutation({
+        mutationFn: () => Doctor_submitICUPatient(formData),
+        onSuccess: () => {
+            refetch();
+            closeAddPatient();
+        },
+        onError: (error) => {
+            console.error('Error adding ICU patient:', error);
+            toast.error('Failed to add ICU patient');
+        },
     });
 
-    return () => {
-      rootListener();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (All_icu_Patient) {
+                    const filteredICUPatients = All_icu_Patient.filter((patient) => patient?.icu_selected === true);
+                    setIcuAddedPatientList(filteredICUPatients);
+
+                    const filteredNotAddedICUPatients = All_icu_Patient.filter(
+                        (patient) => patient?.icu_selected === false && patient?.appointment_status === 'Accepted'
+                    );
+                    setIcuNotAddedPatients(filteredNotAddedICUPatients);
+                }
+            } catch (error) {
+                console.error('Error fetching ICU patients:', error);
+                toast.error('Failed to fetch ICU patients');
+            }
+        };
+
+        fetchData();
+    }, [All_icu_Patient, add_icu_patient_mutation.isLoading]);
+
+    useEffect(() => {
+        const rootRef = ref(db);
+
+        const rootListener = onValue(rootRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const firebaseArray = Object.entries(snapshot.val()).map(([key, value]) => ({ id: key, ...value }));
+                setDeviceCon(firebaseArray);
+
+                const filteredArray = firebaseArray.filter((item) => item.is_connected === false);
+                setFirebaseDeviceList(filteredArray);
+
+                const unAvai = firebaseArray.filter((item) => item.is_connected === true);
+                const userIdArray = unAvai.map((item) => item.user_id);
+
+                const afterFilterUnconnectedPatient = IcuAddedPatientList?.filter(
+                    (item) => !userIdArray.includes(item.id.toString())
+                );
+                setUnconnectedPatients(afterFilterUnconnectedPatient);
+            }
+        });
+
+        return () => {
+            rootListener();
+        };
+    }, [setDevicelistView, IcuAddedPatientList]);
+
+    const openAddPatient = () => {
+        setAddPatient(true);
     };
-  }, [setDevicelistView, IcuAddedPatientList]);
 
-  const openAddPatient = () => {
-    setAddPatient(true);
-  };
+    const closeAddPatient = () => {
+        setAddPatient(false);
+    };
 
-  const closeAddPatient = () => {
-    setAddPatient(false);
-  };
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+        if (!selectedPatient) {
+            toast.error('Please select a patient');
+            return;
+        }
 
-    if (!selectedPatient) {
-      toast.error('Please select a patient');
-      return;
-    }
+        setFormData((prevData) => ({
+            ...prevData,
+            appointmentId: selectedPatient,
+        }));
 
-    setFormData((prevData) => ({
-      ...prevData,
-      appointmentId: selectedPatient,
-    }));
+        add_icu_patient_mutation.mutate();
+        setSelectedPatient('');
+    };
 
-    add_icu_patient_mutation.mutate();
-    setSelectedPatient('');
-  };
+    const handleSubmitDevice = (e) => {
+        e.preventDefault();
 
-  const handleSubmitDevice = (e) => {
-    e.preventDefault();
+        if (!selectedValues.device || !selectedValues.patient) {
+            toast.error('Please select a device and a patient');
+            return;
+        }
 
-    if (!selectedValues.device || !selectedValues.patient) {
-      toast.error('Please select a device and a patient');
-      return;
-    }
-
-    update(ref(db, `/${selectedValues['device']}`), { user_id: selectedValues['patient'], is_connected: true });
-    setDevicelistView(!devicelistView);
-  };
+        update(ref(db, `/${selectedValues['device']}`), { user_id: selectedValues['patient'], is_connected: true });
+        setDevicelistView(!devicelistView);
+    };
 
     return (
         <div className='w-full h-full bg-[#E5E7EB] p-1'>
             <div className='w-full h-full rounded-[10px]' >
-                <div className='w-full h-1/6 rounded-t-[10px] py-7'>
-                    <div className='w-full h-full  bg-gray-300 flex items-center justify-between px-2 shadow-lg '>
-                        <div >
-                            <h1>ICU </h1>
-                        </div>
-                        <div className='w-2/6 h-full flex  '>
-                            <div className='w-2/6 h-full  py-4 px-2 items-end'>
-
+                <div className='w-full h-1/8  flex items-center py-4'>
+                    <div className='w-full h-full shadow-lg border bg-[#D1D5DB] '>
+                        <div className='flex w-full h-full justify-between px-3'>
+                            <div className='flex items-center justify-center '>
+                                <p className='uppercase text-gray-500 font-bold'>
+                                    ICU Patients
+                                </p>
                             </div>
-                            <div className='w-2/6 h-full  py-4 px-2 flex items-center justify-center'>
-                                <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={() => setDevicelistView(true)}>Device config</button>
-                            </div>
-        
-                            <div className='w-2/6 h-full  py-4 px-2 flex items-center justify-center'>
-                                <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={openAddPatient}> +
-                                        Add Patient</button>
+                            <div className='p-2'>
+                                <div className='flex gap-2'>
+                          
+                                        <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={() => setDevicelistView(true)}>Device config</button>
+                                        <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={openAddPatient}> +
+                                            Add Patient</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div className='w-full h-5/6  rounded-b-[10px]'>
                     <div className='w-full h-full '>
                         <div className='w-full h-1/6  py-6 '>
@@ -169,37 +169,37 @@ const DoctorIcuPatients = () => {
                                 </li>
                                 <li className='h-full w-1/4   flex items-center pl-16'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  '>Patient Name</p>
+                                        <p className='  '>Patient Name</p>
                                     </div>
                                 </li>
                                 <li className='h-full w-1/6    flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold '>Email</p>
+                                        <p className=' '>Email</p>
                                     </div>
                                 </li>
                                 <li className='h-full w-1/12      flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  '>Gender</p>
+                                        <p className=' '>Gender</p>
                                     </div>
                                 </li>
                                 <li className='h-full w-1/12     flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  '>Age</p>
+                                        <p className='  '>Age</p>
                                     </div>
                                 </li>
                                 <li className='h-full w-1/6   flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  '>Last Visit</p>
+                                        <p className='  '>Last Visit</p>
                                     </div>
                                 </li>
                                 <li className='h-full w-1/12   flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold  '>Status</p>
+                                        <p className=' '>Status</p>
                                     </div>
                                 </li>
                                 <li className='h-full w-1/12    flex items-center justify-center'>
                                     <div className=''>
-                                        <p className='font-mono font-semibold   '>Actions</p>
+                                        <p className='   '>Actions</p>
                                     </div>
                                 </li>
                             </ul>
@@ -280,7 +280,7 @@ const DoctorIcuPatients = () => {
                                                 </div>
 
                                             </li>
-                                            
+
                                             {/* {deviceCon?.find(item => {
 
                                                                 console.log(item,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
@@ -307,7 +307,7 @@ const DoctorIcuPatients = () => {
                                                     )}
                                                 </div>
                                             </li> */}
-                                               <li className='h-full w-1/12    flex items-center justify-center'>
+                                            <li className='h-full w-1/12    flex items-center justify-center'>
                                                 <div className=''>
                                                     <p className='text-sm '>{val?.id}</p>
                                                 </div>
