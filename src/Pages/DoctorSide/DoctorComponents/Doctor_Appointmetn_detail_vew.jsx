@@ -2,16 +2,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
-import { doctor_get_detail_appointments_view } from "../../../api/user";
+import { doctor_get_detail_appointments_view, getPrescriptions, createPrescription,Doctor_Manage_Appointment_Status } from "../../../api/user";
 import { useParams } from 'react-router-dom';
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 
 function Doctor_Appointmetn_detail_vew() {
     const [appointData, setAppointmentData] = useState(null)
     const [activeComponent, setActiveComponent] = useState('prescription');
     const { appointmentId } = useParams();
+    const [status, setStatus] = useState('Pending');
+    const [icuImportant, setIcuImportant] = useState('')
+    const [icuStatus, setIcuStatus] = useState("ICU Not Needed")
+    
 
-
-    const appointment_date = appointData?.appointment_datetime.split("T")[0] ?? 'date'
+    const appointment_date = appointData?.appointment_datetime.split("T")[0] ?? '1990-09-01'
 
 
     const showPrescription = () => {
@@ -25,15 +30,19 @@ function Doctor_Appointmetn_detail_vew() {
         setActiveComponent('Medical_Background');
     }
 
-    const { data: AppointmentData, isLoading, error } = useQuery(
+
+    const { data: AppointmentData, isLoading, error ,refetch} = useQuery(
         ['doctor_get_detail_appointments_view', appointmentId],
         () => doctor_get_detail_appointments_view(appointmentId)
     );
-
+console.log(AppointmentData,"aaaa");
 
     useEffect(() => {
         if (!isLoading && !error) {
             setAppointmentData(AppointmentData);
+            setStatus(AppointmentData?.appointment_status);
+            setIcuImportant(AppointmentData?.icu_selected)
+
         }
     }, [AppointmentData, isLoading, error]);
     console.log(appointData);
@@ -41,20 +50,70 @@ function Doctor_Appointmetn_detail_vew() {
     const room_name_for_chat = appointData?.doctor_profile?.user?.id + appointData?.patient?.id + appointData?.id
     const room_name_ = 'asd' + room_name_for_chat
 
+    const appointmentStatusMutation = useMutation({
+        mutationFn: () => Doctor_Manage_Appointment_Status(appointmentId, { appointment_status: status,icu_selected:icuImportant,icu_status:icuStatus,icu_admitted_date:appointment_date }),
+        onSuccess: (response) => {
+            toast.success(
+                <div>
+                    Done
+                </div>,
+                {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    style: {
+                        backgroundColor: "#4CAF50",
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        border: "none",
+                        width: "100%",
+                        textAlign: "center",
+                    },
+                }
+            );
 
-    const [status, setStatus] = useState('pending');
+            refetch();
+        },
+
+        onError: (error) => {
+            console.log(error.message);
+        },
+
+    });
+
+      
+
 
     const handleAccept = () => {
-        setStatus('accepted');
+        setStatus('Accepted');
+        appointmentStatusMutation.mutate();
     };
 
     const handleCancel = () => {
-        setStatus('canceled');
+        setStatus('Cancelled');
+        appointmentStatusMutation.mutate();
     };
 
     const handleComplete = () => {
-        setStatus('completed');
+        setStatus('Completed');
+        appointmentStatusMutation.mutate();
     };
+    const handle_admite_Icu = ()=>{
+        setIcuImportant(!icuImportant)
+        if (!icuImportant){
+            setIcuStatus("ICU Admitted")
+        }
+        else{
+            setIcuStatus("ICU Not Needed")
+        }
+        appointmentStatusMutation.mutate();
+    }
+
     return (
         <div className='w-full h-full p-2 rounded-[10px] bg-gray-200'>
             <div className='w-full h-1/6 flex items-center'>
@@ -72,25 +131,25 @@ function Doctor_Appointmetn_detail_vew() {
                             <div className='w-full h-full'>
                                 <div className='w-full h-2/5  flex items-center justify-center p-1'>
                                     <div className=' w-6/12 h-5/6 flex items-center justify-center'>
-                                        <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg?size=626&ext=jpg" alt="" className='w-24 h-24 rounded-full shadow-lg' />
+                                        <img src={appointData?.Patient_profile?.profile_pic} alt="" className='w-24 h-24 rounded-full shadow-lg' />
                                     </div>
                                 </div>
                                 <div className='w-full h-3/5 '>
                                     <div className='w-full h-full  p-1 flex flex-col'>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            {/* <p className='text-gray-500 font-mono'>{'appointData?.doctor_profile?.user?.full_name'}</p> */}
+                                            <p className='text-gray-500 font-mono'>{appointData?.patient?.full_name}</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center text-sm'>
-                                            {/* <p>{'appointData?.doctor_profile?.specialization'}  </p> */}
+                                            <p>{appointData?.patient?.email}  </p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            {/* <p>{'appointment_date'} </p> */}
+                                            <p>{appointData?.patient?.date_of_birth} </p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            {/* <p>{'appointData?.time_slot?.start_time'}-{'appointData?.time_slot?.end_time '}</p> */}
+                                            <p>{appointData?.time_slot?.start_time}-{appointData?.time_slot?.end_time }</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            {/* <p >{'appointData?.appointment_status'}</p> */}
+                                            <p >{appointData?.appointment_status}</p>
                                         </div>
                                     </div>
 
@@ -114,9 +173,13 @@ function Doctor_Appointmetn_detail_vew() {
                                         <button className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white  hover:bg-blue-600 hover:text-white' onClick={showChat}>
                                             <p className=' font-semibold '>Chat</p>
                                         </button>
+                                       
+                                        <button className={` ${icuImportant?"bg-orange-400 text-white ":""} w-36 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white  hover:bg-blue-600 hover:text-white`} onClick={handle_admite_Icu}>
+                                            <p className=' font-semibold '>Start ICU Treatment</p>
+                                        </button>
                                     </div>
                                     <div className='w-2/12 h-full flex gap-1 p-1'>
-                                        {(status === 'accepted' && status !== 'canceled') && (
+                                        {(status === 'Accepted' && status !== 'Cancelled') && (
                                             <button
                                                 className='w-24 h-full px-2 shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'
                                                 onClick={handleComplete}
@@ -125,7 +188,7 @@ function Doctor_Appointmetn_detail_vew() {
                                             </button>
                                         )}
 
-                                        {status !== 'completed' && status !== 'accepted' && status !== 'canceled' && (
+                                        {status !== 'Completed' && status !== 'Accepted' && status !== 'Cancelled' && (
                                             <button
                                                 className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-green-600 active:text-white hover:bg-green-600 hover:text-white'
                                                 onClick={handleAccept}
@@ -134,7 +197,7 @@ function Doctor_Appointmetn_detail_vew() {
                                             </button>
                                         )}
 
-                                        {status !== 'completed' && status !== 'canceled' && (
+                                        {status !== 'Completed' && status !== 'Cancelled' && (
                                             <button
                                                 className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-red-600 active:text-white hover:bg-red-600 hover:text-white'
                                                 onClick={handleCancel}
@@ -147,7 +210,7 @@ function Doctor_Appointmetn_detail_vew() {
                                 <div className='bg-gray-100 w-full h-5/6 rounded-b-[10px]'>
 
                                     {/* {activeComponent === 'Medical_Background' && <Medical_Background />} */}
-                                    {activeComponent === 'prescription' && <Prescription />}
+                                    {activeComponent === 'prescription' && <Prescription appointmentId={appointmentId} />}
                                     {activeComponent === 'chat' && <Chat room={room_name_} />}
                                 </div>
                             </div>
@@ -162,67 +225,89 @@ function Doctor_Appointmetn_detail_vew() {
 
 
 
-function Medical_Background() {
-    return (
-        <div className='w-full h-full  p-2'>
-            <div className='w-full h-full  bg-[#FAFAFA] rounded-[5px] p-1'>
-                <div className='w-full h-full flex '>
-                    <div className='w-full h-3/6  flex gap-3 '>
-                        <div className='w-full h-full flex gap-2'>
-                            <div className='h-full w-full flex flex-col '>
-                                <div className='   flex items-center my-2'>
-                                    <p className='text-bold px-2 text-gray-400 font-mono capitalize '>Allergies : </p>
-                                </div>
-                                <div className=' h-full rounded-[5px] py-2 flex items-center justify-center bg-white shadow-lg '>
-                                    <p className='p-3'>
 
-                                    </p>
-                                </div>
-                            </div>
-                            <div className=' flex flex-col h-full w-full '>
-                                <div className='   flex items-center my-2'>
-                                    <p className='text-bold px-2 text-gray-400 font-mono capitalize '>Problems : </p>
-                                </div>
-                                <div className=' h-full rounded-[5px] py-2 flex items-center justify-center bg-white shadow-lg '>
-                                    <p className='p-3'>
-
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    )
-}
-function Prescription() {
+function Prescription({ appointmentId }) {
     const [prescriptionData, setPrescriptionData] = useState({
-        appointment: '',
+        appointment: appointmentId,
         medications: '',
         dosage: '',
         duration: '',
         quantity: '',
         instructions: '',
-      });
+    });
 
-      console.log(prescriptionData);
-    
-      const [isAddPrescriptionOpen, setIsAddPrescriptionOpen] = useState(false);
-    
-      const handleInputChange = (field, value) => {
+    const [isAddPrescriptionOpen, setIsAddPrescriptionOpen] = useState(false);
+
+    const { data, error, isLoading, refetch } = useQuery(['prescriptions', appointmentId], () => getPrescriptions(appointmentId));
+
+    const [prescriptions, setPrescriptions] = useState([]);
+
+    const handleInputChange = (field, value) => {
         setPrescriptionData({
-          ...prescriptionData,
-          [field]: value,
+            ...prescriptionData,
+            [field]: value,
         });
-      };
-    
-      const handleSubmit = () => {
+    };
+
+    useEffect(() => {
+        if (data) {
+            setPrescriptions(data);
+        }
+    }, [data]);
+
+
+
+    const Add_new_prescription_addMutation = useMutation({
+        mutationFn: () => createPrescription(prescriptionData),
+        onSuccess: (response) => {
+            toast.success(
+                <div>
+                    Prescription added successfully!
+                </div>,
+                {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    style: {
+                        backgroundColor: "#4CAF50",
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        border: "none",
+                        width: "100%",
+                        textAlign: "center",
+                    },
+                }
+            );
+
+            setPrescriptionData({
+                appointment: appointmentId,
+                medications: '',
+                dosage: '',
+                duration: '',
+                quantity: '',
+                instructions: '',
+            });
+
+            refetch();
+        },
+
+        onError: (error) => {
+            console.log(error.message);
+        },
+
+    });
+
+    const handleSubmitPrescription = (event) => {
+        event.preventDefault();
+        Add_new_prescription_addMutation.mutate();
         setIsAddPrescriptionOpen(false);
-      };
+    };
+
 
     return (
         <div className='w-full h-full  rounded-b-[10px]'>
@@ -237,166 +322,151 @@ function Prescription() {
                 <table class="w-full border-collapse">
                     <thead className=' bg-gray-500 text-white'>
                         <tr>
-                            <th class="py-2 px-4 border-b">Medications</th>
-                            <th class="py-2 px-4 border-b">Dosage</th>
-                            <th class="py-2 px-4 border-b">Duration</th>
-                            <th class="py-2 px-4 border-b">Quantity</th>
-                            <th class="py-2 px-4 border-b">Instructions</th>
+                            <th className="py-2 px-4 border-b">Medications</th>
+                            <th className="py-2 px-4 border-b">Dosage</th>
+                            <th className="py-2 px-4 border-b">Duration</th>
+                            <th className="py-2 px-4 border-b">Quantity</th>
+                            <th className="py-2 px-4 border-b">Instructions</th>
                         </tr>
                     </thead>
                     <tbody className=''>
-                        <tr className='w-full h-[50px] bg-blue-200'>
-                            <td class="py-2 px-4 border-b text-center ">Medication 1</td>
-                            <td class="py-2 px-4 border-b text-center">Dosage 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Duration 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Quantity 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Instructions 1</td>
-                        </tr>
-                        <tr className='w-full h-[50px] '>
-                            <td class="py-2 px-4 border-b text-center ">Medication 1</td>
-                            <td class="py-2 px-4 border-b text-center">Dosage 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Duration 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Quantity 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Instructions 1</td>
-                        </tr>
-                        <tr className='w-full h-[50px] bg-blue-200'>
-                            <td class="py-2 px-4 border-b text-center ">Medication 1</td>
-                            <td class="py-2 px-4 border-b text-center">Dosage 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Duration 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Quantity 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Instructions 1</td>
-                        </tr>
-                        <tr className='w-full h-[50px] '>
-                            <td class="py-2 px-4 border-b text-center ">Medication 1</td>
-                            <td class="py-2 px-4 border-b text-center">Dosage 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Duration 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Quantity 1</td>
-                            <td class="py-2 px-4 border-b text-center ">Instructions 1</td>
-                        </tr>
+
+                        {prescriptions.map((prescription, index) => (
+
+                            <tr key={prescription.id} className={`${index % 2 === 0 ? "" : "bg-blue-200"} w-full h-[50px]  `}>
+                                <td className="py-2 px-4 border-b text-center ">{prescription.medications}</td>
+                                <td className="py-2 px-4 border-b text-center">{prescription.dosage}</td>
+                                <td className="py-2 px-4 border-b text-center ">{prescription.duration}</td>
+                                <td className="py-2 px-4 border-b text-center ">{prescription.quantity}</td>
+                                <td className="py-2 px-4 border-b text-center ">{prescription.instructions}</td>
+                            </tr>
+                        ))}
+                      
+
                     </tbody>
                 </table>
             </div>
 
 
             <div className="relative">
-      {isAddPrescriptionOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 shadow">
-          <div
-            className="absolute inset-0 bg-gray-600 bg-opacity-25 backdrop-blur-[3px]"
-            onClick={() => setIsAddPrescriptionOpen(false)}
-          ></div>
-          <div className="bg-white p-2 rounded-[1rem] shadow-lg z-10 w-[34rem] h-[30rem]">
-            <div className="w-full h-5/6 bg-gray-300 rounded-[10px] ">
-              <div className="w-full h-1/6  flex items-center justify-center ">
-                <div className="flex items-center justify-center ">
-                  <h1 className="text-2xl font-bold ">Create Prescription</h1>
-                </div>
-              </div>
-              <div className="w-full h-5/6 bg-gray-200 ">
-                <div className="flex flex-col gap-2 p-3 ">
-                  <div className="flex gap-3 ">
-                    <div className="relative h-10 w-full min-w-[150px] ">
-                      <input
-                        type="text"
-                        value={prescriptionData.medications}
-                        onChange={(e) =>
-                          handleInputChange('medications', e.target.value)
-                        }
-                        className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
-                        placeholder=" "
-                      />
-                      <label
-                        className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
-                      >
-                        Medications
-                      </label>
+                {isAddPrescriptionOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50 shadow  ">
+                        <div
+                            className="absolute inset-0 bg-gray-600 bg-opacity-25 backdrop-blur-[3px]"
+                            onClick={() => setIsAddPrescriptionOpen(false)}
+                        ></div>
+                        <div className="bg-white p-2 rounded-[1rem] shadow-lg z-10 w-[34rem] h-[30rem]">
+                            <div className="w-full h-5/6 bg-gray-300 rounded-[10px] ">
+                                <div className="w-full h-1/6  flex items-center justify-center ">
+                                    <div className="flex items-center justify-center ">
+                                        <h1 className="text-2xl font-bold ">Create Prescription</h1>
+                                    </div>
+                                </div>
+                                <div className="w-full h-5/6 bg-gray-200 ">
+                                    <div className="flex flex-col gap-2 p-3 ">
+                                        <div className="flex gap-3 ">
+                                            <div className="relative h-10 w-full min-w-[150px] ">
+                                                <input
+                                                    type="text"
+                                                    value={prescriptionData.medications}
+                                                    onChange={(e) =>
+                                                        handleInputChange('medications', e.target.value)
+                                                    }
+                                                    className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
+                                                    placeholder=" "
+                                                />
+                                                <label
+                                                    className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
+                                                >
+                                                    Medications
+                                                </label>
+                                            </div>
+                                            <div className="relative h-10 w-full min-w-[150px] ">
+                                                <input
+                                                    type="text"
+                                                    value={prescriptionData.dosage}
+                                                    onChange={(e) =>
+                                                        handleInputChange('dosage', e.target.value)
+                                                    }
+                                                    className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
+                                                    placeholder=" "
+                                                />
+                                                <label
+                                                    className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
+                                                >
+                                                    Dosage
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-3 ">
+                                            <div className="relative h-10 w-full min-w-[150px] ">
+                                                <input
+                                                    type="text"
+                                                    value={prescriptionData.duration}
+                                                    onChange={(e) =>
+                                                        handleInputChange('duration', e.target.value)
+                                                    }
+                                                    className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
+                                                    placeholder=" "
+                                                />
+                                                <label
+                                                    className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
+                                                >
+                                                    Duration
+                                                </label>
+                                            </div>
+                                            <div className="relative h-10 w-full min-w-[150px] ">
+                                                <input
+                                                    type="text"
+                                                    value={prescriptionData.quantity}
+                                                    onChange={(e) =>
+                                                        handleInputChange('quantity', e.target.value)
+                                                    }
+                                                    className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
+                                                    placeholder=" "
+                                                />
+                                                <label
+                                                    className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
+                                                >
+                                                    Quantity
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="w-full h-[180px] ">
+                                            <div className="relative h-full w-full min-w-[150px] ">
+                                                <textarea
+                                                    value={prescriptionData.instructions}
+                                                    onChange={(e) =>
+                                                        handleInputChange('instructions', e.target.value)
+                                                    }
+                                                    className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
+                                                    placeholder=" "
+                                                ></textarea>
+                                                <label
+                                                    className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
+                                                    style={{ left: '50%', transform: 'translateX(-50%)' }}
+                                                >
+                                                    Instructions
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-full h-1/6 ">
+                                    <div className="w-full h-full flex items-center justify-center ">
+                                        <button
+                                            onClick={handleSubmitPrescription}
+                                            className="bg-green-500 px-3 py-2 text-center text-white rounded-[6px] "
+                                        >
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="relative h-10 w-full min-w-[150px] ">
-                      <input
-                        type="text"
-                        value={prescriptionData.dosage}
-                        onChange={(e) =>
-                          handleInputChange('dosage', e.target.value)
-                        }
-                        className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
-                        placeholder=" "
-                      />
-                      <label
-                        className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
-                      >
-                        Dosage
-                      </label>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 ">
-                    <div className="relative h-10 w-full min-w-[150px] ">
-                      <input
-                        type="text"
-                        value={prescriptionData.duration}
-                        onChange={(e) =>
-                          handleInputChange('duration', e.target.value)
-                        }
-                        className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
-                        placeholder=" "
-                      />
-                      <label
-                        className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
-                      >
-                        Duration
-                      </label>
-                    </div>
-                    <div className="relative h-10 w-full min-w-[150px] ">
-                      <input
-                        type="text"
-                        value={prescriptionData.quantity}
-                        onChange={(e) =>
-                          handleInputChange('quantity', e.target.value)
-                        }
-                        className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
-                        placeholder=" "
-                      />
-                      <label
-                        className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
-                      >
-                        Quantity
-                      </label>
-                    </div>
-                  </div>
-                  <div className="w-full h-[180px] ">
-                    <div className="relative h-full w-full min-w-[150px] ">
-                      <textarea
-                        value={prescriptionData.instructions}
-                        onChange={(e) =>
-                          handleInputChange('instructions', e.target.value)
-                        }
-                        className="peer h-full w-full rounded-[7px] border border-blue-gray-600 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-1 outline-gray-300 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 "
-                        placeholder=" "
-                      ></textarea>
-                      <label
-                        className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 "
-                        style={{ left: '50%', transform: 'translateX(-50%)' }}
-                      >
-                        Instructions
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full h-1/6 ">
-                <div className="w-full h-full flex items-center justify-center ">
-                  <button
-                    onClick={handleSubmit}
-                    className="bg-green-500 px-3 py-2 text-center text-white rounded-[6px] "
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
+                )}
             </div>
-          </div>
-        </div>
-      )}
-    </div>
         </div>
     );
 }
@@ -414,7 +484,7 @@ function Chat({ room }) {
     const chatMessageInputRef = useRef(null);
 
     useEffect(() => {
-        console.log('Connecting to WebSocket...');
+        // console.log('Connecting to WebSocket...');
         chatSocket.current = new WebSocket(
             'ws://127.0.0.1:8000/ws/' + roomName + '/'
         );

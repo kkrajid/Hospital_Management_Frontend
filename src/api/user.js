@@ -45,6 +45,7 @@ export const doctor_get_all_icu_patients = async () => {
     const response = await authAxios.get(`doctor/all_icu_patients/`);
     return response.data;
 };
+
 export const Doctor_submitICUPatient = async (data) => {
     const response = await authAxios.post("doctor/add_icu_patient/", data);
     return response.data;
@@ -52,7 +53,7 @@ export const Doctor_submitICUPatient = async (data) => {
 
 export const createPrescription = async (prescriptionData) => {
     try {
-        const response = await authAxios.post('doctor/create-prescription/', prescriptionData);
+        const response = await authAxios.post('doctor/create_prescription/', prescriptionData);
         console.log('Prescription created:', response.data);
         return response.data;
     } catch (error) {
@@ -72,6 +73,15 @@ export const getPrescriptions = async (appointmentId) => {
     }
 };
 
+export const Doctor_Manage_Appointment_Status = async (appointmentId, data) => {
+    try {
+        const response = await authAxios.patch(`doctor/appointments/${appointmentId}/update-status/`, data);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating appointment status:', error);
+        throw error;
+    }
+};
 //**///////////////////////////////////////ADMIN SIDE////////////////////////////////////////////////**//
 
 export const AdminloginRequest = async (data) => {
