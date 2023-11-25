@@ -45,6 +45,7 @@ function DoctorView() {
     const [date, setDate] = useState(formatDate(new Date()));
     const [storeIndex, setStoreIndex] = useState('');
     const userInformation_ = decodeUserInformation()
+    const [appId, setappId] = useState(null)
     const navigate = useNavigate();
 
 
@@ -96,7 +97,8 @@ function DoctorView() {
     const MakeAppointmentMutation = useMutation({
         mutationFn: () => make_patient_appointment(formData),
         onSuccess: (response) => {
-            console.log(response);
+            console.log(response.data.id);
+            navigate(`/patient/payment/${response.data.id}`);
             toast.success(
                 <div>
                   <strong>{response.message}</strong> 
@@ -122,7 +124,7 @@ function DoctorView() {
                 }
               );
            
-            navigate("/patient/appointments");
+            
         },
         onError: (error) => {
             const firstErrorMessage = error.response.data.message

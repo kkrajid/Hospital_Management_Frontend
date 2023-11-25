@@ -27,7 +27,8 @@ import DoctorChatPage from "./Pages/DoctorSide/DoctorChatPage"
 import Patient_Appointment_Detail_View_Page from "./Pages/PatientSide/Patient_Appointment_Detail_View_Page"
 import Doctor_Appointment_Detail_View_Page from "./Pages/DoctorSide/Doctor_Appointment_Detail_View_Page"
 import DoctorIcuPatientsPage from "./Pages/DoctorSide/DoctorIcuPatientsPage"
-
+import DoctorIcuDetail_ViewPage from "./Pages/DoctorSide/DoctorIcuDetail_ViewPage"
+import StripeCheckoutComponent from "./Pages/PatientSide/PageComponents/Stripe/StripeCheckoutComponent"
 
 function App() {
 
@@ -43,13 +44,13 @@ function App() {
                     <Route path="patient/verification" element={<OTPVerification />} />
                     <Route path="*" element={<NotFound />} />
 
-                    <Route path="patient/chat" element={<PatientChatPage />} />
 
                     <Route path="patient" element={<PrivateRoute />} >
                         <Route path="dashboard" element={<PatientDashboardPage />} />
                         <Route path="profile" element={<PatientProfilePage/>} />
                         <Route path="doctors" element={<PatientDoctorPage />} />
                         <Route path="doctors/:page" element={<IndividulaDoctor />} />
+                        <Route path="payment/:payment_app" element={<StripeCheckoutComponent/>} />
                         <Route path="appointments" element={<PatientAppointmentPage />} />
                         <Route path="appointments/:appointmentId" element={<Patient_Appointment_Detail_View_Page/>} />
                     </Route>
@@ -59,6 +60,8 @@ function App() {
                         <Route path="profile" element={<DoctorProfilePage/>} />
                         <Route path="timeslote" element={<DoctorTimeSlotePage/>} />
                         <Route path="icu" element={<DoctorIcuPatientsPage />}/>
+                        <Route path="icu/:icuId" element={<DoctorIcuDetail_ViewPage/> }/>
+                    
                         <Route path="appointments" element={<DoctorAppointmentPage/>} />
                         <Route path="appointments/:appointmentId" element={<Doctor_Appointment_Detail_View_Page/>} />
                         <Route path="chat" element={<DoctorChatPage/>} />
