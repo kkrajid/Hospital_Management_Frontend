@@ -52,27 +52,16 @@ const CheckoutForm = ({ clientSecret, appointmentId }) => {
   };
 
   return (
-    <div className='w-full h-full bg-gray-300'>
-        <form className="w-[500px] h-[300px] px-2 py-3 flex flex-col text-center justify-evenly bg-gray-100 shadow-md rounded-md custom-form-style">
-      <div className="mb-4">
-        <label htmlFor="card-element" className="block text-sm font-medium text-gray-700">
-          Card details
-        </label>
-        <div id="card-element" className="mt-1">
-          <CardElement className="p-2 bg-red-300 border rounded-md focus:outline-none focus:ring focus:border-green-300" />
-        </div>
+    <div className='w-full h-full '>
+    <div className='w-full h-full bg-[#FFD8D7]  flex  py-3 px-4'>
+      <div className='w-8/12 h-full  py-4 bg-green-300 rounded-l-[10px]'>
+      
       </div>
-      <button
-        type="submit"
-        className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300 disabled:opacity-50 custom-button-style"
-        disabled={!stripe}
-        onClick={handleSubmit}
-      >
-        Pay for Hospital Services
-      </button>
-    </form>
+      <div className='w-4/12 h-full py-4 bg-blue-300 rounded-r-[10px] '>
+        
+      </div>
     </div>
-  
+  </div>
   );
 };
 

@@ -4,6 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckoutForm';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import PatientSideBar from '../PatientSideBar';
 
 const stripePromise = loadStripe('pk_test_51O7aFpSFII5KNwJp2bsAyecnA5ZNfUCj61lEDpzjRp3xgwVBUAjcQWfo2BFGvqJUwKAUWF4D24SyOwwtrN2DoeSq00quZMuFz1');
 
@@ -33,13 +34,13 @@ const StripeCheckoutComponent = () => {
    }, [appointmentId]);
 
    return (
-     <div>
-       {clientSecret && (
+     <PatientSideBar child={
+       clientSecret && (
          <Elements stripe={stripePromise}>
              <CheckoutForm clientSecret={clientSecret} appointmentId={appointmentId} />
          </Elements>
-       )}
-     </div>
+       )} />
+     
    );
 };
 

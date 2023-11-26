@@ -29,6 +29,7 @@ import Doctor_Appointment_Detail_View_Page from "./Pages/DoctorSide/Doctor_Appoi
 import DoctorIcuPatientsPage from "./Pages/DoctorSide/DoctorIcuPatientsPage"
 import DoctorIcuDetail_ViewPage from "./Pages/DoctorSide/DoctorIcuDetail_ViewPage"
 import StripeCheckoutComponent from "./Pages/PatientSide/PageComponents/Stripe/StripeCheckoutComponent"
+import HospitalDashboard from "./Pages/HospitalDashboard"
 
 function App() {
 
@@ -43,8 +44,8 @@ function App() {
                     <Route path="admin/login" element={<AdminLoginPage />} />
                     <Route path="patient/verification" element={<OTPVerification />} />
                     <Route path="*" element={<NotFound />} />
-
-
+                    <Route path="3D" element={<HospitalDashboard/>} />
+                    
                     <Route path="patient" element={<PrivateRoute />} >
                         <Route path="dashboard" element={<PatientDashboardPage />} />
                         <Route path="profile" element={<PatientProfilePage/>} />
