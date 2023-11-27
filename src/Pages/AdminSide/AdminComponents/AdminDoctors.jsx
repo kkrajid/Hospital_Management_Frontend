@@ -23,7 +23,7 @@ function AdminDoctors({child}) {
         <p className='bg-blue-100 py-1 px-4 rounded-full uppercase text-blue-600 font-semibold'>{child.specialization}</p>
       </div>
       <div className='mt-2 p-2 rounded bg-[#35b1f5] hover:bg-green-400  active:bg-green-500'>
-        <Link className='flex justify-center items-center gap-3 ' to={``} >
+        <Link className='flex justify-center items-center gap-3 ' to={`/admin/doctors/${child.id}`} >
           <FontAwesomeIcon icon={faEye } className='text-gray-200' />
           <h1 className='text-white'>View</h1>
         </Link>
