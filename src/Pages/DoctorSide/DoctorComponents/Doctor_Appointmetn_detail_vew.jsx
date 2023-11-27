@@ -489,7 +489,7 @@ function Chat({ room }) {
         // "medcare.site/backend"
 
         chatSocket.current = new WebSocket(
-            'wss://medcare.site/ws/' + roomName + '/'
+            'wss://medcare.site/api/ws/' + roomName + '/'
         );
 
         // chatSocket.current = new WebSocket(
