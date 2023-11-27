@@ -239,9 +239,17 @@ function Chat({room}) {
 
     useEffect(() => {
         console.log('Connecting to WebSocket...');
+
+          // "https://medcare.site/backend/api/"
+        // "medcare.site/backend"
+
         chatSocket.current = new WebSocket(
-            'ws://127.0.0.1:8000/ws/' + roomName + '/'
+            'ws://medcare.site/backend/ws/' + roomName + '/'
         );
+        
+        // chatSocket.current = new WebSocket(
+        //     'ws://127.0.0.1:8000/ws/' + roomName + '/'
+        // );
 
         // chatSocket.current.onclose = function (e) {
         //     console.log('WebSocket connection closed');

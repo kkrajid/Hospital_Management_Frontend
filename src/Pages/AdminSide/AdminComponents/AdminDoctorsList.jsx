@@ -33,6 +33,7 @@ function AdminDoctorsList() {
         },
         specialization: "",
         license_number: "",
+        service_charge:"0",
         address: {
           street_address: "",
           city: "",
