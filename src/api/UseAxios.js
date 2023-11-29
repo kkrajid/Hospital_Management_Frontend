@@ -3,8 +3,8 @@ import { useAuthStore } from "../Store/auth";
 import jwt_decode from "jwt-decode";
 
 
-// const baseURL = "http://localhost:8000/api/";
-const baseURL = "https://medcare.site/api/";
+const baseURL = "http://localhost:8000/api/";
+// const baseURL = "https://medcare.site/api/";
 
 
 export const axi = axios.create({

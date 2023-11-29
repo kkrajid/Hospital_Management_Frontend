@@ -1,65 +1,58 @@
-
-import { useMutation } from "@tanstack/react-query";
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { all_doctors_Profile, add_new_doctor_ } from "../../../api/user";
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPlus, faTrash, faTimes, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import AdminDoctors from './AdminDoctors';
 import LoadingSpinner from '../../../Components/LoadingSpinner';
-import { toast } from "react-hot-toast";
+import { toast } from 'react-hot-toast';
+import { all_doctors_Profile, add_new_doctor_ } from '../../../api/user';
+
 function AdminDoctorsList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [doctorProfiles, setDoctorProfiles] = useState([]);
-    const { data, error, isLoading } = useQuery(['all_doctors_Profile'], all_doctors_Profile);
+    const [searchInput, setSearchInput] = useState('');
+    const [searchInputofspe, setSearchInputofspe] = useState('');
+    const [listOfSpecialization, setlistOfSpecialization] = useState([])
 
+
+    const [doctorProfiles, setDoctorProfiles] = useState([]);
+    const { data, error, isLoading ,refetch} = useQuery(['all_doctors_Profile'], all_doctors_Profile);
+
+    let arr=[]
     useEffect(() => {
         if (data && !isLoading) {
             setDoctorProfiles(data);
-
         }
-    }, [data, isLoading, error]);
+        doctorProfiles?.forEach((item)=>arr.push(item?.specialization))
+        setlistOfSpecialization([...Array.from(new Set(arr))])
+    }, [data, isLoading, error,doctorProfiles]);
 
+    useEffect(() => {
+
+     console.log(arr,65656);
+    }, [listOfSpecialization])
+    
     const [formData, setFormData] = useState({
         user: {
-          full_name: "",
-          email: "",
-          date_of_birth: "",
-          gender: "",
-          phone: "",
-          password: "",
-          role:"Doctor"
+            full_name: '',
+            email: '',
+            date_of_birth: '',
+            gender: '',
+            phone: '',
+            password: '',
+            role: 'Doctor',
         },
-        specialization: "",
-        license_number: "",
-        service_charge:"0",
-        address: {
-          street_address: "",
-          city: "",
-          state: "",
-          zip_code: "",
-          country: ""
-        },
-        profile_pic: ""
-      });
-
-
-    console.log(formData);
-    const [errors, setErrors] = useState({
-        full_name: '',
-        email: '',
-        date_of_birth: '',
-        gender: '',
-        phone: '',
         specialization: '',
-        street_address: '',
-        city: '',
-        state: '',
-        country: '',
-        zip_code: '',
-        password: '',
-
+        license_number: '',
+        service_charge: '0',
+        address: {
+            street_address: '',
+            city: '',
+            state: '',
+            zip_code: '',
+            country: '',
+        },
+        profile_pic: '',
     });
 
     const handleFileChange = (e) => {
@@ -86,12 +79,8 @@ function AdminDoctorsList() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-       
         add_new_doctor_addMutation.mutate();
     };
-
-
-
 
     const add_new_doctor_addMutation = useMutation({
         mutationFn: () => add_new_doctor_(formData),
@@ -102,39 +91,32 @@ function AdminDoctorsList() {
                     <strong>Success:</strong> Doctor Added Successfully
                 </div>,
                 {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  style: {
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    border: "none",
-                    width: "100%",
-                    textAlign: "center",
-                  },
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    style: {
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        border: 'none',
+                        width: '100%',
+                        textAlign: 'center',
+                    },
                 }
-              );
-              setFormData({})
-              setIsModalOpen(false);
+            );
+            refetch();
+            setFormData({});
+            setIsModalOpen(false);
         },
         onError: (error) => {
             console.log(error.message);
-
         },
     });
-
-
-
-
-
-
-
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -143,9 +125,21 @@ function AdminDoctorsList() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const filteredDoctors = doctorProfiles.filter((doctor) =>
+    (doctor.user.full_name?.toLowerCase().includes(searchInput.toLowerCase()) ||
+     doctor.specialization?.toLowerCase().includes(searchInput.toLowerCase()))
+);
+
+   
+    console.log(listOfSpecialization,12121232434);
+    
+
+    
     if (isLoading) {
         return <LoadingSpinner />;
     }
+
     return (
         <div className='px-2 py-3 h-full w-full '>
             <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2  h-full  border-b rounded-[10px]'>
@@ -161,41 +155,43 @@ function AdminDoctorsList() {
                             <div className='mr-12 rounded-full shadow-sm  text-gray-400 p-1 px-2'>
                                 <FontAwesomeIcon icon={faTrash} />
                             </div>
-                            <input type="text" placeholder=' Search Doctor' className='text-gray-400 px-1 outline-none' />
-                            <FontAwesomeIcon icon={faSearch} className='text-gray-300' />
+                            <input
+                                type="text"
+                                placeholder="Search Doctor"
+                                className="text-gray-400 px-1 outline-none"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                            />
+                            <FontAwesomeIcon icon={faSearch} className="text-gray-300" />
+
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-row my-2 bg-[#3581f5] py-4 shadow-lg max-w-[600px] md:max-w-[1480px] w-full max-h-[50px] h-full'>
                     <ul className='flex w-full justify-evenly items-center text-white'>
-                        <li>
+                        <button onClick={() => setSearchInput("")} >
                             All
-                        </li>
-                        <li>
-                            special 1
-                        </li>
-                        <li>
-                            special 1
-                        </li>
-                        <li>
-                            special 1
-                        </li>
-                        <li>
-                            special 1
-                        </li>
-                        <li>
-                            special 1
-                        </li>
+                        </button>
+                       
+
+                        {listOfSpecialization.slice(0, 4).map((item,index)=>(
+                        <button key={index} onClick={() => setSearchInput(item)} >
+                            {item}
+                        </button>
+
+                        ))}
+                        
+                        
                     </ul>
                 </div>
 
                 <div className=' w-full  bg-gray-300 h-5/6 rounded-b-[10px] flex  mt-2 overflow-y-auto bg-gray-100 p-2'>
                     <div className='gap-2 grid md:grid-cols-5 grid-cols-2 mx-auto'>
-                        {doctorProfiles.map((profile,index) => (
+                        {filteredDoctors.map((profile, index) => (
                             <AdminDoctors child={profile} key={index} />
 
                         ))}
-                        
+
                     </div>
 
                 </div>
@@ -232,7 +228,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.email ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md`}
                                                     placeholder="Email"
                                                     name="email"
                                                     value={formData?.user?.email}
@@ -244,7 +240,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="date"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.date_of_birth ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md`}
                                                     placeholder="DOB"
                                                     name="date_of_birth"
                                                     value={formData?.user?.date_of_birth}
@@ -254,7 +250,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.gender ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Gender"
                                                     name="gender"
                                                     value={formData?.user?.gender}
@@ -266,7 +262,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.phone ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Mobile"
                                                     name="phone"
                                                     value={formData?.user?.phone}
@@ -276,7 +272,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.specialization ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Specialization"
                                                     name="specialization"
                                                     value={formData?.specialization}
@@ -288,7 +284,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.street_address ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Street Address"
                                                     name="street_address"
                                                     value={formData?.address?.street_address}
@@ -298,7 +294,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.city ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="City"
                                                     name="city"
                                                     value={formData?.address?.city}
@@ -310,7 +306,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.state ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="State"
                                                     name="state"
                                                     value={formData?.address?.state}
@@ -320,7 +316,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.country ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Country"
                                                     name="country"
                                                     value={formData?.address?.country}
@@ -332,7 +328,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.zip_code ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Pin Code"
                                                     name="zip_code"
                                                     value={formData?.address?.zip_code}
@@ -342,7 +338,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="password"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.password ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="Password"
                                                     name="password"
                                                     value={formData?.user?.password}
@@ -354,7 +350,7 @@ function AdminDoctorsList() {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md ${errors.password ? ' border-2 border-red-600' : ''}`}
+                                                    className={`form-input mb-2 w-full py-3 px-6 text-sm border rounded-md `}
                                                     placeholder="license number"
                                                     name="license_number"
                                                     value={formData?.license_number}

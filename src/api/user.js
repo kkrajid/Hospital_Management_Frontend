@@ -104,6 +104,21 @@ export const add_new_doctor_ = async (data) => {
     const response = await authAxios.post("admin/doctor/create", data);
     return response.data;
 };
+export const fetchAllPatients = async () => {
+    const response = await authAxios.get("admin/all_patients");
+    return response.data;
+};
+export const adminblockUsers = async (userIds) => {
+    const response = await authAxios.patch("admin/block-users/", { id: userIds });
+    return response.data;
+}
+export const adminunblockUsers = async (userIds) => {
+    const response = await authAxios.patch("admin/unblock-users/", { id: userIds });
+    return response.data;
+}
+  
+  
+
 //**///////////////////////////////////////PATIENT SIDE////////////////////////////////////////////////**//
 
 export const registerRequest = async (data) => {
@@ -154,6 +169,7 @@ export const get_detail_appointments_view = async (id) => {
     const response = await authAxios.get(`patient/appointments/${id}/`);
     return response.data;
 };
+
 
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////
