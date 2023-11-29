@@ -96,10 +96,10 @@ function AdminPatients() {
 
   return (
     <div className='w-full h-full bg-[#E1E2E6] p-1 rounded-r-[10px]'>
-      <div className='w-full h-full bg-gray-100 rounded-[10px] shadow-lg'>
-        <div className='w-full h-1/6 bg-[#EEEFF0] rounded-t-[10px] flex items-center px-1'>
-          <div className='w-full flex items-center px-2 px-5'>
-            <div className='w-3/5 bg-white py-1 px-4 rounded-[22px] flex gap-2 items-center'>
+      <div className='w-full h-full bg-[#D1D5DB] rounded-[10px] shadow-lg'>
+        <div className='w-full h-1/6 bg-[#D1D5DB] rounded-t-[10px] flex items-center px-1'>
+          <div className='w-full flex items-center px-2 px-5 flex gap-[50%]'>
+            <div className='w-[60%] bg-white py-1 pl-4 rounded-[22px] flex gap-2 items-center'>
               <FontAwesomeIcon icon={faSearch} className='text-blue-500 text-xl' />
               <input
                 type="text"
@@ -109,7 +109,7 @@ function AdminPatients() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className='flex gap-2 w-1/5     '>
+            <div className='flex gap-2 w-1/6     '>
               <button
                 className={` text-white p-3 rounded-full flex items-center justify-center ${selectedPatients.length === 0 ? 'disabled bg-gray-500' : 'bg-green-500'}`}
                 onClick={handleUnblockPatients}
@@ -130,10 +130,10 @@ function AdminPatients() {
             </div>
           </div>
         </div>
-        <div className='w-full h-2/4 bg-[#EEEFF0] rounded-b-[10px] p-1'>
+        <div className='w-full h-2/4  rounded-b-[10px] p-1'>
           <div className='w-full h-full'>
             <div className='w-full h-1/6'>
-              <ul className='w-full h-full bg-white flex gap-1'>
+              <ul className='w-full h-full bg-[#3581F5] flex gap-1  text-white'>
                 <li className='h-full w-1/12    flex items-center justify-center'>
                   <label className="inline-flex items-center">
                     <input type="checkbox" className="w-[15px] h-[15px]" />
@@ -141,42 +141,42 @@ function AdminPatients() {
                 </li>
                 <li className='h-full w-1/4    flex items-center gap-4 px-3'>
                   <div>
-                    <p className='font-mono font-semibold  text-gray-600'>Patient Name</p>
+                    <p className='font-mono font-semibold '>Patient Name</p>
                   </div>
                 </li>
                 <li className='h-full w-1/6    flex items-center justify-center'>
                   <div className=''>
-                    <p className='font-mono font-semibold text-gray-600'>Email</p>
+                    <p className='font-mono font-semibold'>Email</p>
                   </div>
                 </li>
                 <li className='h-full w-1/12    flex items-center justify-center'>
                   <div className=''>
-                    <p className='font-mono font-semibold  text-gray-600'>Gender</p>
+                    <p className='font-mono font-semibold  '>Gender</p>
                   </div>
                 </li>
                 <li className='h-full w-1/12    flex items-center justify-center'>
                   <div className=''>
-                    <p className='font-mono font-semibold  text-gray-600'>Age</p>
+                    <p className='font-mono font-semibold  '>Age</p>
                   </div>
                 </li>
                 <li className='h-full w-1/6   flex items-center justify-center'>
                   <div className=''>
-                    <p className='font-mono font-semibold  text-gray-600'>Last Visit</p>
+                    <p className='font-mono font-semibold '>Last Visit</p>
                   </div>
                 </li>
                 <li className='h-full w-1/12    flex items-center justify-center'>
                   <div className=''>
-                    <p className='font-mono font-semibold  text-gray-600'>BLOCKED</p>
+                    <p className='font-mono font-semibold  '>BLOCKED</p>
                   </div>
                 </li>
                 <li className='h-full w-1/12   flex items-center justify-center'>
                   <div className=''>
-                    <p className='font-mono font-semibold   text-gray-600'>Actions</p>
+                    <p className='font-mono font-semibold   '>Actions</p>
                   </div>
                 </li>
               </ul>
             </div>
-            <div className='w-full mt-1 pt-1 h-5/6 flex flex-col gap-1'>
+            <div className='w-full mt-2 pt-1 h-5/6 flex flex-col gap-1'>
               {currentPatients.map((patient) => (
                 <div className='w-full h-1/4 shadow-lg' key={patient.id}>
                   <ul className='w-full h-full bg-white flex gap-1 text-gray-600 hover:bg-blue-500 hover:text-white'>

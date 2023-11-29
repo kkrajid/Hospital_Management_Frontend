@@ -1,32 +1,40 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { LineChart } from 'recharts';
 import LineChart1 from './LineChart';
-
+import { admin_dashboard_data } from '../../../api/user';
+import { useQuery } from '@tanstack/react-query';
 
 
 function AdminDashboard() {
   // Registering required elements for Chart.js
   ChartJS.register(ChartDataLabels);
   ChartJS.register(ArcElement, Tooltip, Legend);
-
-  const response = [
-    { doctor_name: 'Dr. Smith', appointment_count: 10 },
-    { doctor_name: 'Dr. Johnson', appointment_count: 15 },
-    { doctor_name: 'Dr. Brown', appointment_count: 8 },
-    { doctor_name: 'Dr. White', appointment_count: 20 },
-    { doctor_name: 'Dr. Davis', appointment_count: 12 },
-    { doctor_name: 'Ahamed Thashrif', appointment_count: 18 },
-  ];
+  const [doctorAppointments, setDoctorAppointments] = useState([]);
+  const [dashboardData, setDashboardData] = useState(null);
+  const { data, isLoading, isError, refetch } = useQuery(['admin_dashboard_data'], admin_dashboard_data);
+  console.log(data);
+  useEffect(() => {
+    try {
+      if (data) {
+        setDoctorAppointments(data?.doctors);
+        setDashboardData(data?.dashboard_data)
+      }
+    } catch (error) {
+      console.error('Error setting patients:', error);
+    }
+  }, [data]);
+  console.log(data,'wewew');
+ 
 
   // Extracting labels and data from the response array
-  const labels = response.map((item) => item.doctor_name);
-  const dataValues = response.map((item) => item.appointment_count);
+  const labels = doctorAppointments.map((item) => item.doctor_name);
+  const dataValues = doctorAppointments.map((item) => item.appointment_count);
 
   // Example data for the Doughnut chart
-  const data = {
+  const datas = {
     labels: labels,
     datasets: [
       {
@@ -64,27 +72,14 @@ function AdminDashboard() {
     <div className='w-full h-full   bg-[#D1D5DB] '>
       <div className='w-full h-2/6 flex '>
         <div className='w-full h-full flex px-4 '>
-          <div className='w-2/6 h-full  px-4 py-11 '>
-            <div className='w-full h-full bg-white shadow-lg  rounded-[10px] '>
-
-            </div>
+        {dashboardData && Object.entries(dashboardData).map(([key, value]) => (
+        <div key={key} className='w-2/6 h-full px-4 py-11'>
+          <div className='w-full h-full bg-white shadow-lg rounded-[10px] flex flex-col items-center justify-center gap-2 '>
+          <p className='uppercase text-sm '>{key.replace(/_count/g, '').replace(/_/g, ' ')}</p>
+            <p>{value}</p>
           </div>
-          <div className='w-2/6 h-full  px-4 py-11 '>
-            <div className='w-full h-full bg-white shadow-lg rounded-[10px] '>
-
-            </div>
-          </div>
-          <div className='w-2/6 h-full  px-4 py-11 '>
-            <div className='w-full h-full bg-white shadow-lg rounded-[10px] '>
-
-            </div>
-          </div>
-          <div className='w-2/6 h-full  px-4 py-11 '>
-            <div className='w-full h-full bg-white shadow-lg rounded-[10px] '>
-
-            </div>
-          </div>
-
+        </div>
+      ))}
         </div>
       </div>
       <div className='w-full h-4/6  px-8 py-9'>
@@ -92,7 +87,7 @@ function AdminDashboard() {
           <div className='w-4/6 h-full rounded-t-[10px] p-2 '>
             <div className='w-full h-full  bg-white shadow-lg rounded-[10px]  flex items-center justify-center'>
             <div className='flex flex-col text-center '>
-            <LineChart1/>
+            <LineChart1 child={doctorAppointments} />
 
             </div>
 
@@ -101,7 +96,7 @@ function AdminDashboard() {
           <div className='w-2/6 h-full p-2  '>
             <div className='w-full h-full bg-white shadow-lg border  rounded-[10px] p-6 '>
 
-            <Doughnut data={data} options={options} />
+            <Doughnut data={datas} options={options} />
             </div>
           </div>
 

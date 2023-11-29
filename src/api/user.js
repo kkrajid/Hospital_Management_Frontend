@@ -116,6 +116,12 @@ export const adminunblockUsers = async (userIds) => {
     const response = await authAxios.patch("admin/unblock-users/", { id: userIds });
     return response.data;
 }
+
+export const admin_dashboard_data = async () => {
+    const response = await authAxios.get("admin/admin_dashboard_data/");
+    return response.data;
+};
+
   
   
 

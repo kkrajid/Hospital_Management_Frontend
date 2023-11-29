@@ -33,14 +33,14 @@ function PatientAppointment() {
     }));
   };
   return (
-    <div className='max-w-[1480px] bg-[#F2F3F5] w-full h-full  border rounded-[10px] py-3 shadow-lg  '>
+    <div className='max-w-[1480px] bg-gray-300 w-full h-full  border rounded-[10px] py-3 shadow-lg  '>
       <div className='w-full h-[60px] p-2 shadow-lg bg-white  '>
         <div className='w-full h-full  rounded-t-[10px] shadow-l-lg'>
 
         </div>
       </div>
-      <div className='w-full h-5/6  rounded-b-[10px]  px-4 '>
-        <div className='w-full p-3 bg-white  shadow-lg  my-2'>
+      <div className='w-full h-5/6  rounded-b-[10px]   '>
+        <div className='w-full py-3 bg-white  shadow-lg  my-2'>
           <div className='w-full  flex gap-4 pl-3 flex-evenly'>
             <div className='w-1/6 h-full flex justify-center items-center'>
               <p>Image</p>
@@ -63,10 +63,10 @@ function PatientAppointment() {
             </div>
           </div>
         </div>
-        <div className='overflow-y-auto w-full h-5/6'>
+        <div className='overflow-y-auto w-full h-[100%]'>
 
           {appointData?.map((data, index) => (
-            <div key={index} className='w-full h-1/5 bg-white rounded-[15px] shadow-lg p-4 mb-2'>
+            <div key={index} className='w-full h-1/6  bg-white rounded-[15px] shadow-lg p-4 mb-2 px-20'>
               <div className='w-full h-full flex gap-4 pl-3 flex-evenly'>
                 <div className='w-1/6 h-full flex justify-center items-center'>
                   <img src={data.doctor_profile.profile_pic} alt="" className='w-17 h-16 border-2 border-gray-300 rounded-[10px]' />
