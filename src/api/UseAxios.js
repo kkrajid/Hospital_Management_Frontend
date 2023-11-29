@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 
 
 const baseURL = "http://localhost:8000/api/";
+export const websocketbaseUrl = "127.0.0.1:8000"
 // const baseURL = "https://medcare.site/api/";
 
 

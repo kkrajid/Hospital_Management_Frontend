@@ -40,7 +40,7 @@ function PatientAppointment() {
         </div>
       </div>
       <div className='w-full h-5/6  rounded-b-[10px]   '>
-        <div className='w-full py-3 bg-white  shadow-lg  my-2'>
+        <div className='w-full py-3 bg-white  shadow-lg  my-2 px-14'>
           <div className='w-full  flex gap-4 pl-3 flex-evenly'>
             <div className='w-1/6 h-full flex justify-center items-center'>
               <p>Image</p>

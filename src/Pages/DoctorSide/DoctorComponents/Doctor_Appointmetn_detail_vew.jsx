@@ -6,7 +6,7 @@ import { doctor_get_detail_appointments_view, getPrescriptions, createPrescripti
 import { useParams } from 'react-router-dom';
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-
+import {websocketbaseUrl} from '../../../api/UseAxios'
 function Doctor_Appointmetn_detail_vew() {
     const [appointData, setAppointmentData] = useState(null)
     const [activeComponent, setActiveComponent] = useState('prescription');
@@ -45,7 +45,7 @@ console.log(AppointmentData,"aaaa");
 
         }
     }, [AppointmentData, isLoading, error]);
-    console.log(appointData);
+    console.log(appointData,"dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     const room_name_for_chat = appointData?.doctor_profile?.user?.id + appointData?.patient?.id + appointData?.id
     const room_name_ = 'asd' + room_name_for_chat
@@ -211,7 +211,7 @@ console.log(AppointmentData,"aaaa");
 
                                     {/* {activeComponent === 'Medical_Background' && <Medical_Background />} */}
                                     {activeComponent === 'prescription' && <Prescription appointmentId={appointmentId} />}
-                                    {activeComponent === 'chat' && <Chat room={room_name_} />}
+                                    {activeComponent === 'chat' && <DoctorChat room={room_name_} id={appointData?.doctor_profile?.user?.id} />}
                                 </div>
                             </div>
                         </div>
@@ -472,11 +472,143 @@ function Prescription({ appointmentId }) {
 }
 
 
-function Chat({ room }) {
+// function Chat({ room }) {
 
 
-    const roomName = 'DP' + room
-    const userName = 'Doctor';
+//     const roomName = 'DP' + room
+//     const userName = 'Doctor';
+//     const [messages, setMessages] = useState([]);
+//     const [messageInput, setMessageInput] = useState('');
+//     const chatSocket = useRef(null);
+//     const chatMessagesRef = useRef(null);
+//     const chatMessageInputRef = useRef(null);
+
+//     useEffect(() => {
+//         // console.log('Connecting to WebSocket...');
+//         // "https://medcare.site/backend/api/"
+//         // "medcare.site/backend"
+
+//         // chatSocket.current = new WebSocket(
+//         //     'wss://medcare.site/api/ws/' + roomName + '/'
+//         // );
+
+//         chatSocket.current = new WebSocket(
+//             `ws://${websocketbaseUrl}/ws/` + roomName + '/'
+//         );
+
+//         // chatSocket.current.onclose = function (e) {
+//         //     console.log('WebSocket connection closed');
+//         // };
+
+//         chatSocket.current.onmessage = function (e) {
+//             const data = JSON.parse(e.data);
+
+//             if (data.message) {
+//                 setMessages((prevMessages) => [
+//                     ...prevMessages,
+//                     { username: data.username, message: data.message },
+//                 ]);
+//                 scrollToBottom();
+//             }
+//         };
+
+//         chatMessageInputRef.current.focus();
+
+//         return () => {
+//             chatSocket.current.close();
+//             console.log('Closed WebSocket...');
+
+//         };
+//     }, [roomName]);
+
+//     const handleInputKeyUp = (e) => {
+//         if (e.keyCode === 13) {
+//             handleSendMessage(e);
+//         }
+//     };
+
+//     const handleSendMessage = (e) => {
+//         e.preventDefault();
+
+//         chatSocket.current.send(
+//             JSON.stringify({
+//                 message: messageInput,
+//                 username: userName,
+//                 room: roomName,
+//             })
+//         );
+
+//         setMessageInput('');
+//     };
+
+//     const scrollToBottom = () => {
+//         chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+//     };
+//     return (
+//         <div className='w-full h-full p-2'>
+//             <div className='w-full h-full pb-3 bg-[#D6D3D1] rounded-[5px] flex flex-col'>
+//                 <div className='w-full bg-[#D6D3D1]  rounded-[10px] h-5/6 overflow-y-auto'>
+//                     <div className="flex-1 chat-messages px-6">
+//                         {messages.map((message, index) => (
+//                             <div
+//                                 key={index}
+//                                 className={`${message.username === userName
+//                                     ? 'flex flex-col items-end '
+//                                     : 'flex flex-col items-start'
+//                                     } mb-2 max-w-1/6 p-2 rounded-lg  `}
+//                             >
+//                                 <div className='bg-white w-3/6 rounded-[8px] p-2 shadow-lg'>
+//                                     <span className={`text-sm font-semibold font-mono text-${message.username === userName
+//                                         ? 'red'
+//                                         : 'blue'
+//                                         }-500`}>
+//                                         ~{message.username}
+//                                     </span>
+//                                     <p className='px-3 '>{message.message}</p>
+//                                 </div>
+//                             </div>
+//                         ))}
+//                     </div>
+//                 </div>
+//                 <div className='w-full h-1/6 px-3 py-1'>
+//                     <div className='w-full h-full flex justify-center items-center'>
+//                         <form onSubmit={handleSendMessage} className='w-full h-full flex justify-center items-center'>
+//                             <div className='w-5/6 h-full bg-white shadow-lg p-1 rounded-l-[10px]'>
+//                                 <input
+//                                     type="text"
+//                                     name="content"
+//                                     value={messageInput}
+//                                     onChange={(e) => setMessageInput(e.target.value)}
+//                                     id="chat-message-input"
+//                                     className='w-full h-full px-3 py-1 outline-none'
+//                                     placeholder="Type a message..."
+//                                     onKeyUp={handleInputKeyUp}
+//                                     ref={chatMessageInputRef}
+//                                 />
+//                             </div>
+//                             <button className='w-1/6 h-full py-1 bg-blue-600 shadow-lg rounded-r-[10px]' onClick={handleSendMessage}>
+//                                 <div className='h-full flex items-center justify-center bg-blue-600 text-white rounded-r-[10px]'>
+//                                     <FontAwesomeIcon icon={faPaperPlane} />
+//                                 </div>
+//                             </button>
+//                         </form>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+
+//     )
+// }
+
+
+// export default Doctor_Appointmetn_detail_vew
+
+
+
+function DoctorChat({ room, id }) {
+    const roomName = 'DP' + room;
+    const userName = id;
+
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
     const chatSocket = useRef(null);
@@ -484,21 +616,7 @@ function Chat({ room }) {
     const chatMessageInputRef = useRef(null);
 
     useEffect(() => {
-        // console.log('Connecting to WebSocket...');
-        // "https://medcare.site/backend/api/"
-        // "medcare.site/backend"
-
-        // chatSocket.current = new WebSocket(
-        //     'wss://medcare.site/api/ws/' + roomName + '/'
-        // );
-
-        chatSocket.current = new WebSocket(
-            'ws://127.0.0.1:8000/ws/' + roomName + '/'
-        );
-
-        // chatSocket.current.onclose = function (e) {
-        //     console.log('WebSocket connection closed');
-        // };
+        chatSocket.current = new WebSocket(`ws://${websocketbaseUrl}/ws/` + roomName + '/');
 
         chatSocket.current.onmessage = function (e) {
             const data = JSON.parse(e.data);
@@ -512,22 +630,28 @@ function Chat({ room }) {
             }
         };
 
+        fetchMessages();
+
         chatMessageInputRef.current.focus();
 
         return () => {
             chatSocket.current.close();
             console.log('Closed WebSocket...');
-
         };
     }, [roomName]);
 
-    const handleInputKeyUp = (e) => {
-        if (e.keyCode === 13) {
-            handleSendMessage(e);
+    const fetchMessages = async () => {
+        try {
+            const response = await fetch(`http://${websocketbaseUrl}/api/messages/${roomName}/`);
+            const data = await response.json();
+            setMessages(data);
+            scrollToBottom();
+        } catch (error) {
+            console.error('Error fetching messages:', error);
         }
     };
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault();
 
         chatSocket.current.send(
@@ -544,10 +668,11 @@ function Chat({ room }) {
     const scrollToBottom = () => {
         chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
     };
+
     return (
         <div className='w-full h-full p-2'>
             <div className='w-full h-full pb-3 bg-[#D6D3D1] rounded-[5px] flex flex-col'>
-                <div className='w-full bg-[#D6D3D1]  rounded-[10px] h-5/6 overflow-y-auto'>
+                <div className='w-full bg-[#D6D3D1]  rounded-[10px] h-5/6 overflow-y-auto' ref={chatMessagesRef}>
                     <div className="flex-1 chat-messages px-6">
                         {messages.map((message, index) => (
                             <div
@@ -562,7 +687,7 @@ function Chat({ room }) {
                                         ? 'red'
                                         : 'blue'
                                         }-500`}>
-                                        ~{message.username}
+                                        ~{message.username === userName?"You":"Patient"}
                                     </span>
                                     <p className='px-3 '>{message.message}</p>
                                 </div>
@@ -582,13 +707,12 @@ function Chat({ room }) {
                                     id="chat-message-input"
                                     className='w-full h-full px-3 py-1 outline-none'
                                     placeholder="Type a message..."
-                                    onKeyUp={handleInputKeyUp}
                                     ref={chatMessageInputRef}
                                 />
                             </div>
                             <button className='w-1/6 h-full py-1 bg-blue-600 shadow-lg rounded-r-[10px]' onClick={handleSendMessage}>
                                 <div className='h-full flex items-center justify-center bg-blue-600 text-white rounded-r-[10px]'>
-                                    <FontAwesomeIcon icon={faPaperPlane} />
+                                    Send
                                 </div>
                             </button>
                         </form>
@@ -596,11 +720,9 @@ function Chat({ room }) {
                 </div>
             </div>
         </div>
-
-    )
+    );
 }
 
 
+
 export default Doctor_Appointmetn_detail_vew
-
-
