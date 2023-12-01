@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck, faTimes, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { all_user_appointments } from "../../../api/user";
+import { all_user_appointments,CancelAppointmentApi } from "../../../api/user";
 import { useMutation } from "@tanstack/react-query";
 import LoadingSpinner from '../../../Components/LoadingSpinner';
 import { useNavigate, Link, Navigate } from "react-router-dom";
@@ -11,7 +11,7 @@ import { toast } from "react-hot-toast";
 
 function PatientAppointment() {
   const [appointData, setAppointmentData] = useState(null)
-  const { data: AppointmentData, isLoading, error } = useQuery(
+  const { data: AppointmentData, isLoading, error,refetch } = useQuery(
     ['all_user_appointments'],
     all_user_appointments
   );
@@ -32,9 +32,24 @@ function PatientAppointment() {
       [index]: !prevDropdowns[index],
     }));
   };
-  const handleCancel = (index) => {
+
+
+
+  const cancelAppointmentMutation =useMutation({
+    mutationFn: (id) => CancelAppointmentApi(id),
+    onSuccess: (response) => { 
+      refetch();
+    },
+    onError: (error) => {
+        console.log(error.message);
+    },
+  });
+
+  const handleCancelAppointment = (index) => {
     console.log(`Cancel appointment at index ${index}`);
+    cancelAppointmentMutation.mutate(index);
   };
+
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -116,7 +131,7 @@ function PatientAppointment() {
                         </Link>
                       </li>
                       <li>
-                        <button onClick={() => handleCancel(data.id)} href="#" className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white" >
+                        <button onClick={() => handleCancelAppointment(data.id)} href="#" className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white" >
                           Cancel
                         </button>
                       </li>

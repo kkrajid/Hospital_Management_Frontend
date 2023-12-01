@@ -122,8 +122,10 @@ export const admin_dashboard_data = async () => {
     return response.data;
 };
 
-  
-  
+export const adminunblockDoctor = async (userIds,isBlocked) => {
+    const response = await authAxios.patch("admin/updateBlockStatusOfDoctor/", { id: userIds,is_blocked: !isBlocked});
+    return response.data;
+}
 
 //**///////////////////////////////////////PATIENT SIDE////////////////////////////////////////////////**//
 
@@ -176,6 +178,10 @@ export const get_detail_appointments_view = async (id) => {
     return response.data;
 };
 
-
+export const CancelAppointmentApi = async (id) => {
+    const response = await authAxios.post(`patient/cancel_appointment/${id}/`);
+    return response.data;
+};
+ 
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////

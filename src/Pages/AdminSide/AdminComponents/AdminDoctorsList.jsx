@@ -13,11 +13,12 @@ function AdminDoctorsList() {
     const [searchInput, setSearchInput] = useState('');
     const [searchInputofspe, setSearchInputofspe] = useState('');
     const [listOfSpecialization, setlistOfSpecialization] = useState([])
+    const [blockuser, setBlockuser] = useState(false)
 
 
     const [doctorProfiles, setDoctorProfiles] = useState([]);
     const { data, error, isLoading ,refetch} = useQuery(['all_doctors_Profile'], all_doctors_Profile);
-
+    console.log(data,"all doctors");
     let arr=[]
     useEffect(() => {
         if (data && !isLoading) {
@@ -152,7 +153,7 @@ function AdminDoctorsList() {
                             <button className='mx-2 rounded-full shadow-sm  text-gray-400 p-1 px-2' onClick={openModal}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </button>
-                            <div className='mr-12 rounded-full shadow-sm  text-gray-400 p-1 px-2'>
+                            <div className='mr-12 rounded-full shadow-sm  text-gray-400 p-1 px-2' onClick={()=>setBlockuser(!blockuser)}>
                                 <FontAwesomeIcon icon={faTrash} />
                             </div>
                             <input
@@ -188,7 +189,8 @@ function AdminDoctorsList() {
                 <div className=' w-full  bg-gray-300 h-5/6 rounded-b-[10px] flex  mt-2 overflow-y-auto bg-gray-100 p-2'>
                     <div className='gap-2 grid md:grid-cols-5 grid-cols-2 mx-auto'>
                         {filteredDoctors.map((profile, index) => (
-                            <AdminDoctors child={profile} key={index} />
+                          
+                            <AdminDoctors child={profile} key={index}  blockuser={blockuser} refetch={refetch} />
 
                         ))}
 

@@ -54,6 +54,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.1.0",
+    "sweetalert2": "^11.10.1",
     "three": "^0.158.0",
     "tw-elements": "^1.0.0",
     "webstomp-client": "^1.2.6",
