@@ -32,12 +32,29 @@ const decodeUserInformation = () => {
 };
 
 
-const formatDate = (date) => {
+function formatDate(date) {
+    if (!(date instanceof Date && !isNaN(date))) {
+        date = new Date(); // Set to the current date or another default date
+    }
+
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month because it's zero-based
     const day = String(date.getDate()).padStart(2, '0');
+
     return `${year}-${month}-${day}`;
-};
+}
+function getCurrentDateString() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+// ... rest of your code
+
+
 
 function DoctorView() {
     const { page } = useParams();
@@ -53,16 +70,16 @@ function DoctorView() {
         ['patient_side_doctor_complete_details', page],
         () => patient_side_doctore_complete_details(page)
     );
-    
+
     const { data: doctorTimeSlotData, isLoading: timeSlotLoading, error: doctorTimeSlotError } = useQuery(
         ['patient_side_doctor_time_slot', page, date],
         () => patient_side_doctor_time_slot(page, date),
         {
             enabled: !!page && !!date, // Ensure the query runs when page and date are defined
         }
-        );
-        
-            
+    );
+
+
 
     const timeslot = doctorTimeSlotData
         ? doctorTimeSlotData.map((item) => {
@@ -99,32 +116,7 @@ function DoctorView() {
         onSuccess: (response) => {
             console.log(response.data.id);
             navigate(`/patient/payment/${response.data.id}`);
-            toast.success(
-                <div>
-                  <strong>{response.message}</strong> 
-                  
-                </div>,
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  style: {
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    border: "none",
-                    width: "100%",
-                    textAlign: "center",
-                  },
-                }
-              );
            
-            
         },
         onError: (error) => {
             const firstErrorMessage = error.response.data.message
@@ -152,117 +144,126 @@ function DoctorView() {
         setIsModalOpen(false);
     };
 
-    if (profileLoading || timeSlotLoading || MakeAppointmentMutation.isLoading  ) {
+    if (profileLoading || timeSlotLoading || MakeAppointmentMutation.isLoading) {
         return <LoadingSpinner />;
     }
 
     return (
         <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2  h-screen border-b rounded-[10px]'>
-            <div className='flex items-center  shadow-lg bg-gradient-to-r from-[#6859F3] to-green-300 w-full h-[180px] rounded-[10px]'>
-                <div className='flex justify-between items-center  w-full px-10'>
-                    <div className='  flex items-center '>
-                        <img src={profileData?.profile_pic} alt="" placeholder='image' className='rounded-full w-20 h-20' />
-                        <div>
-                            <div className='flex flex-col mx-2'>
-                                <h1 className='text-white font-semibold capitalize text-2xl'>{profileData?.user['full_name']}</h1>
-                                <h1 className='text-white rounded-[10px] p-2 border border-2 border-blue-600 uppercase'>{profileData?.specialization}</h1>
+            <div className='flex items-center shadow-lg bg-gradient-to-r from-[#209ABB] to-[#4CAEC8] w-full h-[180px] rounded-[10px]'>
+                <div className='flex justify-between items-center w-full px-10'>
+                    <div className='flex items-center'>
+                        <img src={profileData?.profile_pic} alt="" placeholder='image' className='rounded-full w-24 h-24 border-2 border-white' />
+                        <div className='ml-4'>
+                            <div className='flex flex-col'>
+                                <h1 className='text-white font-semibold text-3xl'>{profileData?.user['full_name']}</h1>
+                                <h1 className='text-white rounded-[10px] p-2 border border-2 border-blue-600 uppercase mt-2'>{profileData?.specialization}</h1>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <button className={`py-2 px-3 bg-blue-600 rounded-[10px] text-white hover:bg-green-500 active:bg-green-600  ${!storeIndex ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={!storeIndex} onClick={openModal} >Book Appointment</button>
+                        <button className={`py-2 px-3 bg-blue-600 rounded-[10px] text-white hover:bg-yellow-500 active:bg-yellow-600 ${!storeIndex ? 'opacity-80 cursor-not-allowed' : ''}`} disabled={!storeIndex} onClick={openModal}>Book Appointment</button>
                     </div>
                 </div>
             </div>
-            <div className='w-full bg-gray-100 max-h-[400px]  h-full rounded-[10px] mt-3 flex items-center px-4'>
-                <div className='flex flex-row gap-4 items-center w-full max-h-[300px] h-full'>
-                    <div>
-                        <div className="p-4 flex flex-col gap-2 justify-center items-center  rounded-[10px]">
-                            <Calendar value={date}
-                                onChange={handleDateChange}
-                                minDate={new Date()}
-                                maxDate={null}
-                                className='rounded-[10px] border-white border-6 border-2' />
 
-                        </div>
+            <div className='w-full bg-gray-100 max-h-[400px]  h-full rounded-[10px]  flex items-center px-4'>
+                <div className='flex flex-col gap-4 items-center w-full max-h-[300px] h-full'>
+                    <div className='w-full'>
+                        <h2 className=" border-t-1 border-b-1 py-2 bg-[#209ABB] border-gray-600 font-semibold text-center text-white uppercase mb-4">Appointment Slots</h2>
                     </div>
-                    <div className=' bg-gray-100 h-full w-full '>
-                        <h2 className="text-xl font-semibold flex justify-center ">Appointment slote</h2>
-                        <div className='overflow-y-auto max-h-[300px]'> {/* Set a max height to enable scrolling */}
-                            <div className='flex flex-wrap md:grid md:grid-cols-5 gap-1  '>
-                                {/* {timeslot?.map((slot, index) => {
-                                    // Split the slot into its components
-                                    const [timePart, numberPart] = slot.split('+');
-                                    
-                                    console.log(numberPart['aval'],'*****',numberPart['id']);
+                    <div className='w-full h-1/6 flex items-center'>
+                        <div className="p-4 flex flex-col gap-2 justify-center items-center rounded-[10px]">
 
-                                    return (
-                                        <ul className='w-full sm:w-1/2 md:w-auto' key={index}>
-                                            <button
-                                                className={` ${storeIndex === storeIndex ? 'bg-blue-600 border-blue-600 text-white' : ''} border-blue-400 border-2 p-1 px-2 rounded-[3px] flex justify-center hover:bg-blue-600 hover:border-blue-600 hover:text-white active:bg-blue-800 active:border-blue-800 ${!storeIndex ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={!storeIndex} 
-                                                onClick={() => {
-                                                    setStoreIndex(storeIndex);
-                                                    setSelectedTimeSlot(timePart)
+                            <input
+                                type="date"
+                                value={date} // Assuming you have a function formatDate to convert the date to the required format
+                                onChange={(e) => handleDateChange(new Date(e.target.value))}
+                                min={getCurrentDateString()} // Assuming you have a function getCurrentDateString to get the current date in the required format
+                                max={null} // If you don't want to set a max date, you can remove this attribute
+                                className="rounded-[10px] border-gray-300 border-6 border-2 p-2"
+                            />
+                        </div>
 
-                                                }}
-                                            >
-                                                {timePart}
-                                            </button>
-                                        </ul>
-                                    );
-                                })} */}
-                                {timeslot?.map((slot, index) => {
-                                    // Extract the properties from the time slot object
-                                    const { startTime, endTime, aval, id } = slot;
+                    </div>
+                    <div className="bg-gray-100 h-full w-full">
 
-                                    return (
-                                        <ul className='w-full sm:w-1/2 md:w-auto' key={index}>
-                                            <button
-                                                className={`${aval ? '' : 'bg-red-600 text-white border-red-600'
-                                                    } ${id === storeIndex ? 'bg-blue-600 text-white ' : ''
-                                                    } border-blue-400 border-2 p-1 px-2 rounded-[3px] flex justify-center   active:border-blue-800 ${!aval ? 'opacity-50 cursor-not-allowed' : ''
-                                                    }`}
-                                                disabled={!aval}
-                                                onClick={() => {
-                                                    setStoreIndex(id); // Assuming `setStoreIndex` is a function that sets the selected store index
-                                                    setSelectedTimeSlot(`${startTime} - ${endTime}`); // Assuming `setSelectedTimeSlot` is a function to set the selected time slot
-                                                }}
-                                            >
-                                                {startTime} - {endTime}
-                                            </button>
-                                        </ul>
-                                    );
-                                })}
-
-
+                        <div className="overflow-y-auto max-h-[300px]">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 p-3 ">
+                                {timeslot?.map(({ startTime, endTime, aval, id }) => (
+                                    <button
+                                        key={id}
+                                        className={`rounded-md overflow-hidden ${aval
+                                            ? ' '
+                                            : 'bg-white text-red-700 border-red-700 opacity-80 cursor-not-allowed'
+                                            } ${id === storeIndex
+                                                ? '  border-2 text-green-500 border-green-500  transform scale-105'
+                                                : 'border-2 border-gray-500'
+                                            } w-full h-11 p-2 flex items-center justify-center focus:outline-none`} // Reduced the height to h-16
+                                        disabled={!aval}
+                                        onClick={() => {
+                                            if (id === storeIndex) {
+                                                setStoreIndex(null);
+                                                setSelectedTimeSlot(null);
+                                            } else {
+                                                setStoreIndex(id);
+                                                setSelectedTimeSlot(`${startTime} - ${endTime}`);
+                                            }
+                                        }}
+                                    >
+                                        <span className="text-lg font-semibold">
+                                            {startTime} - {endTime}
+                                        </span>
+                                    </button>
+                                ))}
 
                             </div>
                         </div>
 
+
+
+
                         <div className="relative">
+
                             {isModalOpen && (
                                 <div className="fixed inset-0 flex items-center justify-center z-50 shadow">
-                                    <div className="absolute inset-0 bg-gray-600 bg-opacity-25 backdrop-blur-[3px]"></div>
-                                    <div className="bg-white p-4 rounded shadow-lg z-10 w-[350px] h-[400px]">
-                                        <div className='flex flex-row w-full justify-between '>
-                                            <div>
-
+                                    <div
+                                        className="absolute inset-0 bg-gray-600 bg-opacity-25 backdrop-blur-[3px]"
+                                        onClick={closeModal}
+                                    ></div>
+                                    <div className="bg-white p-2 rounded-[1rem] shadow-lg z-10 w-[28rem] h-[20rem]">
+                                        <div className="w-full h-5/6 bg-gray-300 rounded-[10px]">
+                                            <div className="w-full h-1/6 flex items-center justify-center">
+                                                <div className="flex items-center justify-center">
+                                                    <h1 className="text-2xl font-bold uppercase">Confirm Appointment</h1>
+                                                </div>
                                             </div>
-                                            <button className='uppercase text-gray-400 text-1xl' onClick={closeModal}><FontAwesomeIcon icon={faTimes} className='text-blue-300 w-6 h-6' /></button>
-                                        </div>
-                                        <div className='flex w-full justify-center mt -3 p-3 items-center'>
-                                            <FontAwesomeIcon icon={faCalendarCheck} className='w-[80px] h-[80px] text-green-400' />
-                                        </div>
-                                        <div className='flex items-center w-full justify-center flex-col'>
-                                            <h1 className='flex items-center text-2xl text-gray-500 my-2'>
-                                                {userInformation_}
-                                            </h1>
-                                            <p className='text-[20px] text-gray-500'>Confirm for Your Appointment</p>
-                                            <h1 className=' mt-2 font-bold '>
-                                                {selectedTimeSlot} | {profileData?.user['full_name']}
-                                            </h1>
-                                            <h1 className='mta-2 text-gray-500 font-bold'>{date}</h1>
-                                            <button className='py-3 px-5 rounded-[30px] bg-[#60CAE3] mt-7 text-white font-semibold uppercase active:bg-blue-500' onClick={handleSubmit}>Make Appointment</button>
+                                            <div className="w-full h-5/6 bg-gray-200 flex items-center justify-center">
+                                                <div className="flex flex-col gap-2 p-3 ">
+                                                    <div className='flex items-center w-full justify-center flex-col'>
+                                                        <h1 className='flex items-center text-3xl text-gray-500 my-2'>
+                                                            {userInformation_}
+                                                        </h1>
+
+                                                        <h1 className=' mt-2 font-bold text-2xl'>
+                                                            {selectedTimeSlot} | Dr.{profileData?.user['full_name']}
+                                                        </h1>
+                                                        <h1 className='mta-2 text-gray-500 font-bold'>{date}</h1>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div className="w-full h-1/6">
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <button
+                                                        onClick={handleSubmit}
+                                                        className="bg-[#60CAE3] px-3 py-2 text-center text-white rounded-[6px]"
+                                                    >
+                                                        Make Appointment
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

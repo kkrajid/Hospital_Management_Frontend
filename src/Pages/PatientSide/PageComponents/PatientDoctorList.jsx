@@ -48,7 +48,7 @@ function PatientDoctorList() {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-row mt-2 shadow-lg bg-[#474EDB] max-w-[600px] md:max-w-[1480px] w-full max-h-[50px] h-full'>
+            <div className='flex flex-row mt-2 bg-[#209ABB] shadow-lg  max-w-[600px] md:max-w-[1480px] w-full max-h-[50px] h-full'>
                 <ul className='flex flex w-full justify-evenly items-center text-white'>
                 <button onClick={() => setSearchInput("")} >
                             All

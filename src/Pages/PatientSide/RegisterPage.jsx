@@ -1,5 +1,5 @@
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { registerRequest } from "../../api/user";
@@ -16,7 +16,7 @@ const RegisterPage = () => {
     date_of_birth: "",
     address: "",
     agreeToTerms: false,
-    gender:"Unknown",
+    gender:"",
     role:"Patient"
 
   });
@@ -154,9 +154,25 @@ const RegisterPage = () => {
       return;
     }
 
-    // If all validations pass, then submit the form
     registerMutations.mutate();
   };
+
+  useEffect(() => {
+    return () => {
+      registerMutations.reset();
+      setFormData({
+        email: "",
+        full_name: "",
+        password: "",
+        phone: "",
+        date_of_birth: "",
+        address: "",
+        agreeToTerms: false,
+        gender: "",
+        role: "Patient"
+      });
+    };
+  }, []);
 
   if (registerMutations.isLoading) {
     return <LoadingSpinner />;
@@ -164,10 +180,10 @@ const RegisterPage = () => {
   if (isAuth) return <Navigate to="/" />;
   
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <div className="box-area w-100 p-6 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen flex justify-center items-center bg-gray-200 px-20">
+      <div className="box-area w-100 p-6 bg-white rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row space-y-6 md:space-x-6">
-          <div className="md:w-1/2 bg-blue-600 rounded-lg p-6">
+          <div className="md:w-1/2 bg-[#4CAEC8] rounded-lg p-6">
             <div className="mb-3">
               {/* <img src="images/1.png" alt="Hospital Logo" className="w-48 mx-auto" /> */}
             </div>
@@ -204,11 +220,19 @@ const RegisterPage = () => {
               onChange={handleInputChange}
             />
             <input
-              type="text"
+              type="date"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Date of Birth (MM/DD/YYYY)"
               name="date_of_birth"
               value={formData.date_of_birth}
+              onChange={handleInputChange}
+            />
+             <input
+              type="text"
+              className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
+              placeholder="Gender"
+              name="gender"
+              value={formData.gender}
               onChange={handleInputChange}
             />
 
@@ -244,7 +268,7 @@ const RegisterPage = () => {
               </label>
             </div>
             <button
-              className={`bg-blue-500 hover:bg-blue-700 active:bg-blue-900 text-white w-full py-3 text-sm ${formData.agreeToTerms ? '' : 'opacity-50 cursor-not-allowed'
+              className={`bg-[#4CAEC8] hover:bg-[#4CAEC8] active:bg-[#4CAEC8] text-white w-full py-3 text-sm ${formData.agreeToTerms ? '' : 'opacity-50 cursor-not-allowed'
                 }`}
               disabled={!formData.agreeToTerms}
             >Register</button>

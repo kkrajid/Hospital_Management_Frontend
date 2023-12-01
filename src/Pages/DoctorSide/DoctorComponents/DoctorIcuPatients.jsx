@@ -134,7 +134,7 @@ const DoctorIcuPatients = () => {
 
         if (selectedData.device && selectedData.patient.trim() !== '') {
             const nodeRef = ref(db, `/${selectedData.device}`);
-            update(nodeRef, { user_id: selectedData.patient,is_connected:true, })
+            update(nodeRef, { user_id: selectedData.patient,is_connected:true,HeartRate:0,Temperature:0            })
                 .then(() => {
                     // Refresh the list after updating user_id
                     getDisconnectedNodes();

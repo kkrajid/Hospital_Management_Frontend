@@ -32,6 +32,13 @@ function PatientAppointment() {
       [index]: !prevDropdowns[index],
     }));
   };
+  const handleCancel = (index) => {
+    console.log(`Cancel appointment at index ${index}`);
+  };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <div className='max-w-[1480px] bg-gray-300 w-full h-full  border rounded-[10px] py-3 shadow-lg  '>
       <div className='w-full h-[60px] p-2 shadow-lg bg-white  '>
@@ -40,36 +47,36 @@ function PatientAppointment() {
         </div>
       </div>
       <div className='w-full h-5/6  rounded-b-[10px]   '>
-        <div className='w-full py-3 bg-white  shadow-lg  my-2 px-14'>
-          <div className='w-full  flex gap-4 pl-3 flex-evenly'>
-            <div className='w-1/6 h-full flex justify-center items-center'>
+        <div className='w-full py-3 bg-[#209ABB]  shadow-lg  my-2 px-14'>
+          <div className='w-full  flex gap-4 pl-4 flex-evenly'>
+            <div className='w-1/6 h-full flex justify-center text-white items-center'>
               <p>Image</p>
             </div>
             <div className='w-1/6 h-full flex items-center justify-center'>
-              <p className='font-semibold text-gray-600'>Doctor Name</p>
+              <p className='font-semibold text-white'>Doctor Name</p>
             </div>
             <div className='w-1/6 h-full flex items-center justify-center'>
-              <p className='font-semibold text-gray-600'>Specialization</p>
+              <p className='font-semibold text-white'>Specialization</p>
             </div>
             <div className='w-1/6 h-full flex items-center justify-center'>
-              <p className='font-semibold text-gray-600'>Date</p>
+              <p className='font-semibold text-white'>Date</p>
             </div>
             <div className='w-1/6 h-full flex items-center justify-center'>
-              <p className='font-semibold text-gray-600'>Time</p>
+              <p className='font-semibold text-white '>Time</p>
             </div>
             <div className='w-1/6 h-full flex items-center flex gap-10 justify-center'>
-              <p className='font-semibold text-gray-600'>Status</p>
+              <p className='font-semibold text-white '>Status</p>
               <p className='font-semibold text-gray-600'> </p>
             </div>
           </div>
         </div>
-        <div className='overflow-y-auto w-full h-[100%]'>
+        <div className='overflow-y-auto w-full h-[100%] px-1 bg-[#E4E6EA] '>
 
           {appointData?.map((data, index) => (
-            <div key={index} className='w-full h-1/6  bg-white rounded-[15px] shadow-lg p-4 mb-2 px-20'>
-              <div className='w-full h-full flex gap-4 pl-3 flex-evenly'>
+            <div key={index} className='w-full h-1/8  bg-white rounded-[5px] shadow-xl py-2 mb-2 px-20 flex items-center justify-center '>
+              <div className='w-full h-full flex gap-4  flex-evenly items-center '>
                 <div className='w-1/6 h-full flex justify-center items-center'>
-                  <img src={data.doctor_profile.profile_pic} alt="" className='w-17 h-16 border-2 border-gray-300 rounded-[10px]' />
+                  <img src={data.doctor_profile.profile_pic} alt="" className='w-14 h-14 border-2 border-gray-300 rounded-full ' />
                 </div>
                 <div className='w-1/6 h-full flex items-center justify-center'>
                   <p className='font-semibold text-sm text-gray-600'>{data.doctor_profile.user.full_name}</p>
@@ -109,9 +116,9 @@ function PatientAppointment() {
                         </Link>
                       </li>
                       <li>
-                        <a href="#" className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
+                        <button onClick={() => handleCancel(data.id)} href="#" className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white" >
                           Cancel
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </div>

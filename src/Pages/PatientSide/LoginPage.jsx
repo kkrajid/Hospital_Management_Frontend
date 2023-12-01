@@ -102,10 +102,10 @@ const LoginPage = () => {
 
   return (
     <>
-    <div className="min-h-screen flex justify-center items-center">
-      <div className="box-area w-100 p-6 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen flex justify-center items-center bg-gray-200 ">
+      <div className="box-area w-100 p-6 bg-white rounded-lg shadow-xl border-2 ">
         <div className="flex flex-col md:flex-row space-y-6 md:space-x-6">
-          <div className="md:w-1/2 bg-blue-600 rounded-lg p-6">
+          <div className="md:w-1/2 bg-[#4CAEC8] rounded-lg p-6">
             <div className="mb-3">
               <img src="Hospital Image" placeholder="Hospital Image" alt="Hospital Logo" className="w-48 mx-auto" />
             </div>
@@ -147,7 +147,7 @@ const LoginPage = () => {
                 </small>
               </div>
             </div>
-            <button className="bg-blue-500 text-white w-full py-3 text-sm">Login</button>
+            <button className="bg-[#4CAEC8] text-white w-full py-3 text-sm">Login</button>
             <div className="mt-2">
               <small>Don't have an account? <Link to={'/register'}>Register</Link></small>
             </div>

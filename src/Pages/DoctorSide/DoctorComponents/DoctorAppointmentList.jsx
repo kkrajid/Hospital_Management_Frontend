@@ -15,7 +15,7 @@ function DoctorAppointmentList() {
   })
   const datas = JSON.stringify(dataa);
   const [appointData, setAppointmentData] = useState(null)
-  const { data: AppointmentData, isLoading, error } = useQuery(['all_user_appointments_for_doctor', datas], () => all_user_appointments_for_doctor(datas));
+  const { data: AppointmentData, isLoading, error,refetch } = useQuery(['all_user_appointments_for_doctor', datas], () => all_user_appointments_for_doctor(datas));
   const [search, setSearch] = useState('');
 
   const filteredAppointments = appointData?.filter((appointment) => {
@@ -34,6 +34,7 @@ function DoctorAppointmentList() {
     if (!isLoading && !error) {
       setAppointmentData(AppointmentData);
     }
+    refetch();
   }, [AppointmentData, isLoading, error, dataa, datas]);
   console.log(appointData);
   return (

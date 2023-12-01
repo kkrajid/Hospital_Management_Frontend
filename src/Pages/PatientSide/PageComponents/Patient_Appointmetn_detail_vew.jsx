@@ -48,7 +48,7 @@ function Patient_Appointmetn_detail_vew() {
                 </div>
             </div>
             <div className='w-full h-5/6 bg-white rounded-b-[10px] relative'>
-                <div className='w-full  bg-blue-400 h-2/5 rounded-t-[5px]'>
+                <div className='w-full  bg-[#209ABB] h-2/5 rounded-t-[5px]'>
 
                 </div>
                 <div className='w-full h-5/6 bg-transparent absolute bottom-0 flex p-4 gap-2'>
@@ -57,13 +57,14 @@ function Patient_Appointmetn_detail_vew() {
                             <div className='w-full h-full'>
                                 <div className='w-full h-2/5  flex items-center justify-center p-1'>
                                     <div className=' w-6/12 h-5/6 flex items-center justify-center'>
-                                        <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg?size=626&ext=jpg" alt="" className='w-24 h-24 rounded-full shadow-lg' />
+                                    
+                                        <img src={appointData?.doctor_profile?.profile_pic} alt="" className='w-24 h-24 rounded-full shadow-lg' />
                                     </div>
                                 </div>
                                 <div className='w-full h-3/5 '>
                                     <div className='w-full h-full  p-1 flex flex-col'>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p className='text-gray-500 font-mono'>{appointData?.doctor_profile?.user?.full_name}</p>
+                                            <p className='text-gray-500 font-mono'>Dr.{appointData?.doctor_profile?.user?.full_name}</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center text-sm'>
                                             <p>{appointData?.doctor_profile?.specialization}  </p>

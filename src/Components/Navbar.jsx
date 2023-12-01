@@ -49,7 +49,7 @@ const Navbar = () => {
                     </div>
                 ):(
                     <div className='hidden md:flex '>
-                        <Link className='flex gap-2 justify-between items-center bg-gray-100  rounded-full p-4 ' to={`/patient/dashboard`}>
+                        <Link className='flex gap-2 justify-between items-center bg-gray-100  rounded-full p-4 ' to={`/patient/profile`}>
                         <FontAwesomeIcon icon={faUser} className='text-gray-600' />
                             </Link>
                     </div>

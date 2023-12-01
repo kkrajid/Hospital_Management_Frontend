@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import {websocketbaseUrl} from '../../../api/UseAxios'
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 function Doctor_Appointmetn_detail_vew() {
     const [appointData, setAppointmentData] = useState(null)
     const [activeComponent, setActiveComponent] = useState('prescription');
@@ -210,7 +212,7 @@ console.log(AppointmentData,"aaaa");
                                 <div className='bg-gray-100 w-full h-5/6 rounded-b-[10px]'>
 
                                     {/* {activeComponent === 'Medical_Background' && <Medical_Background />} */}
-                                    {activeComponent === 'prescription' && <Prescription appointmentId={appointmentId} />}
+                                    {activeComponent === 'prescription' && <Prescription appointmentId={appointmentId} Data={appointData} />}
                                     {activeComponent === 'chat' && <DoctorChat room={room_name_} id={appointData?.doctor_profile?.user?.id} />}
                                 </div>
                             </div>
@@ -226,7 +228,40 @@ console.log(AppointmentData,"aaaa");
 
 
 
-function Prescription({ appointmentId }) {
+function Prescription({ appointmentId,Data }) {
+
+
+    const generateStyledMedicalPrescription = () => {
+        const doc = new jsPDF();
+        doc.setFont('helvetica');
+        doc.setFontSize(10);
+        doc.text('PRESCRIPTION ', 90, 20);
+        doc.text(`Dr. ${Data?.doctor_profile?.user.full_name}`, 20, 50);
+        doc.text(`Specialization: ${Data?.doctor_profile?.specialization} `, 20, 55);
+        doc.text(`Contact: ${Data?.doctor_profile?.user.phone}`, 20, 60);
+        doc.text(`Name:${Data?.patient?.full_name} `, 160, 50);
+        doc.text(`Address: `, 160, 55);
+        doc.text(`Date of Birth:${Data?.patient?.date_of_birth}`, 160, 60);
+        const prescriptionsData = prescriptions.map((prescription) => [
+            prescription.medications,
+            prescription.dosage,
+            prescription.duration,
+            prescription.quantity,
+            prescription.instructions,
+          ]);
+        
+          doc.autoTable({
+            startY: 70,
+            head: [['Medications', 'Dosage', 'Duration', 'Quantity', 'Instructions']],
+            body: prescriptionsData,
+          });
+        
+          doc.save('prescription.pdf');
+      };
+      
+      
+
+    
     const [prescriptionData, setPrescriptionData] = useState({
         appointment: appointmentId,
         medications: '',
@@ -314,7 +349,14 @@ function Prescription({ appointmentId }) {
             <div className='w-full h-1/6 bg-gray-200 flex justify-end'>
 
                 <div className='w-2/6 h-full  flex items-center justify-center gap-2 '>
-                    <button className='py-2 px-3 rounded-[5px] border-blue-600 shadow-lg bg-gray-300 text-gray-600 text-sm active:bg-blue-600 active:text-white'>Download</button>
+                <button
+  type="button"
+  className='py-2 px-3 rounded-[5px] border-blue-600 shadow-lg bg-gray-300 text-gray-600 text-sm active:bg-blue-600 active:text-white'
+  onClick={() => generateStyledMedicalPrescription()}
+>
+  Download
+</button>
+
                     <button className='py-2 px-3 rounded-[5px] border-blue-600 shadow-lg bg-gray-300 text-gray-600 text-sm active:bg-blue-600 active:text-white' onClick={() => setIsAddPrescriptionOpen(true)}>Create Prescription</button>
                 </div>
             </div>

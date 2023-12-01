@@ -24,7 +24,7 @@ const StripeCheckoutComponent = () => {
          const data = response.data;
          console.log(response.data);
          setClientSecret(data.clientSecret);
-         setAmount(data.amount); // Set the dynamically retrieved amount
+         setAmount(data.amount); 
        } catch (error) {
          console.error('Error creating PaymentIntent:', error.message);
        }
@@ -37,7 +37,7 @@ const StripeCheckoutComponent = () => {
      <PatientSideBar child={
        clientSecret && (
          <Elements stripe={stripePromise}>
-             <CheckoutForm clientSecret={clientSecret} appointmentId={appointmentId} />
+             <CheckoutForm clientSecret={clientSecret} appointmentId={appointmentId} amount={amount} />
          </Elements>
        )} />
      
