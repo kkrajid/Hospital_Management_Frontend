@@ -5,6 +5,7 @@ import { faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { fetchAllPatients, adminblockUsers, adminunblockUsers } from "../../../api/user";
 import { toast } from 'react-hot-toast';
+import LoadingSpinner from '../../../Components/LoadingSpinner';
 function AdminPatients() {
   const { data, isLoading, isError, refetch } = useQuery(['fetchAllPatients'], fetchAllPatients);
   const [patients, setPatients] = useState([]);
@@ -87,7 +88,7 @@ function AdminPatients() {
   const currentPatients = filteredPatients;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner/>
   }
 
   if (isError) {

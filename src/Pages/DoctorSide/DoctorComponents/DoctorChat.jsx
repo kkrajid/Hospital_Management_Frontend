@@ -1,64 +1,124 @@
-import React from 'react'
-import { faSearch, faAddressBook } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-function DoctorChat() {
+import React, { useState, useEffect, useRef } from 'react';
+import { websocketbaseUrl } from '../../../api/UseAxios'
+
+function DoctorChat({ room, id }) {
+    const roomName = 'DP' + room;
+    const userName = id;
+
+    const [messages, setMessages] = useState([]);
+    const [messageInput, setMessageInput] = useState('');
+    const chatSocket = useRef(null);
+    const chatMessagesRef = useRef(null);
+    const chatMessageInputRef = useRef(null);
+
+    useEffect(() => {
+        chatSocket.current = new WebSocket(`ws://${websocketbaseUrl}/ws/` + roomName + '/');
+
+        chatSocket.current.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+
+            if (data.message) {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { username: data.username, message: data.message },
+                ]);
+                scrollToBottom();
+            }
+        };
+
+        fetchMessages();
+
+        chatMessageInputRef.current.focus();
+
+        return () => {
+            chatSocket.current.close();
+            console.log('Closed WebSocket...');
+        };
+    }, [roomName]);
+
+    const fetchMessages = async () => {
+        try {
+            const response = await fetch(`http://${websocketbaseUrl}/api/messages/${roomName}/`);
+            const data = await response.json();
+            setMessages(data);
+            scrollToBottom();
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        }
+    };
+
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+
+        chatSocket.current.send(
+            JSON.stringify({
+                message: messageInput,
+                username: userName,
+                room: roomName,
+            })
+        );
+
+        setMessageInput('');
+    };
+
+    const scrollToBottom = () => {
+        chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    };
+
     return (
-        <div className='w-full h-full bg-gray-100  p-1 rounded-[10px]' >
-            <div className='w-full h-full  rounded-[10px] flex '>
-                <div className='h-full w-1/5 '>
-                    <div className='h-full w-full '>
-                        <div className='w-full  h-1/6 flex flex-col'>
-                            <div className='w-full h-2/4 flex items-center justify-center'>
-                                <p className='text-2xl font-semibold '>Chat</p>
-                            </div>
-                            <div className='w-full h-2/4 p-1  rounded-[5px]'>
-                                <div className='w-full h-full flex bg-white border rounded-[5px] items-center px-2 justify-center'>
-                                    <input type="text" placeholder='Search' className='  outline-none ' />
-                                    <FontAwesomeIcon icon={faSearch} className='text-gray-300' />
+        <div className='w-full h-full p-2'>
+            <div className='w-full h-full pb-3 bg-[#D6D3D1] rounded-[5px] flex flex-col'>
+                <div className='w-full bg-[#D6D3D1]  rounded-[10px] h-5/6 overflow-y-auto' ref={chatMessagesRef}>
+                    <div className="flex-1 chat-messages px-6">
+                        {messages.map((message, index) => (
+                            <div
+                                key={index}
+                                className={`${message.username === userName
+                                    ? 'flex flex-col items-end '
+                                    : 'flex flex-col items-start'
+                                    } mb-2 max-w-1/6 p-2 rounded-lg  `}
+                            >
+                                <div className='bg-white w-3/6 rounded-[8px] p-2 shadow-lg'>
+                                    <span className={`text-sm font-semibold font-mono text-${message.username === userName
+                                        ? 'red'
+                                        : 'blue'
+                                        }-500`}>
+                                        ~{message.username === userName ? "You" : "Patient"}
+                                    </span>
+                                    <p className='px-3 '>{message.message}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div className='w-full h-5/6 p-1 border-2 rounded-[5px] flex flex-col gap-1'>
-                            <div className='w-full h-[50px] bg-white border rounded-[5px]'>
-
-                            </div>
-                            <div className='w-full h-[50px] bg-white border rounded-[5px]'>
-
-                            </div>
-                            <div className='w-full h-[50px] bg-white border  rounded-[5px]'>
-
-                            </div>
-                            <div className='w-full h-[50px] bg-white border rounded-[5px]'>
-
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
-                <div className='h-full w-4/5 border-2 rounded-r-[5px]'>
-                    <div className='w-full max-h-[60px] h-full bg-white shadow-lg border rounded-[5px]'>
-                        <div className='w-full h-full flex justify-between items-center px-6'>
-                            <div className='flex gap-4 items-center w-full'>
-                                <img src="https://th.bing.com/th/id/OIP.JJxXAqkEgzy-r70pFyvJ1QHaE7?pid=ImgDet&rs=1" className='w-10 h-10 rounded-full' alt="" />
-                                <p>Name</p>
+                <div className='w-full h-1/6 px-3 py-1'>
+                    <div className='w-full h-full flex justify-center items-center'>
+                        <form onSubmit={handleSendMessage} className='w-full h-full flex justify-center items-center'>
+                            <div className='w-5/6 h-full bg-white shadow-lg p-1 rounded-l-[10px]'>
+                                <input
+                                    type="text"
+                                    name="content"
+                                    value={messageInput}
+                                    onChange={(e) => setMessageInput(e.target.value)}
+                                    id="chat-message-input"
+                                    className='w-full h-full px-3 py-1 outline-none'
+                                    placeholder="Type a message..."
+                                    ref={chatMessageInputRef}
+                                />
                             </div>
-                            <div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div className='w-full max-h-[400px] h-full bg-[#F3F4F6]'>
-
-                    </div>
-                    <div className='w-full  max-h-[65px] h-full p-2 rounded-[6px]'>
-                        <div className='w-full h-full  flex border rounded-[6px]'>
-                            <input type="text" className='w-5/6 outline-none py-1 px-3 bg-[#F3F4F6]' placeholder='Enter text' />
-                            <button className='w-1/6 h-full flex items-center justify-center p-1 bg-blue-400 text-white active:bg-blue-600 rounded-r-lg'>Send</button>
-                        </div>
+                            <button className='w-1/6 h-full py-1 bg-blue-600 shadow-lg rounded-r-[10px]' onClick={handleSendMessage}>
+                                <div className='h-full flex items-center justify-center bg-blue-600 text-white rounded-r-[10px]'>
+                                    Send
+                                </div>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
+
+
 
 export default DoctorChat
