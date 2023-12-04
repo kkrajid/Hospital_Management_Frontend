@@ -5,7 +5,7 @@ import { faAddressBook } from '@fortawesome/free-solid-svg-icons'; // You also n
 
 function DoctorList({ child }) {
   return (
-    <div className='max-w-[250px] rounded-lg h-[310px] bg-white shadow p-2'>
+    <div className='max-w-[250px] rounded-lg h-[310px] bg-white shadow p-2 hover:shadow-2xl'>
       <img
         // src="https://img.freepik.com/free-photo/young-nurse-man-feeling-happy-relaxed-satisfied-showing-approval-with-okay-gesture-smiling_1194-250175.jpg?size=626&ext=jpg" 
         src={child.profile_pic}

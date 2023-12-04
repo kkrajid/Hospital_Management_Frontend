@@ -21,6 +21,17 @@ function DoctorIcuDetail_View() {
   const [dpmData, setDpmData] = useState([]);
   const [disconnectedNodes, setDisconnectedNodes] = useState([]);
   const [connectedNodes, setConnectedNodes] = useState([]);
+  const [isICUStatusModal, setisICUStatusModal] = useState(false)
+  const [icuStatusData, setIcuStatusData] = useState({
+    status: '',
+  });
+
+  const handleInputChange = (fieldName, value) => {
+    setIcuStatusData((prevData) => ({
+      ...prevData,
+      [fieldName]: value,
+    }));
+  };
 
   const { data: AppointmentData, isLoading, error, refetch } = useQuery(
     ['doctor_get_detail_appointments_view', icuId],
@@ -113,6 +124,15 @@ function DoctorIcuDetail_View() {
   }, [connectedNodes, icuId]);
 
 
+  const [icuStatus, setICUStatus] = useState(''); // Initialize with an empty string or default status
+
+  const updateICUStatus = (status) => {
+    setICUStatus(status);
+  };
+
+  const handleSubmitICUcondition = () => {
+    setisICUStatusModal(false);
+  }
 
   return (
     <div className='w-full h-full '>
@@ -181,103 +201,149 @@ function DoctorIcuDetail_View() {
             </div>
           </div>
         </div>
-        <div className='w-9/12 h-full  py-4'>
-          <div className='w-full h-full  flex flex-col  gap-3'>
-            <div className='w-full h-3/6  relative flex flex-col gap-10 '>
-              <div className='w-full h-full bg-transparent inset-0 z-10 pt-8'>
-              </div>
-              <div className='w-full h-4/5 absolute bottom-0 z-5 py-3 px-6'>
-                <div className='w-full h-full flex gap-3 py-6 px-2'>
-                  <div className='w-2/6 h-full bg-white shadow-lg rounded-[10px]'>
+        <div className='w-9/12 h-full '>
+          <div className='w-full h-3/6 '>
+            <div className="w-full h-1/6 ">
+
+            </div>
+            <div className="w-full h-5/6 ">
+              <div className="w-full h-full ">
+                <div className="h-1/6 w-full  flex justify-end px-2 ">
+                  <button className="bg-[#1AACAC] text-white px-3 py-1 rounded" onClick={() => setisICUStatusModal(true)} >Update ICU Status</button>
+                </div>
+                <div className="w-full h-5/6  px-4 py-2 flex gap-2 ">
+                  <div className="w-2/6 h-5/6 bg-white shadow-xl rounded-[10px] ">
 
                   </div>
-                  <div className='w-2/6 h-full bg-white shadow-lg rounded-[10px]'>
+                  <div className="w-2/6 h-5/6  bg-white shadow-xl rounded-[10px] ">
 
                   </div>
-                  <div className='w-2/6 h-full bg-white shadow-lg rounded-[10px]'>
+                  <div className="w-2/6 h-5/6  bg-white shadow-xl rounded-[10px] ">
 
                   </div>
                 </div>
               </div>
             </div>
-            <div className='w-full h-3/6  px-6'>
-              <div className='w-full h-full bg-white shadow-lg border-1 rounded-[13px]'>
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        ID
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Heart Rate
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        AVG  Heart Rate
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Is Connected
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Node Name
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        User ID
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Actions
-                      </th>
+          </div>
+          <div className="w-full h-3/6 p-4">
+            <div className='w-full h-full bg-white shadow-lg border-1 rounded-[13px]'>
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      ID
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Heart Rate
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      AVG  Heart Rate
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Node Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      User ID
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {dpmData && dpmData.map((item) => (
+                    <tr key={item.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">{item?.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{item?.HeartRate}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{item?.Temperature}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {item.is_connected ? 'Connected' : 'Not Connected'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">{item?.nodeName}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{item?.user_id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {item.is_connected && (
+                          <button
+                            onClick={() => handleDisconnect(item?.nodeName)}
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
+                            Disconnect
+                          </button>
+                        )}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {dpmData && dpmData.map((item) => (
-                      <tr key={item.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">{item?.id}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{item?.HeartRate}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{item?.Temperature}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {item.is_connected ? 'True' : 'False'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">{item?.nodeName}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{item?.user_id}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {item.is_connected && (
-                            <button
-                              onClick={() => handleDisconnect(item?.nodeName)}
-                              className="text-indigo-600 hover:text-indigo-900"
-                            >
-                              Disconnect
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+      </div>
+      <div className="relative">
+        {isICUStatusModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 shadow">
+            <div
+              className="absolute inset-0 bg-gray-600 bg-opacity-25 backdrop-blur-[3px]"
+              onClick={() => setisICUStatusModal(false)}
+            ></div>
+            <div className="bg-white p-4 rounded-[1rem] shadow-lg z-10 w-2/6">
+              <h2 className="text-lg font-semibold mb-4 text-center ">Update ICU Status</h2>
+              <div>
+                <select
+                  value={icuStatus}
+                  onChange={(e) => updateICUStatus(e.target.value)}
+                  className="border p-2 rounded w-full mb-4"
+                >
+                  <option value="">Select ICU Status</option>
+                  <option value="ICU Admitted">Admitted</option>
+                  <option value="Critical">Critical</option>
+                  <option value="Discharged">Recovered</option>
+                  <option value="Discharged">Discharged</option>
+                </select>
+                <div className="flex justify-end">
+                  <div className='flex gap-3'>
+                    <button
+                      onClick={() => setisICUStatusModal(false)}
+                      className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSubmitICUcondition}
+                      className="bg-green-500 text-white px-4 py-2 rounded"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -70,7 +70,7 @@ function PatientDoctorList() {
                    
               
                 {filteredDoctors.map((profile) => (
-                            <DoctorList child={profile} />
+                            <DoctorList child={profile}  />
 
                         ))}
             
