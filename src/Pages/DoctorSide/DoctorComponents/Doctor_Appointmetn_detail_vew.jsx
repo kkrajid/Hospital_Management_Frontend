@@ -15,7 +15,7 @@ function Doctor_Appointmetn_detail_vew() {
     const { appointmentId } = useParams();
     const [status, setStatus] = useState('Pending');
     const [icuImportant, setIcuImportant] = useState('')
-    const [icuStatus, setIcuStatus] = useState("ICU Not Needed")
+    const [icuStatus, setIcuStatus] = useState("Not Needed")
 
 
     const appointment_date = appointData?.appointment_datetime.split("T")[0] ?? '1990-09-01'
@@ -107,11 +107,11 @@ function Doctor_Appointmetn_detail_vew() {
     const handle_admite_Icu = () => {
         setIcuImportant(!icuImportant)
         if (!icuImportant) {
-            setIcuStatus("ICU Admitted")
+            setIcuStatus("Admitted")
             setModalOpen(!isModalOpen)
         }
         else {
-            setIcuStatus("ICU Not Needed")
+            setIcuStatus("Not Needed")
         }
         appointmentStatusMutation.mutate();
     }

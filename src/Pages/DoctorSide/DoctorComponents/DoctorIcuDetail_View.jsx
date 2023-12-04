@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { doctor_get_detail_appointments_view } from "../../../api/user";
+import { doctor_get_detail_appointments_view,Doctor_Manage_Appointment_Status } from "../../../api/user";
 import { useParams } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, update, get } from 'firebase/database';
-
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast"; 
 const firebaseConfig = {
   apiKey: 'YOUR_API_KEY',
   authDomain: 'YOUR_AUTH_DOMAIN',
@@ -22,16 +23,9 @@ function DoctorIcuDetail_View() {
   const [disconnectedNodes, setDisconnectedNodes] = useState([]);
   const [connectedNodes, setConnectedNodes] = useState([]);
   const [isICUStatusModal, setisICUStatusModal] = useState(false)
-  const [icuStatusData, setIcuStatusData] = useState({
-    status: '',
-  });
+  const [icuStatus, setICUStatus] = useState(''); 
 
-  const handleInputChange = (fieldName, value) => {
-    setIcuStatusData((prevData) => ({
-      ...prevData,
-      [fieldName]: value,
-    }));
-  };
+
 
   const { data: AppointmentData, isLoading, error, refetch } = useQuery(
     ['doctor_get_detail_appointments_view', icuId],
@@ -124,13 +118,49 @@ function DoctorIcuDetail_View() {
   }, [connectedNodes, icuId]);
 
 
-  const [icuStatus, setICUStatus] = useState(''); // Initialize with an empty string or default status
+  const appointmentStatusMutation = useMutation({
+    mutationFn: () => Doctor_Manage_Appointment_Status(icuId, { icu_status: icuStatus }),
+    onSuccess: (response) => {
+        toast.success(
+            <div>
+                Done
+            </div>,
+            {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                style: {
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    border: "none",
+                    width: "100%",
+                    textAlign: "center",
+                },
+            }
+        );
+
+        refetch();
+    },
+
+    onError: (error) => {
+        console.log(error.message);
+    },
+
+});
 
   const updateICUStatus = (status) => {
     setICUStatus(status);
   };
 
   const handleSubmitICUcondition = () => {
+   
+    appointmentStatusMutation.mutate();
     setisICUStatusModal(false);
   }
 
@@ -315,13 +345,13 @@ function DoctorIcuDetail_View() {
               <div>
                 <select
                   value={icuStatus}
-                  onChange={(e) => updateICUStatus(e.target.value)}
+                  onChange={(e) => updateICUStatus(e.target.value)} 
                   className="border p-2 rounded w-full mb-4"
                 >
                   <option value="">Select ICU Status</option>
-                  <option value="ICU Admitted">Admitted</option>
+                  <option value="Admitted">Admitted</option>
                   <option value="Critical">Critical</option>
-                  <option value="Discharged">Recovered</option>
+                  <option value="Recovered">Recovered</option>
                   <option value="Discharged">Discharged</option>
                 </select>
                 <div className="flex justify-end">

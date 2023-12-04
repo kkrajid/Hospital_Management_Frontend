@@ -51,7 +51,7 @@ const DoctorIcuPatients = () => {
         const updatedPatientList = [];
         allIcuPatients.forEach((Patient) => {
 
-            if (Patient.icu_status !== 'ICU Discharged')
+            if (Patient.icu_status === 'Admitted')
                 updatedPatientList.push(Patient);
             console.log(updatedPatientList, "dgdgdgdgdgdgdgdggdgdgdg");
 
@@ -296,7 +296,7 @@ const DoctorIcuPatients = () => {
             <li className='h-full w-1/12 flex items-center justify-center'>
               <div>
                 <p className='text-sm'>
-                  {val?.discharged ? 'Yes' : 'No'}
+                  {val?.icu_status ==="Discharged" ? 'Yes' : 'No'}
                 </p>
               </div>
             </li>

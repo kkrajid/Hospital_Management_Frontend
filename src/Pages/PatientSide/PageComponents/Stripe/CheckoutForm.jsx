@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
+import { baseURL } from '../../../../api/UseAxios';
 
 
 const CheckoutForm = ({ clientSecret, appointmentId, amount }) => {
@@ -36,7 +37,7 @@ const CheckoutForm = ({ clientSecret, appointmentId, amount }) => {
         // Handle error display or other actions as needed
       } else if (paymentIntent.status === 'succeeded') {
         // Payment succeeded, send a request to your backend to confirm the payment
-        const response = await fetch('http://127.0.0.1:8000/api/confirm-payment/', {
+        const response = await fetch(`${baseURL}confirm-payment/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
