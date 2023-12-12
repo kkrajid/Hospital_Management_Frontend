@@ -13,6 +13,7 @@ const StripeCheckoutComponent = () => {
    const appointmentId = payment_app;
    const [clientSecret, setClientSecret] = useState(null);
    const [amount, setAmount] = useState(0);
+   const [paymentData, setpaymentData] = useState(null)
 
    useEffect(() => {
      const fetchData = async () => {
@@ -22,7 +23,8 @@ const StripeCheckoutComponent = () => {
          });
 
          const data = response.data;
-         console.log(response.data);
+         console.log(response.data,"payment ");
+         setpaymentData(response.data)
          setClientSecret(data.clientSecret);
          setAmount(data.amount); 
        } catch (error) {
@@ -37,7 +39,7 @@ const StripeCheckoutComponent = () => {
      <PatientSideBar child={
        clientSecret && (
          <Elements stripe={stripePromise}>
-             <CheckoutForm clientSecret={clientSecret} appointmentId={appointmentId} amount={amount} />
+             <CheckoutForm clientSecret={clientSecret} appointmentId={appointmentId} amount={amount} paymentData={paymentData} />
          </Elements>
        )} />
      

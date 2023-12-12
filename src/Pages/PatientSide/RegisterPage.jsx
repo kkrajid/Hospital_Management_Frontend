@@ -1,5 +1,5 @@
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { registerRequest } from "../../api/user";
@@ -14,10 +14,10 @@ const RegisterPage = () => {
     password: "",
     phone: "",
     date_of_birth: "",
-    address: "",
+    address: " ",
     agreeToTerms: false,
-    gender:"",
-    role:"Patient"
+    gender: "",
+    role: "Patient"
 
   });
 
@@ -98,12 +98,20 @@ const RegisterPage = () => {
   });
 
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
   const nameRegex = /^[a-zA-Z\s]+$/;
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const phoneRegex = /^\d{10}$/;
-  const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{2}$/;
-  const addressRegex = /\S+/;
+  const phoneRegex = /^(\d)(?!\1+$)\d{9}$/;
+
+  // const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{2}$/;
+  // const addressRegex = /\S+/;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -127,18 +135,24 @@ const RegisterPage = () => {
       );
       return;
     }
-    // // Validate date field
-    // if (!dateRegex.test(formData.date)) {
-    //   toast.error("Invalid date format (DD/MM/YYYY)");
+
+    // Validate date of birth field
+    // if (!dateRegex.test(formData.date_of_birth)) {
+    //   toast.error("Invalid date format (MM/DD/YYYY)");
     //   return;
     // }
 
     // Validate address field
-    if (!addressRegex.test(formData.address)) {
-      toast.error("Address field cannot be empty");
+    // if (!addressRegex.test(formData.address)) {
+    //   toast.error("Address field cannot be empty");
+    //   return;
+    // }
+
+    // Validate gender field
+    if (!nameRegex.test(formData.gender)) {
+      toast.error("Invalid gender format");
       return;
     }
-
 
     // Validate phone number field
     if (!phoneRegex.test(formData.phone)) {
@@ -146,14 +160,13 @@ const RegisterPage = () => {
       return;
     }
 
-
-
-    // Validate address field
-    if (!addressRegex.test(formData.address)) {
-      toast.error("Address field cannot be empty");
+    // Validate checkbox for terms and conditions
+    if (!formData.agreeToTerms) {
+      toast.error("You must agree to the terms and conditions");
       return;
     }
 
+    // If all validations pass, proceed with registration
     registerMutations.mutate();
   };
 
@@ -178,7 +191,6 @@ const RegisterPage = () => {
     return <LoadingSpinner />;
   }
   if (isAuth) return <Navigate to="/" />;
-  
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-200 px-20">
       <div className="box-area w-100 p-6 bg-white rounded-lg shadow-xl">
@@ -226,17 +238,22 @@ const RegisterPage = () => {
               name="date_of_birth"
               value={formData.date_of_birth}
               onChange={handleInputChange}
+              max={getCurrentDate()} // Set the max attribute dynamically
             />
-             <input
-              type="text"
+            <select
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Gender"
               name="gender"
               value={formData.gender}
               onChange={handleInputChange}
-            />
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
 
-            <input
+            {/* <input
               type="text"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"
               placeholder="Address"
@@ -244,7 +261,7 @@ const RegisterPage = () => {
               value={formData.address}
               onChange={handleInputChange}
 
-            />
+            /> */}
             <input
               type="text"
               className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-100"

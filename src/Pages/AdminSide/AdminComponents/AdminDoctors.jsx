@@ -73,7 +73,7 @@ function AdminDoctors({ child, blockuser,refetch }) {
         className={`w-full rounded-lg ${child.is_blocked ? 'filter grayscale' : ''}`}
       />
       {child.is_blocked && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl opacity-50 z-20 ">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl  font-semibold opacity-100 z-20 ">
           BLOCKED
         </div>
       )}

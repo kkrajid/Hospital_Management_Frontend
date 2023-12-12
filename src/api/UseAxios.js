@@ -3,10 +3,10 @@ import { useAuthStore } from "../Store/auth";
 import jwt_decode from "jwt-decode";
 
 
-export const baseURL = "http://localhost:8000/api/";
-export const websocketbaseUrl = "127.0.0.1:8000"
-// export const baseURL = "https://medcare.site/api/";
-// export const websocketbaseUrl = "medcare.site"
+// export const baseURL = "http://localhost:8000/api/";
+// export const websocketbaseUrl = "127.0.0.1:8000"
+export const baseURL = "https://medcare.site/api/";
+export const websocketbaseUrl = "medcare.site"
 
 
 export const axi = axios.create({

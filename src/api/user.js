@@ -127,6 +127,17 @@ export const adminunblockDoctor = async (userIds,isBlocked) => {
     return response.data;
 }
 
+export const get_admin_doctor_detail_view = async (id) => {
+    const response = await authAxios.get(`admin/doctors/${id}/`);
+    return response.data;
+};
+
+
+export const adminUpdateDoctorCharge = async ({id,service_charge}) => {
+    const response = await authAxios.patch(`admin/doctors/${id}/`,{service_charge});
+    return response.data;
+}
+
 //**///////////////////////////////////////PATIENT SIDE////////////////////////////////////////////////**//
 
 export const registerRequest = async (data) => {

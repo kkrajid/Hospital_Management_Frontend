@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import { websocketbaseUrl } from '../../../api/UseAxios'
 function PatientChat(props) {
   const { roomName, userName } = props;
   const [messages, setMessages] = useState([]);
@@ -9,9 +9,10 @@ function PatientChat(props) {
   const chatMessageInputRef = useRef(null);
 
   useEffect(() => {
-    chatSocket.current = new WebSocket(
-      'ws://127.0.0.1:8000/ws/' + roomName + '/'
-    );
+    chatSocket.current = new WebSocket(`ws://${websocketbaseUrl}/ws/` + roomName + '/');
+    // chatSocket.current = new WebSocket(
+    //   'ws://127.0.0.1:8000/ws/' + roomName + '/'
+    // );
 
     chatSocket.current.onclose = function (e) {
       console.log('WebSocket connection closed');

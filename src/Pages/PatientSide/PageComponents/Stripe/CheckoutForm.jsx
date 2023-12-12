@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '../../../../api/UseAxios';
+import { Toaster, toast } from 'react-hot-toast';
 
 
-const CheckoutForm = ({ clientSecret, appointmentId, amount }) => {
+const CheckoutForm = ({ clientSecret, appointmentId, amount,paymentData }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const CheckoutForm = ({ clientSecret, appointmentId, amount }) => {
 
         if (response.ok) {
           console.log('Payment confirmed');
+          toast.success('Payment confirmed. Appointment is confirmed.');
           // Handle successful payment confirmation
           navigate('/patient/appointments');
         } else {
@@ -60,60 +62,58 @@ const CheckoutForm = ({ clientSecret, appointmentId, amount }) => {
       }
     } catch (error) {
       console.error('Error during payment confirmation:', error);
-      // Handle unexpected errors during payment confirmation
+      // Handle unexpected errors during payment confirmation  bg-gradient-to-r from-purple-700 to-indigo-700
     }
   };
 
   return (
-    <div className='w-full h-full bg-[#D1D5DB] '>
-      <div className='w-full h-full flex items-center justify-center '>
-      <div className='w-[30%] h-[55%] rounded-[10px] bg-white shadow-lg p-2 '>
-          <div className='w-full h-full p-3'>
-            <form onSubmit={handleSubmit}>
-              {/* Add user information components here */}
-              {/* For example: */}
-
-
-              {/* Payment Options */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">Card Number</label>
-                <div className="bg-gray-200 rounded-md p-4 border-2 border-gray-400 ">
-                  <CardNumberElement className="" />
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">Expiration Date</label>
-                <div className="bg-gray-200 rounded-md p-4 border-2 border-gray-400">
-                  <CardExpiryElement
-
-                    className="outline-none" />
-
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2">CVV</label>
-                <div className="bg-gray-200 rounded-md p-4 border-2 border-gray-400">
-                  <CardCvcElement className="outline-none" />
-                </div>
-              </div>
-
-              <div className='w-full flex items-center justify-center'>
-              <button
-                type="submit"
-                className="bg-yellow-500 text-white font-bold py-2 px-4 rounded-md hover:bg-yellow-600"
-                disabled={!stripe}
-              >
-                Pay
-              </button>
-              </div>
-            </form>
+    <div className="flex items-center  justify-center h-screen bg-gray-300 ">
+    <div className="w-2/5 max-w-2xl bg-white rounded-xl overflow-hidden shadow-lg">
+      <div className="bg-blue-500 p-6 text-white">
+     
+        <h2 className="text-3xl font-bold flex justify-between "><p>{paymentData.appointment_data.doctor_profile.user.full_name}</p><p className='text-lg'>{paymentData.appointment_data.doctor_profile.specialization}</p></h2>
+        <p className="text-sm flex justify-end"><p>{paymentData.appointment_data.time_slot.start_time}-{paymentData.appointment_data.time_slot.end_time}</p> </p>
+        <p className="text-sm flex justify-end">{paymentData.appointment_data.time_slot.date}</p>
+        <p className="text-lg font-bold flex justify-end"> <p>Amount:</p> <p>Rs.{amount}</p></p>
+      </div>
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Payment Details</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Payment Options */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Card Number</label>
+            <div className="bg-gray-200 rounded-md p-4 border-2 border-gray-400">
+              <CardNumberElement className="" />
+            </div>
           </div>
-       
-        </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Expiration Date</label>
+            <div className="bg-gray-200 rounded-md p-4 border-2 border-gray-400">
+              <CardExpiryElement className="outline-none" />
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">CVV</label>
+            <div className="bg-gray-200 rounded-md p-4 border-2 border-gray-400">
+              <CardCvcElement className="outline-none" />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white font-bold w-full py-3 px-6 rounded-md hover:bg-blue-600"
+              disabled={!stripe}
+            >
+              Pay Now
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
   );
 };
 

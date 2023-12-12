@@ -133,7 +133,7 @@ function AdminDoctorsList() {
 );
 
    
-    console.log(listOfSpecialization,12121232434);
+    console.log(filteredDoctors,"filtered dat");
     
 
     
