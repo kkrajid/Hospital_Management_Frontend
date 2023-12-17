@@ -44,7 +44,7 @@ function AdminDoctorsList() {
             role: 'Doctor',
         },
         specialization: '',
-        license_number: '',
+        license_number: ' ',
         service_charge: '0',
         address: {
             street_address: '',
@@ -89,7 +89,7 @@ function AdminDoctorsList() {
             const response = await add_new_doctor_(formData);
             return response.data;
           } catch (error) {
-            throw error.response.data; // Throw the server response for better error handling
+            throw error.response.data;
           }
         },
         onSuccess: (response) => {
@@ -122,8 +122,7 @@ function AdminDoctorsList() {
           setIsModalOpen(false);
         },
         onError: (error) => {
-          console.log(error); // Log the entire error for debugging
-          // Handle specific error cases if needed
+          console.log(error); 
           toast.error(
             <div>
               <strong>Error:</strong> Unable to add the doctor
@@ -134,7 +133,7 @@ function AdminDoctorsList() {
           );
         },
       });
-      
+
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -150,6 +149,7 @@ function AdminDoctorsList() {
 
    
     console.log(filteredDoctors,"filtered dat");
+    console.log(formData,"filled data");
     
 
     
