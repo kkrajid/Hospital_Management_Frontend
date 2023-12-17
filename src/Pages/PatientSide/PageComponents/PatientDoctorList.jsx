@@ -33,22 +33,22 @@ function PatientDoctorList() {
         return <LoadingSpinner/>;
       }
     return (
-        <div className='flex flex-col shadow-lg bg-gray-300 max-w-[1480px] w-full px-1 py-2  h-screen border-b rounded-[10px]'>
-            <div className='flex flex-row shadow max-w-[600px]  bg-white md:max-w-[1480px] w-full  h-[50px] rounded-[2px] py-1 px-4'>
+        <div className='flex flex-col  bg-gray-800 max-w-[1480px] w-full px-1 py-2  h-screen rounded-[10px]'>
+            <div className='flex flex-row shadow max-w-[600px]  bg-gray-600 md:max-w-[1480px] w-full  h-[50px] rounded-[5px] py-1 px-4'>
                 <div className='hidden md:flex flex-row justify-between items-center w-full'>
                     <div>
                         <h1 className='text-gray-400'>Doctors</h1>
                     </div>
-                    <div className='flex flex-row bg-white justify-between items-center rounded-[10px] p-1'>
+                    <div className='flex flex-row bg-gray-500 justify-between items-center rounded-[10px] p-1 pr-2'>
                         <input type="text" placeholder=' Search Doctor'
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
-                         className='text-gray-400 px-1 outline-none' />
+                         className='text-gray-400 px-1 outline-none bg-gray-500' />
                         <FontAwesomeIcon icon={faSearch} className='text-gray-300' />
                     </div>
                 </div>
             </div>
-            <div className='flex flex-row mt-2 bg-[#209ABB] shadow-lg  max-w-[600px] md:max-w-[1480px] w-full max-h-[50px] h-full'>
+            <div className='flex flex-row mt-2 bg-[#B0B0B0] shadow-lg  max-w-[600px] md:max-w-[1480px] w-full max-h-[50px] h-full rounded-md'>
                 <ul className='flex flex w-full justify-evenly items-center text-white'>
                 <button onClick={() => setSearchInput("")} >
                             All
@@ -65,7 +65,7 @@ function PatientDoctorList() {
                 </ul>
             </div>
 
-            <div className=' md:max-w-[700px]w-full max-h-[560px] bg-gray-300 h-full flex  mt-2 overflow-y-auto bg-gray-100 p-2'>
+            <div className=' md:max-w-[700px]w-full max-h-[560px] bg-gray-300 h-full flex  mt-2 overflow-y-auto bg-gray-800 p-2 border-2 rounded-xl border-gray-700'>
                 <div className='gap-2 grid md:grid-cols-5 grid-cols-2 mx-auto'>
                    
               

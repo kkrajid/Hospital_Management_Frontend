@@ -102,7 +102,7 @@ function AdminDoctorDetailView() {
     }
   };
 
-  if (loading || isLoading) {
+  if (loading || isLoading || update_doctor_charge_mutation.isLoading) {
     return  <LoadingSpinner/>;
   }
 

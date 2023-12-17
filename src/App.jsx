@@ -30,6 +30,8 @@ import DoctorIcuPatientsPage from "./Pages/DoctorSide/DoctorIcuPatientsPage"
 import DoctorIcuDetail_ViewPage from "./Pages/DoctorSide/DoctorIcuDetail_ViewPage"
 import StripeCheckoutComponent from "./Pages/PatientSide/PageComponents/Stripe/StripeCheckoutComponent"
 import AdminDoctorDetailViewPage from "./Pages/AdminSide/AdminDoctorDetailViewPage"
+import PatientWalletPage from "./Pages/PatientSide/PatientWalletPage"
+import Sample from "./Pages/Sample"
 
 
 function App() {
@@ -44,6 +46,7 @@ function App() {
                     <Route path="doctor/login" element={<DoctorLoginPage />} />
                     <Route path="admin/login" element={<AdminLoginPage />} />
                     <Route path="patient/verification" element={<OTPVerification />} />
+                    <Route path="sample" element={<Sample/>} />
                     <Route path="*" element={<NotFound />} />
                    
                     
@@ -55,6 +58,7 @@ function App() {
                         <Route path="payment/:payment_app" element={<StripeCheckoutComponent/>} />
                         <Route path="appointments" element={<PatientAppointmentPage />} />
                         <Route path="appointments/:appointmentId" element={<Patient_Appointment_Detail_View_Page/>} />
+                        <Route path="wallet" element={<PatientWalletPage/>} />
                     </Route>
 
                     <Route path="doctor" element={<DoctorPrivateRoute />} >

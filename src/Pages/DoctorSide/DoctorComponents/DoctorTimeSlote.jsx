@@ -16,7 +16,7 @@ function DoctorTimeSlote() {
     const [tempData, settempData] = useState([])
     
 
-    const { data, error, isLoading } = useQuery(['Doctor_all_time_slote_', date || currentDate], () =>
+    const { data, error, isLoading,refetch } = useQuery(['Doctor_all_time_slote_', date ||currentDate], () =>
         Doctor_all_time_slote_(date || currentDate)
     );
 
@@ -25,7 +25,7 @@ function DoctorTimeSlote() {
         if (data && !isLoading) {
             const filteredData = data.filter(item => item.date === date);
             settempData([...data])
-           
+            setSelectedItems(new Set())
             const timeRanges = filteredData?.map(item => {
                 const itemStartTime = item.start_time.substring(0, 5);
                 const itemEndTime = item.end_time.substring(0, 5);
@@ -46,15 +46,16 @@ function DoctorTimeSlote() {
     const timeSlotMutation = useMutation({
         mutationFn: () => Doctor_time_slote_create(requestData),
         onSuccess: (response) => {
-            response.forEach((item) => {
-                const itemStartTime = item.start_time.substring(0, 5);
-                const itemEndTime = item.end_time.substring(0, 5);
-                const timeRange = `${itemStartTime} - ${itemEndTime}`;
+            // response.forEach((item) => {
+            //     const itemStartTime = item.start_time.substring(0, 5);
+            //     const itemEndTime = item.end_time.substring(0, 5);
+            //     const timeRange = `${itemStartTime} - ${itemEndTime}`;
 
-                if (!datas.includes(timeRange)) {
-                    setData(prevData => [...prevData, timeRange]);
-                }
-            });
+            //     if (!datas.includes(timeRange)) {
+            //         setData(prevData => [...prevData, timeRange]);
+            //     }
+            // });
+            refetch();
             setTimeSlotView(!TimeSlotView)
             toast.success('Time Slot Created', toastConfig);
 
@@ -171,8 +172,7 @@ function DoctorTimeSlote() {
             textAlign: 'center',
         },
     };
-
-
+    console.log(selectedItems,"dsfdsfdf");
     return (
         <div className='w-full h-full bg-gray-200 rounded-[10px] border shadow-lg '>
             <div className='w-full h-1/8  flex items-center py-4'>
@@ -185,7 +185,7 @@ function DoctorTimeSlote() {
                         </div>
                         <div className='flex gap-2'>
                             <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={() => setTimeSlotView(true)} >Create slot</button>
-                            <button onClick={handleDelete} className='p-1 px-2 bg-red-600 text-white  rounded-[7px]'>
+                            <button onClick={handleDelete} className={`p-1 px-2 ${selectedItems.size === 0 ?"bg-gray-600 opacity-50 cursor-not-allowed'":"bg-red-600"} text-white  rounded-[7px]`} disabled={selectedItems.size === 0 } >
                                 Delete
                             </button>
                         </div>

@@ -140,6 +140,10 @@ function AdminDoctorsList() {
     if (isLoading) {
         return <LoadingSpinner />;
     }
+    if (add_new_doctor_addMutation.isLoading) {
+        return <LoadingSpinner />;
+    }
+
 
     return (
         <div className='px-2 py-3 h-full w-full '>

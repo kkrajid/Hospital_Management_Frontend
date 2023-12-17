@@ -193,6 +193,10 @@ export const CancelAppointmentApi = async (id) => {
     const response = await authAxios.post(`patient/cancel_appointment/${id}/`);
     return response.data;
 };
- 
+
+export const user_refund_amount_api = async () => {
+    const response = await authAxios.get("patient/refund-amount/");
+    return response.data;
+};
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////

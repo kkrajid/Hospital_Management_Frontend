@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { faHome, faCalendar, faComments, faEnvelope, faSignOutAlt, faUserMd } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCalendar, faComments, faEnvelope, faSignOutAlt, faUserMd,faWallet } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useAuthStore} from '../../../Store/auth'
 
@@ -11,12 +11,12 @@ function PatientSideBar({ child }) {
   return (
     <div className=''>
       
-      <div className="w-full h-screen p-2 bg-[#D0D5FF] border-b flex " >
+      <div className="w-full h-screen p-2 bg-gray-700 border-b flex " >
 
-        <div className="bg-[#e0e3ee] rounded-[22px] w-full h-full md:max-w-[1480px] max-w-[600px] p-4 m-auto ">
-          <div className="rounded-[22px] bg-white w-full h-full m-auto flex shadow-lg ">
+        <div className="bg-gray-600 rounded-[22px] w-full h-full md:max-w-[1480px] max-w-[600px] p-4 m-auto ">
+          <div className="rounded-[22px] bg-gray-800 w-full h-full m-auto flex shadow-lg ">
             <div className="flex m-2 md:flex-row  w-full ">
-              <div className="mx-5 my-3 rounded-[20px] bg-[#209ABB] w-[10px] px-9 flex justify-center shadow-lg ">
+              <div className="mx-5 my-3 rounded-[20px] bg-[#C0C0C0] w-[10px] px-9 flex justify-center shadow-lg ">
                 <div className='flex flex-col justify-between my-12'>
                   <div className='flex flex-col my-12 gap-6'>
                     <Link className='bg-[#EEEEEE] flex items-center justify-center rounded-[10px] p-2 hover:bg-white' to='/patient/profile'>
@@ -28,8 +28,8 @@ function PatientSideBar({ child }) {
                     <Link className='bg-[#EEEEEE]  flex justify-center items-center rounded-[10px] p-2 hover:bg-white' to='/patient/appointments'>
                       <FontAwesomeIcon icon={faCalendar} size="lg" className="text-gray-500 hover:text-blue-500" />
                     </Link>
-                    <Link className='bg-[#EEEEEE]  flex justify-center items-center rounded-[10px] p-2 hover.bg-white' to='/patient/chat'>
-                      <FontAwesomeIcon icon={faComments} size="lg" className="text-gray-500 hover:text-blue-500" />
+                    <Link className='bg-[#EEEEEE]  flex justify-center items-center rounded-[10px] p-2 hover.bg-white' to='/patient/wallet'>
+                      <FontAwesomeIcon icon={faWallet} size="lg" className="text-gray-500 hover:text-blue-500" />
                     </Link>
                     <Link className='bg-[#EEEEEE]  flex justify-center items-center rounded-[10px] p-2 hover:bg-white' to='/patient/messages'>
                       <FontAwesomeIcon icon={faEnvelope} size="lg" className="text-gray-500 hover:text-blue-500" />

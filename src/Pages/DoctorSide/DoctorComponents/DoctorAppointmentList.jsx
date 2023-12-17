@@ -7,6 +7,7 @@ import { all_user_appointments_for_doctor } from "../../../api/user";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, Link, Navigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import LoadingSpinner from '../../../Components/LoadingSpinner';
 
 function DoctorAppointmentList() {
   const [dataa, setData] = useState({
@@ -37,6 +38,10 @@ function DoctorAppointmentList() {
     refetch();
   }, [AppointmentData, isLoading, error, dataa, datas]);
   console.log(appointData);
+
+  if (isLoading) {
+    return <LoadingSpinner/>;
+  }
   return (
     <div className='w-full h-full bg-gray-200 rounded-[10px] border shadow-lg '>
       <div className='w-full h-1/8  flex items-center py-4'>

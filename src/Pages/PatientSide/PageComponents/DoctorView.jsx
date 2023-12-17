@@ -149,8 +149,8 @@ function DoctorView() {
     }
 
     return (
-        <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2  h-screen border-b rounded-[10px]'>
-            <div className='flex items-center shadow-lg bg-gradient-to-r from-[#209ABB] to-[#4CAEC8] w-full h-[180px] rounded-[10px]'>
+        <div className='flex flex-col shadow-lg max-w-[1480px] w-full px-1 py-2  h-screen  rounded-[10px]'>
+            <div className='flex items-center shadow-lg bg-gradient-to-r from-[#B0B0B0] to-[#B0B0B0] w-full h-[180px] rounded-[10px]'>
                 <div className='flex justify-between items-center w-full px-10'>
                     <div className='flex items-center'>
                         <img src={profileData?.profile_pic} alt="" placeholder='image' className='rounded-full w-24 h-24 border-2 border-white' />
@@ -167,10 +167,10 @@ function DoctorView() {
                 </div>
             </div>
 
-            <div className='w-full bg-gray-100 max-h-[400px]  h-full rounded-[10px]  flex items-center px-4'>
+            <div className='w-full bg-gray-800 max-h-[400px]  h-full rounded-[10px]  flex items-center px-4'>
                 <div className='flex flex-col gap-4 items-center w-full max-h-[300px] h-full'>
                     <div className='w-full'>
-                        <h2 className=" border-t-1 border-b-1 py-2 bg-[#209ABB] border-gray-600 font-semibold text-center text-white uppercase mb-4">Appointment Slots</h2>
+                        <h2 className=" border-t-1 border-b-1 py-2 bg-[#B0B0B0] border-gray-600 font-semibold text-center text-white uppercase mb-4 rounded-md">Appointment Slots</h2>
                     </div>
                     <div className='w-full h-1/6 flex items-center'>
                         <div className="p-4 flex flex-col gap-2 justify-center items-center rounded-[10px]">
@@ -186,16 +186,16 @@ function DoctorView() {
                         </div>
 
                     </div>
-                    <div className="bg-gray-100 h-full w-full">
+                    <div className="bg-gray-700 h-full w-full rounded-md">
 
-                        <div className="overflow-y-auto max-h-[300px]">
+                        <div className="overflow-y-auto max-h-[250px]">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 p-3 ">
                                 {timeslot?.map(({ startTime, endTime, aval, id }) => (
                                     <button
                                         key={id}
                                         className={`rounded-md overflow-hidden ${aval
                                             ? ' '
-                                            : 'bg-white text-red-700 border-red-700 opacity-80 cursor-not-allowed'
+                                            : 'text-red-700 border-red-700 opacity-80 cursor-not-allowed'
                                             } ${id === storeIndex
                                                 ? '  border-2 text-green-500 border-green-500  transform scale-105'
                                                 : 'border-2 border-gray-500'
@@ -232,7 +232,7 @@ function DoctorView() {
                                         onClick={closeModal}
                                     ></div>
                                     <div className="bg-white p-2 rounded-[1rem] shadow-lg z-10 w-[28rem] h-[20rem]">
-                                        <div className="w-full h-5/6 bg-gray-300 rounded-[10px]">
+                                        <div className="w-full h-5/6 bg-gray-200 rounded-[10px]">
                                             <div className="w-full h-1/6 flex items-center justify-center">
                                                 <div className="flex items-center justify-center">
                                                     <h1 className="text-2xl font-bold uppercase">Confirm Appointment</h1>
@@ -242,11 +242,12 @@ function DoctorView() {
                                                 <div className="flex flex-col gap-2 p-3 ">
                                                     <div className='flex items-center w-full justify-center flex-col'>
                                                         <h1 className='flex items-center text-3xl text-gray-500 my-2'>
-                                                            {userInformation_}
+                                                        Dr.{profileData?.user['full_name']}
                                                         </h1>
 
                                                         <h1 className=' mt-2 font-bold text-2xl'>
-                                                            {selectedTimeSlot} | Dr.{profileData?.user['full_name']}
+                                                            {selectedTimeSlot}  
+                                                           
                                                         </h1>
                                                         <h1 className='mta-2 text-gray-500 font-bold'>{date}</h1>
 

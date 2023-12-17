@@ -41,19 +41,19 @@ function Patient_Appointmetn_detail_vew() {
     const room_name_for_chat = appointData?.doctor_profile?.user?.id+appointData?.patient?.id+appointData?.id
     const room_name_ = 'asd'+room_name_for_chat
     return (
-        <div className='w-full h-full p-2 rounded-[10px] bg-gray-200'>
-            <div className='w-full h-1/6 flex items-center'>
-                <div className='w-full shadow-lg h-3/4 bg-white '>
+        <div className='w-full h-full p-2 rounded-[10px] bg-gray-800'>
+            <div className='w-full h-1/6 flex items-center py-3 '>
+                <div className='w-full shadow-lg h-3/4 bg-gray-700 rounded-md  '>
 
                 </div>
             </div>
-            <div className='w-full h-5/6 bg-white rounded-b-[10px] relative'>
-                <div className='w-full  bg-[#209ABB] h-2/5 rounded-t-[5px]'>
+            <div className='w-full h-5/6 bg-gray-700 rounded-xl relative'>
+                <div className='w-full  bg-[#B0B0B0] h-2/5 rounded-t-xl'>
 
                 </div>
                 <div className='w-full h-5/6 bg-transparent absolute bottom-0 flex p-4 gap-2'>
                     <div className='h-full w-1/5 bg-transparent py-2 px-2 flex justify-center'>
-                        <div className='w-full h-full bg-white rounded-[8px] shadow-lg p-2'>
+                        <div className='w-full h-full bg-gray-700 rounded-xl shadow-lg p-2'>
                             <div className='w-full h-full'>
                                 <div className='w-full h-2/5  flex items-center justify-center p-1'>
                                     <div className=' w-6/12 h-5/6 flex items-center justify-center'>
@@ -64,19 +64,19 @@ function Patient_Appointmetn_detail_vew() {
                                 <div className='w-full h-3/5 '>
                                     <div className='w-full h-full  p-1 flex flex-col'>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p className='text-gray-500 font-mono'>Dr.{appointData?.doctor_profile?.user?.full_name}</p>
+                                            <p className='text-gray-400 font-mono'>Dr.{appointData?.doctor_profile?.user?.full_name}</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center text-sm'>
-                                            <p>{appointData?.doctor_profile?.specialization}  </p>
+                                            <p className='text-gray-400'>{appointData?.doctor_profile?.specialization}  </p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{appointment_date} </p>
+                                            <p className='text-gray-400'>{appointment_date} </p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{appointData?.time_slot?.start_time }-{appointData?.time_slot?.end_time }</p>
+                                            <p className='text-gray-400'>{appointData?.time_slot?.start_time }-{appointData?.time_slot?.end_time }</p>
                                         </div>
                                         <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p >{appointData?.appointment_status}</p>
+                                            <p className='text-gray-400' >{appointData?.appointment_status}</p>
                                         </div>
                                     </div>
 
@@ -85,25 +85,25 @@ function Patient_Appointmetn_detail_vew() {
                         </div>
                     </div>
                     <div className='h-full  w-4/5 bg-transparent py-2 px-2 flex justify-center'>
-                        <div className='w-full h-full bg-gray-200 rounded-[8px] shadow-lg p-2'>
+                        <div className='w-full h-full bg-gray-700 rounded-xl shadow-lg p-2'>
                             <div className=' w-full h-full '>
-                                <div className='w-full h-1/6 bg-white rounded-t-[10px] border-gray-300 shadow-lg p-2'>
+                                <div className='w-full h-1/6 bg-gray-600 rounded-t-xl border-gray-300 shadow-lg p-2'>
                                     <div className='w-full h-full shadow-lg flex gap-1 p-1'>
                                         {/* <button className='w-36 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showMedical_Background}>
                                             <p className=' font-semibold'>Medical Background</p>
                                         </button> */}
-                                        <button className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showPrescription}>
+                                        <button className='w-24 h-full shadow-lg bg-gray-700  rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white' onClick={showPrescription}>
                                             <p className=' font-semibold'>Prescription</p>
                                         </button>
-                                        <button className='w-24 h-full shadow-lg border rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white  hover:bg-blue-600 hover:text-white' onClick={showChat}>
+                                        <button className='w-24 h-full shadow-lg bg-gray-700 rounded-[5px] text-gray-400 text-sm active:bg-blue-600 active:text-white  hover:bg-blue-600 hover:text-white' onClick={showChat}>
                                             <p className=' font-semibold '>Chat</p>
                                         </button>
-                                        <button className='w-24 h-full shadow-lg border rounded-[5px]  text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'>
+                                        <button className='w-24 h-full shadow-lg bg-gray-700 rounded-[5px]  text-gray-400 text-sm active:bg-blue-600 active:text-white hover:bg-blue-600 hover:text-white'>
                                             <p className=' font-semibold'>Download</p>
                                         </button>
                                     </div>
                                 </div>
-                                <div className='bg-gray-100 w-full h-5/6 rounded-b-[10px]'>
+                                <div className='bg-gray-100 w-full h-5/6 rounded-b-xl'>
 
                                     {/* {activeComponent === 'Medical_Background' && <Medical_Background />} */}
                                     {activeComponent === 'prescription' && <Prescription appointmentId={appointmentId} />}
@@ -172,8 +172,8 @@ function Prescription({appointmentId}) {
         }
     }, [data]);
     return (
-        <div className='w-full h-full  rounded-b-[10px]'>
-        <div className='w-full h-full bg-gray-200 shadow-lg border-2 rounded-b-[10px] overflow-y-auto'>
+        <div className='w-full h-full  rounded-b-xl'>
+        <div className='w-full h-full bg-gray-600 shadow-lg  rounded-b-xl overflow-y-auto'>
             <table class="w-full border-collapse">
                 <thead className=' bg-gray-500 text-white'>
                     <tr>
@@ -188,7 +188,7 @@ function Prescription({appointmentId}) {
 
                     {prescriptions?.map((prescription, index) => (
 
-                        <tr key={prescription.id} className={`${index % 2 === 0 ? "" : "bg-blue-200"} w-full h-[50px]  `}>
+                        <tr key={prescription.id} className={`${index % 2 === 0 ? "bg-gray-400" : "bg-blue-200"} w-full h-[50px]  `}>
                             <td className="py-2 px-4 border-b text-center ">{prescription.medications}</td>
                             <td className="py-2 px-4 border-b text-center">{prescription.dosage}</td>
                             <td className="py-2 px-4 border-b text-center ">{prescription.duration}</td>

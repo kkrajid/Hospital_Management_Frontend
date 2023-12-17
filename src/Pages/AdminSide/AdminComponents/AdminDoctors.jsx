@@ -6,6 +6,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { adminunblockDoctor } from '../../../api/user';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import LoadingSpinner from '../../../Components/LoadingSpinner';
 function AdminDoctors({ child, blockuser,refetch }) {
   const [isBlocked, setIsBlocked] = useState(child.is_blocked);
   console.log(child.is_blocked,323232);
@@ -55,8 +56,23 @@ function AdminDoctors({ child, blockuser,refetch }) {
     }
   };
 
+
+  if (blockDoctorMutation.isLoading) {
+    return (
+      <div className='max-w-[220px] rounded-lg h-[310px] bg-white shadow p-2 relative'>
+     
+      <div className='w-full h-full flex items-center justify-center '>
+      <div className="loading-spinner"></div>
+      </div>
+      </div>
+    );
+  }
+
+
+
   return (
     <div className='max-w-[220px] rounded-lg h-[310px] bg-white shadow p-2 relative'>
+     
     {blockuser && (
       <input
         type="checkbox"
