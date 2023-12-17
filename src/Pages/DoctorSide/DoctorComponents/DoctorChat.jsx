@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { websocketbaseUrl } from '../../../api/UseAxios'
+import { websocketbaseUrl,baseURL } from '../../../api/UseAxios'
 
 function DoctorChat({ room, id }) {
     const roomName = 'DP' + room;
@@ -38,7 +38,7 @@ function DoctorChat({ room, id }) {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://${websocketbaseUrl}/api/messages/${roomName}/`);
+            const response = await fetch(`${baseURL}messages/${roomName}/`);
             const data = await response.json();
             setMessages(data);
             scrollToBottom();

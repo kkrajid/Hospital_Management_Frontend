@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
 import { get_detail_appointments_view,getPrescriptions } from "../../../api/user";
 import { useParams } from 'react-router-dom';
-import {websocketbaseUrl} from '../../../api/UseAxios'
+import {websocketbaseUrl,baseURL} from '../../../api/UseAxios'
 function Patient_Appointmetn_detail_vew() {
     const [appointData, setAppointmentData] = useState(null)
     const [activeComponent, setActiveComponent] = useState('prescription');
@@ -245,7 +245,7 @@ function PatientChat({ room,id }) {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://${websocketbaseUrl}/api/messages/${roomName}/`);
+            const response = await fetch(`${baseURL}messages/${roomName}/`);
             const data = await response.json();
             setMessages(data);
             scrollToBottom();
