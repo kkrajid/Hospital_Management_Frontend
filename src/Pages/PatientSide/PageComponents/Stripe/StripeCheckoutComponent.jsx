@@ -5,6 +5,7 @@ import CheckoutForm from './CheckoutForm';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import PatientSideBar from '../PatientSideBar';
+import { baseURL } from '../../../../api/UseAxios';
 
 const stripePromise = loadStripe('pk_test_51O7aFpSFII5KNwJp2bsAyecnA5ZNfUCj61lEDpzjRp3xgwVBUAjcQWfo2BFGvqJUwKAUWF4D24SyOwwtrN2DoeSq00quZMuFz1');
 
@@ -18,7 +19,7 @@ const StripeCheckoutComponent = () => {
    useEffect(() => {
      const fetchData = async () => {
        try {
-         const response = await axios.post('http://127.0.0.1:8000/api/create-payment-intent/', {
+         const response = await axios.post(`${baseURL}create-payment-intent/`, {
            appointmentId: appointmentId,
          });
 
