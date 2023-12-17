@@ -102,8 +102,10 @@ export const get_all_patients = async () => {
 };
 export const add_new_doctor_ = async (data) => {
     const response = await authAxios.post("admin/doctor/create", data,{
-        maxContentLength: 2000000, // Set an appropriate value
-      });
+        maxContentLength: 5000000, // Set an appropriate value based on your requirements
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }});
     return response.data;
 };
 export const fetchAllPatients = async () => {

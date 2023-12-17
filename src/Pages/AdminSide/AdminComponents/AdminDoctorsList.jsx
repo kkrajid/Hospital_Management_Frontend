@@ -78,13 +78,28 @@ function AdminDoctorsList() {
         });
     };
 
+    const formDataToSend = new FormData();
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        Object.entries(formData.user).forEach(([key, value]) => {
+            formDataToSend.append(`user[${key}]`, value);
+        });
+        formDataToSend.append('specialization', formData.specialization);
+        formDataToSend.append('license_number', formData.license_number);
+        formDataToSend.append('service_charge', formData.service_charge);
+        Object.entries(formData.address).forEach(([key, value]) => {
+            formDataToSend.append(`address[${key}]`, value);
+        });
+        if (formData.profile_pic) {
+            formDataToSend.append('profile_pic', formData.profile_pic);
+        }
+    
         add_new_doctor_addMutation.mutate();
     };
 
     const add_new_doctor_addMutation = useMutation({
-        mutationFn: () => add_new_doctor_(formData),
+        mutationFn: () => add_new_doctor_(formDataToSend),
         onSuccess: (response) => {
             console.log(response);
             toast.success(
