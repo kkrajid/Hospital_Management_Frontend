@@ -100,14 +100,11 @@ export const get_all_patients = async () => {
     const response = await authAxios.get("admin/all_patients");
     return response.data;
 };
-
 export const add_new_doctor_ = async (data) => {
-    try {
-      const response = await authAxios.post("admin/doctor/create", data);
-      return response.data;
-    } catch (error) {
-      throw error; // Throw the entire error for better error handling
-    }
+    const response = await authAxios.post("admin/doctor/create", data,{
+        maxContentLength: 2000000, // Set an appropriate value
+      });
+    return response.data;
 };
 export const fetchAllPatients = async () => {
     const response = await authAxios.get("admin/all_patients");

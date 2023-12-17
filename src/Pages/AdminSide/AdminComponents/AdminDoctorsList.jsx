@@ -44,7 +44,7 @@ function AdminDoctorsList() {
             role: 'Doctor',
         },
         specialization: '',
-        license_number: ' ',
+        license_number: '',
         service_charge: '0',
         address: {
             street_address: '',
@@ -84,55 +84,40 @@ function AdminDoctorsList() {
     };
 
     const add_new_doctor_addMutation = useMutation({
-        mutationFn: async (formData) => {
-          try {
-            const response = await add_new_doctor_(formData);
-            return response.data;
-          } catch (error) {
-            throw error.response.data;
-          }
-        },
+        mutationFn: () => add_new_doctor_(formData),
         onSuccess: (response) => {
-          console.log(response);
-          toast.success(
-            <div>
-              <strong>Success:</strong> Doctor Added Successfully
-            </div>,
-            {
-              position: 'top-center',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              style: {
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                border: 'none',
-                width: '100%',
-                textAlign: 'center',
-              },
-            }
-          );
-          refetch();
-          setFormData({});
-          setIsModalOpen(false);
+            console.log(response);
+            toast.success(
+                <div>
+                    <strong>Success:</strong> Doctor Added Successfully
+                </div>,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    style: {
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        border: 'none',
+                        width: '100%',
+                        textAlign: 'center',
+                    },
+                }
+            );
+            refetch();
+            setFormData({});
+            setIsModalOpen(false);
         },
         onError: (error) => {
-          console.log(error); 
-          toast.error(
-            <div>
-              <strong>Error:</strong> Unable to add the doctor
-            </div>,
-            {
-              // Add your error toast configuration here
-            }
-          );
+            console.log(error.message);
         },
-      });
+    });
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -149,7 +134,6 @@ function AdminDoctorsList() {
 
    
     console.log(filteredDoctors,"filtered dat");
-    console.log(formData,"filled data");
     
 
     
