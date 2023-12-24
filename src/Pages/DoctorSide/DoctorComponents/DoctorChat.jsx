@@ -14,7 +14,7 @@ function DoctorChat({ room, id }) {
     const MAX_MESSAGE_LENGTH = 200; // Adjust the maximum length as needed
 
     useEffect(() => {
-        chatSocket.current = new WebSocket(`ws://${websocketbaseUrl}/ws/` + roomName + '/');
+        chatSocket.current = new WebSocket(`wss://${websocketbaseUrl}/ws/` + roomName + '/');
 
         chatSocket.current.onmessage = function (e) {
             const data = JSON.parse(e.data);
