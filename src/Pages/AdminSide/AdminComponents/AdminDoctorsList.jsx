@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faPlus, faTrash, faTimes, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import AdminDoctors from './AdminDoctors';
-import LoadingSpinner from '../../../Components/LoadingSpinner';
+import { faSearch, faPlus, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import { all_doctors_Profile, add_new_doctor_ } from '../../../api/user';
+
+import AdminDoctors from './AdminDoctors';
+import LoadingSpinner from '../../../Components/LoadingSpinner';
+import { Link } from 'react-router-dom';
+const getToastConfig = () => ({
+    duration: 4000,
+    position: 'top-right',
+    style: {
+        background: '#333',
+        color: '#fff',
+    },
+});
+
 
 function AdminDoctorsList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const [searchInputofspe, setSearchInputofspe] = useState('');
-    const [listOfSpecialization, setlistOfSpecialization] = useState([])
-    const [blockuser, setBlockuser] = useState(false)
-
-
-    const [doctorProfiles, setDoctorProfiles] = useState([]);
-    const { data, error, isLoading ,refetch} = useQuery(['all_doctors_Profile'], all_doctors_Profile);
-    console.log(data,"all doctors");
-    let arr=[]
-    useEffect(() => {
-        if (data && !isLoading) {
-            setDoctorProfiles(data);
-        }
-        doctorProfiles?.forEach((item)=>arr.push(item?.specialization))
-        setlistOfSpecialization([...Array.from(new Set(arr))])
-    }, [data, isLoading, error,doctorProfiles]);
-
-    useEffect(() => {
-
-     console.log(arr,65656);
-    }, [listOfSpecialization])
-    
+    const [listOfSpecialization, setListOfSpecialization] = useState([]);
+    const [blockuser, setBlockuser] = useState(false);
     const [formData, setFormData] = useState({
         user: {
             full_name: '',
@@ -53,8 +43,44 @@ function AdminDoctorsList() {
             zip_code: '',
             country: '',
         },
-        profile_pic: '',
+        profile_pic: null,
     });
+
+    const [doctorProfiles, setDoctorProfiles] = useState([]);
+    const { data, error, isLoading, refetch } = useQuery(['all_doctors_Profile'], all_doctors_Profile);
+
+
+
+    const handleAddDoctorSuccess = (response) => {
+        console.log(response);
+        toast.success('Doctor added successfully!', getToastConfig());
+        refetch();
+        resetFormDataAndModal();
+    };
+
+    const handleAddDoctorError = (error) => {
+        console.error(error.message);
+        toast.error('Failed to add the doctor. Please try again.', getToastConfig());
+    };
+
+    const add_new_doctor_addMutation = useMutation({
+        mutationFn: (formData) => add_new_doctor_(formData),
+        onSuccess: handleAddDoctorSuccess,
+        onError: handleAddDoctorError,
+    });
+
+    const updateDoctorProfiles = () => {
+        if (data && !isLoading) {
+            setDoctorProfiles(data);
+        }
+        const arr = doctorProfiles?.map((item) => item?.specialization);
+        setListOfSpecialization([...new Set(arr)]);
+    };
+
+    useEffect(() => {
+        updateDoctorProfiles();
+    }, [data, isLoading, error, doctorProfiles]);
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -70,77 +96,62 @@ function AdminDoctorsList() {
         }
     };
 
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevFormData) => ({
+            ...prevFormData,
             [name]: value,
-        });
+        }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        add_new_doctor_addMutation.mutate();
+        add_new_doctor_addMutation.mutate(formData);
     };
 
-    const add_new_doctor_addMutation = useMutation({
-        mutationFn: () => add_new_doctor_(formData),
-        onSuccess: (response) => {
-            console.log(response);
-            toast.success(
-                <div>
-                    <strong>Success:</strong> Doctor Added Successfully
-                </div>,
-                {
-                    position: 'top-center',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    style: {
-                        backgroundColor: '#4CAF50',
-                        color: 'white',
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                        border: 'none',
-                        width: '100%',
-                        textAlign: 'center',
-                    },
-                }
-            );
-            refetch();
-            setFormData({});
-            setIsModalOpen(false);
-        },
-        onError: (error) => {
-            console.log(error.message);
-        },
-    });
+    const resetFormDataAndModal = () => {
+        setFormData({
+            user: {
+                full_name: '',
+                email: '',
+                date_of_birth: '',
+                gender: '',
+                phone: '',
+                password: '',
+                role: 'Doctor',
+            },
+            specialization: '',
+            license_number: '',
+            service_charge: '0',
+            address: {
+                street_address: '',
+                city: '',
+                state: '',
+                zip_code: '',
+                country: '',
+            },
+            profile_pic: null,
+        });
+        setIsModalOpen(false);
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        resetFormDataAndModal();
     };
 
-    const filteredDoctors = doctorProfiles.filter((doctor) =>
-    (doctor.user.full_name?.toLowerCase().includes(searchInput.toLowerCase()) ||
-     doctor.specialization?.toLowerCase().includes(searchInput.toLowerCase()))
-);
+    const filteredDoctors = doctorProfiles.filter(
+        (doctor) =>
+            doctor.user.full_name?.toLowerCase().includes(searchInput.toLowerCase()) ||
+            doctor.specialization?.toLowerCase().includes(searchInput.toLowerCase())
+    );
 
-   
-    console.log(filteredDoctors,"filtered dat");
-    
-
-    
     if (isLoading) {
-        return <LoadingSpinner />;
-    }
-    if (add_new_doctor_addMutation.isLoading) {
         return <LoadingSpinner />;
     }
 
@@ -157,7 +168,7 @@ function AdminDoctorsList() {
                             <button className='mx-2 rounded-full shadow-sm  text-gray-400 p-1 px-2' onClick={openModal}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </button>
-                            <div className='mr-12 rounded-full shadow-sm  text-gray-400 p-1 px-2' onClick={()=>setBlockuser(!blockuser)}>
+                            <div className='mr-12 rounded-full shadow-sm  text-gray-400 p-1 px-2' onClick={() => setBlockuser(!blockuser)}>
                                 <FontAwesomeIcon icon={faTrash} />
                             </div>
                             <input
@@ -177,24 +188,24 @@ function AdminDoctorsList() {
                         <button onClick={() => setSearchInput("")} >
                             All
                         </button>
-                       
 
-                        {listOfSpecialization.slice(0, 4).map((item,index)=>(
-                        <button key={index} onClick={() => setSearchInput(item)} >
-                            {item}
-                        </button>
+
+                        {listOfSpecialization.slice(0, 4).map((item, index) => (
+                            <button key={index} onClick={() => setSearchInput(item)} >
+                                {item}
+                            </button>
 
                         ))}
-                        
-                        
+
+
                     </ul>
                 </div>
 
                 <div className=' w-full  bg-gray-300 h-5/6 rounded-b-[10px] flex  mt-2 overflow-y-auto bg-gray-100 p-2'>
                     <div className='gap-2 grid md:grid-cols-5 grid-cols-2 mx-auto'>
                         {filteredDoctors.map((profile, index) => (
-                          
-                            <AdminDoctors child={profile} key={index}  blockuser={blockuser} refetch={refetch} />
+
+                            <AdminDoctors child={profile} key={index} blockuser={blockuser} refetch={refetch} />
 
                         ))}
 

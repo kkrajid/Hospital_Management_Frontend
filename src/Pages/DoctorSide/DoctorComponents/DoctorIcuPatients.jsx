@@ -35,7 +35,8 @@ const DoctorIcuPatients = () => {
     }, [data]);
 
     useEffect(() => {
-        // console.log(allIcuPatients, 12121);
+      
+      
 
     }, [allIcuPatients]);
 
@@ -45,15 +46,14 @@ const DoctorIcuPatients = () => {
             console.error('Error fetching data:', error);
         }
     }, [error]);
-
-
+    console.log(allIcuPatients[0]?.doctor?.id)
     useEffect(() => {
         const updatedPatientList = [];
         allIcuPatients.forEach((Patient) => {
 
             if (Patient.icu_status === 'Admitted')
                 updatedPatientList.push(Patient);
-            console.log(updatedPatientList, "dgdgdgdgdgdgdgdggdgdgdg");
+           
 
         });
         seticuAddPosiblePatient(updatedPatientList);
@@ -134,7 +134,7 @@ const DoctorIcuPatients = () => {
 
         if (selectedData.device && selectedData.patient.trim() !== '') {
             const nodeRef = ref(db, `/${selectedData.device}`);
-            update(nodeRef, { user_id: selectedData.patient,is_connected:true,HeartRate:0,Temperature:0            })
+            update(nodeRef, { user_id: selectedData.patient,is_connected:true,HeartRate:0,Temperature:0,  doctor_id:allIcuPatients[0]?.doctor?.id          })
                 .then(() => {
                     // Refresh the list after updating user_id
                     getDisconnectedNodes();
@@ -150,7 +150,7 @@ const DoctorIcuPatients = () => {
                 });
         }
         // Perform your submission logic here
-        console.log('Submitting with Device:', selectedData.device, 'Patient:', selectedData.patient);
+     
     };
 
     const handleDeviceChange = (e) => {
@@ -163,7 +163,8 @@ const DoctorIcuPatients = () => {
 
     // Determine whether the submit button should be disabled
     const isSubmitDisabled = !selectedData.device || !selectedData.patient;
-    console.log(connectedNodes,"conee");
+   
+    
 
 
     return (

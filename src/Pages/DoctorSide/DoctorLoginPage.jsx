@@ -1,4 +1,3 @@
-
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import { DoctorloginRequest } from "../../api/user";
 import { useMutation } from "@tanstack/react-query";
@@ -10,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 function DoctorLoginPage() {
   const containerStyle = {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#2C3E50',
     minHeight: '100vh',
     display: 'flex',
     justifyContent: 'center',
@@ -18,12 +17,24 @@ function DoctorLoginPage() {
   };
 
   const formContainerStyle = {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#34495E',
     borderRadius: '10px',
     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
     padding: '20px',
     maxWidth: '400px',
     width: '90%',
+    color: '#ECF0F1',
+  };
+
+  const inputStyle = {
+    marginBottom: '16px',
+    width: '100%',
+    padding: '12px',
+    fontSize: '16px',
+    borderRadius: '8px',
+    border: '1px solid #3498DB',
+    outline: 'none',
+    color: 'black',
   };
 
   const logoStyle = {
@@ -36,21 +47,18 @@ function DoctorLoginPage() {
   const { isAuth } = useAuthStore();
   const setToken = useAuthStore((state) => state.setToken);
 
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
   };
-
 
   const DoctorloginMutation = useMutation({
     mutationFn: () => DoctorloginRequest(formData),
@@ -58,7 +66,7 @@ function DoctorLoginPage() {
       setToken(response.data.token);
       toast.success(
         <div>
-          Login Successfull!
+          Login Successful!
         </div>,
         {
           position: "top-center",
@@ -82,7 +90,7 @@ function DoctorLoginPage() {
       navigate("/doctor");
     },
     onError: (error) => {
-      const firstErrorMessage = error.response.data.message
+      const firstErrorMessage = error.response.data.message;
       console.log(error);
 
       toast.error(
@@ -111,8 +119,6 @@ function DoctorLoginPage() {
     },
   });
 
-  
-
   const handleSubmit = (event) => {
     event.preventDefault();
     DoctorloginMutation.mutate();
@@ -128,12 +134,12 @@ function DoctorLoginPage() {
         <div className="mb-4 text-center">
           {/* <img src="images/1.png" alt="Hospital Logo" style={logoStyle} /> */}
         </div>
-        <h2 className="text-2xl font-semibold text-center text-indigo-600 mb-4">Doctor Login</h2>
-        <p className="text-center text-gray-600 mb-6">Welcome back, Doctor! Please sign in to access your account.</p>
+        <h2 className="text-2xl font-semibold text-center text-[#1AACAC] mb-4">Doctor Login</h2>
+        <p className="text-center text-gray-300 mb-6">Welcome back, Doctor! Please sign in to access your account.</p>
         <div className="mb-4">
           <input
             type="text"
-            className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            style={inputStyle}
             placeholder="Email Address"
             name="email"
             value={formData.email}
@@ -143,7 +149,7 @@ function DoctorLoginPage() {
         <div className="mb-4">
           <input
             type="password"
-            className="form-input mb-2 w-full py-3 px-4 text-sm bg-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            style={inputStyle}
             placeholder="Password"
             name="password"
             value={formData.password}
@@ -161,11 +167,11 @@ function DoctorLoginPage() {
           </label>
           <div className="forgot">
             <small>
-              {/* <a href="#" className="text-indigo-600">Forgot Password?</a> */}
+              {/* <a href="#" className="text-orange-600">Forgot Password?</a> */}
             </small>
           </div>
         </div>
-        <button className="bg-indigo-600 text-white w-full py-3 text-sm rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-400">
+        <button className="bg-[#1AACAC] text-white w-full py-3 text-sm rounded-lg hover:bg-orange-700 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-400">
           Login
         </button>
       </form>

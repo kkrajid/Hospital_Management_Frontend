@@ -43,14 +43,14 @@ function DoctorAppointmentList() {
     return <LoadingSpinner/>;
   }
   return (
-    <div className='w-full h-full bg-gray-200 rounded-[10px] border shadow-lg '>
+    <div className='w-full h-full bg-[#c7cbd2] rounded-[10px] border shadow-lg p-1 '>
       <div className='w-full h-1/8  flex items-center py-4'>
-        <div className='w-full h-full shadow-lg border bg-[#D1D5DB] '>
+        <div className='w-full h-full shadow-lg border bg-[#1AACAC] rounded-lg'>
           <div className='flex w-full h-full justify-between px-3'>
             <div className='flex items-center justify-center '>
-              <p className='uppercase text-gray-500 font-bold'>
-                Appointments
-              </p>
+              <div>
+              <h1 className="text-xl font-semibold text-white">Appointments</h1>
+            </div>
             </div>
             <div className='p-2'>
               <div className='flex items-center justify-center gap-2 bg-white px-2 rounded-[10px] border'>
@@ -69,10 +69,10 @@ function DoctorAppointmentList() {
         </div>
       </div>
       <div className='w-full h-5/6 p-1'>
-        <div className='w-full h-full rounded-[10px] overflow-y-auto flex flex-col gap-2'>
+        <div className='w-full h-full rounded-lg overflow-y-auto flex flex-col gap-2'>
           <div className='w-full h-1/6 flex items-center  '>
-            <div className='w-full h-[48px] bg-red-500'>
-              <ul className='w-full h-full bg-[#1AACAC] shadow-lg border flex items-center justify-evenly roundedw-[15px] shadow-lg '>
+            <div className='w-full h-[48px] '>
+              <ul className='w-full h-full bg-[#00BFBF] shadow-lg border flex items-center justify-evenly rounded-lg shadow-lg '>
                 <li className='flex items-center justify-center w-1/6'>Image</li>
                 <li className='flex items-center justify-center w-1/6'>Patient Name</li>
                 <li className='flex items-center justify-center w-1/6'>Date</li>
@@ -82,14 +82,14 @@ function DoctorAppointmentList() {
               </ul>
             </div>
           </div>
-          <div className='h-5/6 w-full px-2 overflow-y-auto flex flex-col gap-3'>
+          <div className='h-5/6 w-full px-2 overflow-y-auto flex flex-col gap-1'>
             {filteredAppointments?.map((data, index) => {
               const isCancelable = data?.appointment_status !== "Cancelled" && new Date(data?.time_slot?.date + "T" + data?.time_slot?.start_time) > new Date();
 
               return (
                 <div className='w-full h-1/8 flex items-center mb-1' key={index}>
                   <div className='w-full h-full  '>
-                    <ul className='w-full h-full bg-gray-300 rounded-[4px] border-1 shadow-lg   py-2 flex items-center justify-evenly'>
+                    <ul className='w-full h-full bg-gray-200 rounded-[4px] border-1 shadow-lg   py-2 flex items-center justify-evenly'>
                       <li className='flex items-center justify-center w-1/6'>
                         <img src={data?.Patient_profile?.profile_pic} className='w-12 h-12 rounded-full border border-2 border-gray-200' alt="" />
                       </li>

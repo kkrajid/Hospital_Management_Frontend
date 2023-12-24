@@ -47,7 +47,7 @@ function PatientProfile() {
         },
     });
 
-    const { data, error, isLoading } = useQuery(['patientProfile'], patientProfile);
+    const { data, error, isLoading,refetch } = useQuery(['patientProfile'], patientProfile);
     console.log(data);
     useEffect(() => {
         if (data && !isLoading) {
@@ -105,6 +105,7 @@ function PatientProfile() {
                   },
                 }
               );
+              refetch();
               
         },
         onError: (error) => {

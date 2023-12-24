@@ -32,6 +32,7 @@ import StripeCheckoutComponent from "./Pages/PatientSide/PageComponents/Stripe/S
 import AdminDoctorDetailViewPage from "./Pages/AdminSide/AdminDoctorDetailViewPage"
 import PatientWalletPage from "./Pages/PatientSide/PatientWalletPage"
 import Sample from "./Pages/Sample"
+import DoctorNotificationPage from "./Pages/DoctorSide/DoctorNotificationPage"
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
                         <Route path="icu" element={<DoctorIcuPatientsPage />}/>
                         <Route path="icu/:icuId" element={<DoctorIcuDetail_ViewPage/> }/>
                         <Route path="appointments" element={<DoctorAppointmentPage/>} />
+                        <Route path="notifications" element={<DoctorNotificationPage/>} />
                         <Route path="appointments/:appointmentId" element={<Doctor_Appointment_Detail_View_Page/>} />
                         <Route path="chat" element={<DoctorChatPage/>} />
                     </Route>

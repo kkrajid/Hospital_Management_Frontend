@@ -11,6 +11,12 @@ export const Doctor_Dashboard = async () => {
     const response = await authAxios.get("doctor/dashboard");
     return response.data;
 };
+export const Doctor_Dashboard_all = async () => {
+    const response = await authAxios.get("doctor/dashboard_all");
+    return response.data;
+};
+
+
 export const Doctor_time_slote_create = async (data) => {
     const response = await authAxios.post("doctor/create_time_slots", data);
     return response.data;
@@ -29,9 +35,10 @@ export const doctor_profile_detail = async () => {
     return response.data;
 };
 export const DoctorProfile_add_or_update = async (formData) => {
-    const response = await authAxios.put(`doctor_profile_detail`, formData)
+    const response = await authAxios.patch(`doctor_profile_detail`, formData)
     return response.data;
 };
+
 export const all_user_appointments_for_doctor = async (data) => {
     const response = await authAxios.get(`doctor/get_all_appointment_of_doctor?data=${data}`);
     return response.data;
@@ -82,6 +89,24 @@ export const Doctor_Manage_Appointment_Status = async (appointmentId, data) => {
         throw error;
     }
 };
+
+export const get_doctor_all_alert_from_icu_patients = async () => {
+    const response = await authAxios.get(`notifications/`);
+    return response.data;
+};
+
+export const  fetchNotificationUsers = async (user_ids) => {
+    try {
+      const response = await authAxios.get('doctor/get_notification_patient/', {
+        params: {
+          user_ids: user_ids.join(','), // Convert the array to a comma-separated string
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('Error fetching notification users');
+    }
+  };
 //**///////////////////////////////////////ADMIN SIDE////////////////////////////////////////////////**//
 
 export const AdminloginRequest = async (data) => {
@@ -101,7 +126,7 @@ export const get_all_patients = async () => {
     return response.data;
 };
 export const add_new_doctor_ = async (data) => {
-    const response = await authAxios.post("admin/doctor/create", data);
+    const response = await authAxios.post("admin/create-doctor/", data);
     return response.data;
 };
 export const fetchAllPatients = async () => {

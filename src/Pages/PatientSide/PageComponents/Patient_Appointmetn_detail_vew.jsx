@@ -219,7 +219,7 @@ function PatientChat({ room,id }) {
     const chatMessageInputRef = useRef(null);
 
     useEffect(() => {
-        chatSocket.current = new WebSocket(`wss://${websocketbaseUrl}/ws/` + roomName + '/');
+        chatSocket.current = new WebSocket(`ws://${websocketbaseUrl}/ws/` + roomName + '/');
 
         chatSocket.current.onmessage = function (e) {
             const data = JSON.parse(e.data);

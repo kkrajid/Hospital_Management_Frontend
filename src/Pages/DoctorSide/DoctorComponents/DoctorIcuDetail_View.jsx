@@ -99,7 +99,7 @@ function DoctorIcuDetail_View() {
 
       // Check if the node exists before updating
       if (snapshot.exists()) {
-        await update(nodeRef, { user_id: "", is_connected: false });
+        await update(nodeRef, { user_id: "", is_connected: false,doctor_id:"" });
         console.log(`${nodeName} disconnected successfully`);
       } else {
         console.log(`${nodeName} does not exist or already disconnected`);

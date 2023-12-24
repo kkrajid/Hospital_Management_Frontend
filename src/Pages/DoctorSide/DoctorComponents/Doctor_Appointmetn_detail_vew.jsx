@@ -146,47 +146,45 @@ function Doctor_Appointmetn_detail_vew() {
         setAppointmetnCancel(false);
     };
     return (
-        <div className='w-full h-full p-2 rounded-[10px] bg-gray-200'>
+        <div className='w-full h-full p-2 rounded-[10px] bg-gray-300'>
             <div className='w-full h-1/6 flex items-center'>
                 <div className='w-full shadow-lg h-3/4 bg-white '>
 
                 </div>
             </div>
-            <div className='w-full h-5/6 bg-white rounded-b-[10px] relative'>
+            <div className='w-full h-5/6 bg-gray-300 rounded-b-[10px] relative'>
                 <div className='w-full  bg-[#1AACAC] h-2/5 rounded-t-[5px]'>
 
                 </div>
                 <div className='w-full h-5/6 bg-transparent absolute bottom-0 flex flex-col md:flex-row    py-2 px-3 gap-2'>
                     <div className='h-full w-1/5 bg-transparent py-2 flex justify-center'>
-                        <div className='w-full h-full bg-gray-200 shadow-lg rounded-[8px] shadow-lg py-2'>
-                            <div className='w-full h-full'>
-                                <div className='w-full h-2/5  flex items-center justify-center p-1'>
-                                    <div className=' w-6/12 h-5/6 flex items-center justify-center'>
-                                        <img src={appointData?.Patient_profile?.profile_pic} alt="" className='w-24 h-24 rounded-full shadow-lg' />
-                                    </div>
+                        <div className="flex items-center justify-center w-full h-full bg-gray-300 shadow-xl rounded-lg p-4">
+                            <div className="flex flex-col items-center">
+                                <div className="relative">
+                                    <img
+                                        src={appointData?.Patient_profile?.profile_pic}
+                                        alt=""
+                                        className="w-32 h-32 rounded-full object-cover shadow-lg"
+                                    />
                                 </div>
-                                <div className='w-full h-3/5 '>
-                                    <div className='w-full h-full  p-1 flex flex-col'>
-                                        <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p className='text-gray-500 font-mono'>{appointData?.patient?.full_name}</p>
-                                        </div>
-                                        <div className='w-full h-1/6  flex items-center justify-center text-sm'>
-                                            <p>{appointData?.patient?.email}  </p>
-                                        </div>
-                                        <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{appointData?.patient?.date_of_birth} </p>
-                                        </div>
-                                        <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p>{appointData?.time_slot?.start_time}-{appointData?.time_slot?.end_time}</p>
-                                        </div>
-                                        <div className='w-full h-1/6  flex items-center justify-center'>
-                                            <p >{appointData?.appointment_status}</p>
-                                        </div>
-                                    </div>
-
+                                <div className="mt-4 text-center">
+                                    <p className="text-gray-700 font-semibold text-xl">
+                                        {appointData?.patient?.full_name}
+                                    </p>
+                                    <p className="text-gray-700 text-sm">{appointData?.patient?.email}</p>
+                                    <p className="text-gray-700 text-sm">
+                                        {appointData?.patient?.date_of_birth}
+                                    </p>
+                                    <p className="text-gray-700 text-xs">
+                                        {appointData?.time_slot?.start_time}-{appointData?.time_slot?.end_time}
+                                    </p>
+                                    <p className="text-green-500 font-semibold mt-2 text-lg">
+                                        {appointData?.appointment_status}
+                                    </p>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div className='h-full  w-4/5 bg-transparent py-2 px-2 flex justify-center'>
                         <div className='w-full h-full bg-gray-200 rounded-[8px] shadow-lg p-2'>
@@ -251,8 +249,8 @@ function Doctor_Appointmetn_detail_vew() {
                                     </div>
                                 </div>
                                 <div className='bg-gray-100 w-full h-5/6 rounded-b-[10px]'>
-                                    {activeComponent === 'prescription' && <Prescription  appointmentId={appointmentId} Data={appointData} />}
-                                    {activeComponent === 'chat' && <DoctorChat  room={room_name_} id={appointData?.doctor_profile?.user?.id} />}
+                                    {activeComponent === 'prescription' && <Prescription appointmentId={appointmentId} Data={appointData} />}
+                                    {activeComponent === 'chat' && <DoctorChat room={room_name_} id={appointData?.doctor_profile?.user?.id} />}
                                 </div>
                             </div>
                         </div>

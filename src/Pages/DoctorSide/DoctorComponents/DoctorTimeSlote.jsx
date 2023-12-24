@@ -174,17 +174,17 @@ function DoctorTimeSlote() {
     };
     console.log(selectedItems,"dsfdsfdf");
     return (
-        <div className='w-full h-full bg-gray-200 rounded-[10px] border shadow-lg '>
+        <div className='w-full h-full bg-[#c7cbd2] rounded-[10px] border shadow-lg  p-2'>
             <div className='w-full h-1/8  flex items-center py-4'>
-                <div className='w-full h-full shadow-lg border bg-[#D1D5DB] '>
+                <div className='w-full h-full shadow-lg border bg-[#1AACAC] rounded-lg '>
                     <div className='flex w-full h-full justify-between py-2 px-3 '>
                         <div className='flex items-center justify-center '>
-                            <p className='uppercase text-gray-500 font-bold'>
-                                Time slot
-                            </p>
+                        <div>
+                            <h1 className="text-xl font-semibold text-white">Time slot</h1>
+                        </div>
                         </div>
                         <div className='flex gap-2'>
-                            <button className='py-2 px-3 border-blue-600 rounded-[5px] text-blue-500 shadow active:bg-blue-400 active:text-white' onClick={() => setTimeSlotView(true)} >Create slot</button>
+                            <button className='py-2 px-3 bg-white border-blue-600 rounded-[5px]  shadow active:bg-blue-400 active:text-white' onClick={() => setTimeSlotView(true)} >Create slot</button>
                             <button onClick={handleDelete} className={`p-1 px-2 ${selectedItems.size === 0 ?"bg-gray-600 opacity-50 cursor-not-allowed'":"bg-red-600"} text-white  rounded-[7px]`} disabled={selectedItems.size === 0 } >
                                 Delete
                             </button>
@@ -192,7 +192,7 @@ function DoctorTimeSlote() {
                     </div>
                 </div>
             </div>
-            <div className='w-full h-5/6 bg-gray-200  mt-1 rounded-[10px] p-3 flex justify-center overflow-y-auto'>
+            <div className='w-full h-5/6 bg-gray-300  mt-1 rounded-[10px] p-3 flex justify-center overflow-y-auto'>
                 <div>
                     <ul className='flex grid grid-cols-7 p-3 gap-3 '>
                         {datas?.map((val, indexs) => {
@@ -209,13 +209,30 @@ function DoctorTimeSlote() {
                         }
                          
                             return (
-                                <button key={indexs} className={`${!status_time?" cursor-not-allowed pointer-events-none border-gray-400 text-gray-400  ":""} ${selectedItems.has(index) ? 'border-red-500 text-red-500 active:opacity-[0.85]' : ''} rounded-[6px] p-2 border-blue-300 border-2 text-blue-500 flex items-center justify-center active:opacity-[0.85] `} onClick={() => handleItemToggle(index)}>
-                                    {/* <div
-                                                className={${selectedItems.has(index) ? 'bg-red-500' : ''} border-blue-400 border-2 w-[15px] h-[16px] rounded-[10px] mr-2}
-                                                onClick={() => handleItemToggle(index)}
-                                            ></div> */}
-                                    <p className='flex  font-semibold font-mono  '>{time_data[0]}</p>
-                                </button>
+                                <button
+                                key={indexs}
+                                className={`${
+                                  !status_time
+                                    ? 'cursor-not-allowed pointer-events-none border-[#1AACAC] text-white bg-[#1AACAC]'
+                                    : ''
+                                } ${
+                                  selectedItems.has(index)
+                                    ? 'border-red-800 text-white bg-red-500 active:opacity-[0.85]'
+                                    : ''
+                                } rounded-[6px] p-2 border-gray-700 border-2 text-gray-700 flex items-center justify-center active:opacity-[0.85] transition duration-300 transform hover:scale-105`}
+                                onClick={() => handleItemToggle(index)}
+                              >
+                                <div
+                                  className={`${
+                                    selectedItems.has(index) ? 'bg-red-500' : ''
+                                  } border-gray-700 border-2 w-[15px] h-[16px] rounded-[10px] mr-2`}
+                                  onClick={() => handleItemToggle(index)}
+                                ></div>
+                                <p className="flex font-semibold font-mono">{time_data[0]}</p>
+                              </button>
+                              
+                              
+                              
                             );
                         })}
                     </ul>
