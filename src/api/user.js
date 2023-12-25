@@ -35,7 +35,7 @@ export const doctor_profile_detail = async () => {
     return response.data;
 };
 export const DoctorProfile_add_or_update = async (formData) => {
-    const response = await authAxios.patch(`doctor_profile_detail`, formData)
+    const response = await authAxios.patch(`update_doctor_profile`, formData)
     return response.data;
 };
 
@@ -96,16 +96,13 @@ export const get_doctor_all_alert_from_icu_patients = async () => {
 };
 
 export const  fetchNotificationUsers = async (user_ids) => {
-    try {
+
       const response = await authAxios.get('doctor/get_notification_patient/', {
         params: {
-          user_ids: user_ids.join(','), // Convert the array to a comma-separated string
+          user_ids: user_ids.join(','), 
         },
       });
       return response.data;
-    } catch (error) {
-      throw new Error('Error fetching notification users');
-    }
   };
 //**///////////////////////////////////////ADMIN SIDE////////////////////////////////////////////////**//
 

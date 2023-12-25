@@ -11,10 +11,10 @@ function DoctorNotifications() {
     ['get_doctor_all_alert_from_icu_patients'],
     () => get_doctor_all_alert_from_icu_patients()
   );
-
+  console.log(data);
   useEffect(() => {
     if (data) {
-      const userIDsSet = new Set(data.map((dataItem) => dataItem?.user_id));
+      const userIDsSet = new Set(data?.map((dataItem) => dataItem?.user_id));
       const uniqueUserIDs = Array.from(userIDsSet);
       setUserIDs(uniqueUserIDs);
       fetchNotificationUsers(uniqueUserIDs);
@@ -30,8 +30,8 @@ function DoctorNotifications() {
     }
   );
 
-  if (isLoading || notificationUsersLoading) {
-    return <p>Loading...</p>;
+  if (isLoading || notificationUsersLoading && userIDs.length !==0) {
+    return <LoadingSpinner/>;
   }
 
   if (error || notificationUsersError) {

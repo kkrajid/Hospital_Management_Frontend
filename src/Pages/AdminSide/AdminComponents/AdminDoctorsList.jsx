@@ -43,7 +43,7 @@ function AdminDoctorsList() {
             zip_code: '',
             country: '',
         },
-        profile_pic: null,
+        profile_pic: " ",
     });
 
     const [doctorProfiles, setDoctorProfiles] = useState([]);
