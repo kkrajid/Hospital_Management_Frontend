@@ -35,7 +35,7 @@ export const doctor_profile_detail = async () => {
     return response.data;
 };
 export const DoctorProfile_add_or_update = async (formData) => {
-    const response = await authAxios.patch(`update_doctor_profile`, formData)
+    const response = await authAxios.patch(`doctor_profile_detail`, formData)
     return response.data;
 };
 
