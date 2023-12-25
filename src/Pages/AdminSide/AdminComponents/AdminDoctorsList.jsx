@@ -151,7 +151,7 @@ function AdminDoctorsList() {
             doctor.specialization?.toLowerCase().includes(searchInput.toLowerCase())
     );
 
-    if (isLoading) {
+    if (isLoading || add_new_doctor_addMutation.isLoading) {
         return <LoadingSpinner />;
     }
 
