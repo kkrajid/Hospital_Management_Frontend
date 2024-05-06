@@ -33,6 +33,7 @@ import AdminDoctorDetailViewPage from "./Pages/AdminSide/AdminDoctorDetailViewPa
 import PatientWalletPage from "./Pages/PatientSide/PatientWalletPage"
 import Sample from "./Pages/Sample"
 import DoctorNotificationPage from "./Pages/DoctorSide/DoctorNotificationPage"
+import LandingPage from "./Pages/LandingPage/LandingPage"
 
 
 function App() {
@@ -41,7 +42,9 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />} >
-                    <Route index element={<HomePage />} />
+                    {/* <Route index element={<HomePage />} /> */}
+                    <Route index element={<LandingPage/>} />
+                    
                     <Route path="login" element={<LoginPage />} />
                     <Route path="register" element={<RegisterPage />} />
                     <Route path="doctor/login" element={<DoctorLoginPage />} />
