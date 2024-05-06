@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import doctorimg2 from "./../../assets/doctor2 (1).png";
+// import doctorimg2 from "./../../assets/doctor2 (1).png";
 
 const HeroSection = () => {
   const [showDoctorLogin, setShowDoctorLogin] = useState(false);

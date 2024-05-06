@@ -1,10 +1,11 @@
 // LandingPage.js
 import React from 'react';
-import Header from '../../components/Header/Header';
-import HeroSection from '../../components/HeroSection/HeroSection';
-import FeaturesSection from '../../components/FeaturesSection/FeaturesSection';
-import ServicesSection from '../../components/ServicesSection/ServicesSection';
-import Footer from '../../components/Footer/Footer';
+import Header from '../../Components/LandingPage/Header/Header';
+
+import HeroSection from '../../Components/LandingPage/HeroSection/HeroSection'
+import FeaturesSection from '../../Components/LandingPage/FeaturesSection/FeaturesSection';
+import ServicesSection from '../../Components/LandingPage/ServicesSection/ServicesSection';
+import Footer from '../../Components/LandingPage/Footer/Footer';
 
 
 
